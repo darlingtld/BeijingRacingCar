@@ -1,0 +1,38 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.6.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+	runtime('mysql:mysql-connector-java')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile('org.springframework.boot:spring-boot-starter-logging')
+	compile group: 'org.jsoup', name: 'jsoup', version: '1.10.2'
+	compile group: 'com.google.guava', name: 'guava', version: '22.0'
+	// https://mvnrepository.com/artifact/net.sourceforge.htmlunit/htmlunit
+	compile group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: '2.27'
+	// https://mvnrepository.com/artifact/com.codeborne/phantomjsdriver
+	compile group: 'com.codeborne', name: 'phantomjsdriver', version: '1.4.3'
+	compile 'com.codeborne:selenide:4.5.1'
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
