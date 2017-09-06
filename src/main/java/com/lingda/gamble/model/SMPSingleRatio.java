@@ -8,16 +8,16 @@ public class SMPSingleRatio {
     private double lon;
     private double hu;
 
-    @Override
-    public String toString() {
-        return "SMPSingleRatio{" +
-                "da=" + da +
-                ", xiao=" + xiao +
-                ", dan=" + dan +
-                ", shuang=" + shuang +
-                ", lon=" + lon +
-                ", hu=" + hu +
-                '}';
+    public SMPSingleRatio() {
+    }
+
+    public SMPSingleRatio(double da, double xiao, double dan, double shuang, double lon, double hu) {
+        this.da = da;
+        this.xiao = xiao;
+        this.dan = dan;
+        this.shuang = shuang;
+        this.lon = lon;
+        this.hu = hu;
     }
 
     public double getDa() {
@@ -66,5 +66,17 @@ public class SMPSingleRatio {
 
     public void setHu(double hu) {
         this.hu = hu;
+    }
+
+    @Override
+    public String toString() {
+        return "SMPSingleRatio{" +
+                "da=" + da +
+                ", xiao=" + xiao +
+                ", dan=" + dan +
+                ", shuang=" + shuang +
+                ", lon=" + lon +
+                ", hu=" + hu +
+                '}';
     }
 }

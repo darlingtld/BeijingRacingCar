@@ -1,6 +1,13 @@
 package com.lingda.gamble.model;
 
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "smp_ratio")
 public class SMPRatio {
+    @Id
+    private String id;
     private Integer round;
     private SMPSingleRatio ratioFirst;
     private SMPSingleRatio ratioSecond;
@@ -16,7 +23,8 @@ public class SMPRatio {
     @Override
     public String toString() {
         return "SMPRatio{" +
-                "round=" + round +
+                "id=" + id +
+                ", round=" + round +
                 ", ratioFirst=" + ratioFirst +
                 ", ratioSecond=" + ratioSecond +
                 ", ratioThird=" + ratioThird +
@@ -28,6 +36,14 @@ public class SMPRatio {
                 ", ratioNinth=" + ratioNinth +
                 ", ratioTenth=" + ratioTenth +
                 '}';
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Integer getRound() {
