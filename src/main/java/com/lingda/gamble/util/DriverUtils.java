@@ -49,11 +49,28 @@ public class DriverUtils {
         }
     }
 
-    public static WebElement returnOnFindingElementContainingValue(WebDriver driver, By selector, String value) {
+    public static WebElement returnOnFindingElementEqualsValue(WebDriver driver, By selector, String value) {
+        while (true) {
+            try {
+                logger.debug("Finding element having exact value={} by {}", value, selector.toString());
+                Optional<WebElement> element = driver.findElements(selector).stream().filter(ele -> ele.getText().equals(value)).findFirst();
+                return element.orElseThrow(
+                        () -> new RuntimeException(String.format("Failed to find element having exact value=%s by %s", value, selector.toString())));
+            } catch (NoSuchElementException e) {
+                try {
+                    Thread.sleep(POLLING_INTERVAL_MS);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static WebElement returnOnFindingElementContainsValue(WebDriver driver, By selector, String value) {
         while (true) {
             try {
                 logger.debug("Finding element having value={} by {}", value, selector.toString());
-                Optional<WebElement> element = driver.findElements(selector).stream().filter(ele -> ele.getText().equals(value)).findFirst();
+                Optional<WebElement> element = driver.findElements(selector).stream().filter(ele -> ele.getText().contains(value)).findFirst();
                 return element.orElseThrow(
                         () -> new RuntimeException(String.format("Failed to find element having value=%s by %s", value, selector.toString())));
             } catch (NoSuchElementException e) {

@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class NavigationOperationTest {
+public class RatioFetchingOperationTest {
 
     @Autowired
     private LoginOperation loginOperation;
@@ -17,10 +17,14 @@ public class NavigationOperationTest {
     @Autowired
     private NavigationOperation navigationOperation;
 
+    @Autowired
+    private RatioFetchingForSMPOperation ratioFetchingForSMPOperation;
+
     @Test
-    public void shouldNavigate() throws InterruptedException {
+    public void shouldFetchRatio() throws InterruptedException {
         WebDriver driver = BrowserDriver.getDriver();
         loginOperation.doLogin(driver);
         navigationOperation.doNavigate(driver);
+        ratioFetchingForSMPOperation.doFetchRatio(driver);
     }
 }
