@@ -8,7 +8,7 @@ public class BrowserDriver {
 
     private static WebDriver driver = null;
 
-    static WebDriver getDriver() {
+    public static WebDriver getDriver() {
         if (driver == null) {
             return new ChromeDriver(new ChromeDriverService.Builder().withSilent(true).build());
         } else {

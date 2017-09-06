@@ -31,4 +31,10 @@ public class SMPRatioRepositoryTest {
         smpRatio.setRatioTenth(new SMPSingleRatio(1.98, 1.98, 1.98, 1.98, 1.98, 1.98));
         smpRatioRepository.save(smpRatio);
     }
+
+    @Test
+    public void shouldReturnOnFindByRound(){
+        SMPRatio smpRatio = smpRatioRepository.findByRound(1);
+        System.out.println(smpRatio);
+    }
 }
