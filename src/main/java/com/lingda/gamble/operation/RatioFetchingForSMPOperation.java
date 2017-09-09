@@ -33,7 +33,7 @@ public class RatioFetchingForSMPOperation {
     @Autowired
     private LotteryResultRepository lotteryResultRepository;
 
-    public void doFetchRatio(WebDriver driver) throws InterruptedException {
+    public Integer doFetchRatio(WebDriver driver) throws InterruptedException {
         driver.switchTo().parentFrame();
         DriverUtils.returnOnFindingFrame(driver, "mainFrame");
         logger.info("[Operation - FetchRatio] Fetch ratio for 北京赛车 - 双面盘");
@@ -47,7 +47,7 @@ public class RatioFetchingForSMPOperation {
         if (m.find()) {
             lotteryResult.setRound(Integer.parseInt(m.group(1)));
         } else {
-            throw new RuntimeException("Can not find lotter result");
+            throw new RuntimeException("Can not find lottery result");
         }
         lotteryResult.setFirst(Integer.parseInt(spanList.get(1).getText()));
         lotteryResult.setSecond(Integer.parseInt(spanList.get(2).getText()));
@@ -78,7 +78,7 @@ public class RatioFetchingForSMPOperation {
             SMPSingleRatio smpSingleRatio = new SMPSingleRatio();
             if (trList.get(1).findElements(By.tagName("th")).get(1).getText().equals("-")) {
 //                正在开奖 或者 正在刷新
-                return;
+                return null;
             }
             smpSingleRatio.setDa(Double.parseDouble(trList.get(1).findElements(By.tagName("th")).get(1).getText()));
             smpSingleRatio.setXiao(Double.parseDouble(trList.get(2).findElements(By.tagName("th")).get(1).getText()));
@@ -118,6 +118,6 @@ public class RatioFetchingForSMPOperation {
             logger.info("[Operation - FetchRatio] Save ratio to DB for 北京赛车 - 双面盘 - 赔率");
             smpRatioRepository.save(smpRatio);
         }
-
+        return smpRatio.getRound();
     }
 }

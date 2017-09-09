@@ -1,5 +1,6 @@
 package com.lingda.gamble;
 
+import com.lingda.gamble.operation.BetForSMPOperation;
 import com.lingda.gamble.operation.BrowserDriver;
 import com.lingda.gamble.operation.LoginOperation;
 import com.lingda.gamble.operation.NavigationOperation;
@@ -37,14 +38,22 @@ public class GambleApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(LoginOperation loginOperation, NavigationOperation navigationOperation, RatioFetchingForSMPOperation ratioFetchingForSMPOperation) {
+    public CommandLineRunner demo(LoginOperation loginOperation,
+                                  NavigationOperation navigationOperation,
+                                  RatioFetchingForSMPOperation ratioFetchingForSMPOperation,
+                                  BetForSMPOperation betForSMPOperation) {
         return (args) -> {
             WebDriver driver = BrowserDriver.getDriver();
             loginOperation.doLogin(driver);
             navigationOperation.doNavigate(driver);
             while (true) {
-                ratioFetchingForSMPOperation.doFetchRatio(driver);
-                Thread.sleep(15 * 1000);
+                try {
+                    Integer round = ratioFetchingForSMPOperation.doFetchRatio(driver);
+                    betForSMPOperation.doBet(driver, round);
+                    Thread.sleep(15 * 1000);
+                } catch (Exception e){
+                    logger.error(e.getMessage(), e);
+                }
             }
         };
     }
