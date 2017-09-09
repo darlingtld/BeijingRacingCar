@@ -27,18 +27,24 @@ public class RatioFetchingForSMPOperation {
 
     private static final Pattern roundPattern = Pattern.compile("^([0-9]+)\\s+期");
 
-    @Autowired
-    private SMPRatioRepository smpRatioRepository;
+    private static final String PLAYGROUND = "双面盘";
+
+    private final SMPRatioRepository smpRatioRepository;
+
+    private final LotteryResultRepository lotteryResultRepository;
 
     @Autowired
-    private LotteryResultRepository lotteryResultRepository;
+    public RatioFetchingForSMPOperation(SMPRatioRepository smpRatioRepository, LotteryResultRepository lotteryResultRepository) {
+        this.smpRatioRepository = smpRatioRepository;
+        this.lotteryResultRepository = lotteryResultRepository;
+    }
 
     public Integer doFetchRatio(WebDriver driver) throws InterruptedException {
         driver.switchTo().parentFrame();
         DriverUtils.returnOnFindingFrame(driver, "mainFrame");
-        logger.info("[Operation - FetchRatio] Fetch ratio for 北京赛车 - 双面盘");
+        logger.info("[Operation - FetchRatio] Fetch ratio for 北京赛车 - {}", PLAYGROUND);
 
-        logger.info("[Operation - FetchRatio] Fetch lottery result for 北京赛车 - 双面盘 - 期数");
+        logger.info("[Operation - FetchRatio] Fetch lottery result for 北京赛车 - {} - 期数", PLAYGROUND);
 //        获取之前开奖信息
         WebElement lotteryResultEle = DriverUtils.returnOnFindingElement(driver, By.id("betmyOpenRoundData"));
         List<WebElement> spanList = lotteryResultEle.findElements(By.tagName("span"));
@@ -61,11 +67,11 @@ public class RatioFetchingForSMPOperation {
         lotteryResult.setTenth(Integer.parseInt(spanList.get(10).getText()));
         logger.info(lotteryResult.toString());
         if (lotteryResultRepository.findByRound(lotteryResult.getRound()) == null) {
-            logger.info("[Operation - FetchRatio] Save lotteryResult to DB for 北京赛车 - 双面盘 - 开奖信息");
+            logger.info("[Operation - FetchRatio] Save lotteryResult to DB for 北京赛车 - {} - 开奖信息", PLAYGROUND);
             lotteryResultRepository.save(lotteryResult);
         }
 
-        logger.info("[Operation - FetchRatio] Fetch round for 北京赛车 - 双面盘 - 期数");
+        logger.info("[Operation - FetchRatio] Fetch round for 北京赛车 - {} - 期数", PLAYGROUND);
 //        获取当前下注期数
         WebElement element = DriverUtils.returnOnFindingElementContainsValue(driver, By.tagName("td"), "北京赛车");
         SMPRatio smpRatio = new SMPRatio();
@@ -92,30 +98,40 @@ public class RatioFetchingForSMPOperation {
             switch (i) {
                 case 0:
                     smpRatio.setRatioFirst(smpSingleRatio);
+                    break;
                 case 1:
                     smpRatio.setRatioSecond(smpSingleRatio);
+                    break;
                 case 2:
                     smpRatio.setRatioThird(smpSingleRatio);
+                    break;
                 case 3:
                     smpRatio.setRatioFourth(smpSingleRatio);
+                    break;
                 case 4:
                     smpRatio.setRatioFifth(smpSingleRatio);
+                    break;
                 case 5:
                     smpRatio.setRatioSixth(smpSingleRatio);
+                    break;
                 case 6:
                     smpRatio.setRatioSeventh(smpSingleRatio);
+                    break;
                 case 7:
                     smpRatio.setRatioEighth(smpSingleRatio);
+                    break;
                 case 8:
                     smpRatio.setRatioNinth(smpSingleRatio);
+                    break;
                 case 9:
                     smpRatio.setRatioTenth(smpSingleRatio);
+                    break;
             }
         }
-        logger.info("[Operation - FetchRatio] Fetch ratio for 北京赛车 - 双面盘 - 赔率");
+        logger.info("[Operation - FetchRatio] Fetch ratio for 北京赛车 - {} - 赔率", PLAYGROUND);
         logger.info(smpRatio.toString());
         if (smpRatioRepository.findByRound(smpRatio.getRound()) == null) {
-            logger.info("[Operation - FetchRatio] Save ratio to DB for 北京赛车 - 双面盘 - 赔率");
+            logger.info("[Operation - FetchRatio] Save ratio to DB for 北京赛车 - {} - 赔率", PLAYGROUND);
             smpRatioRepository.save(smpRatio);
         }
         return smpRatio.getRound();
