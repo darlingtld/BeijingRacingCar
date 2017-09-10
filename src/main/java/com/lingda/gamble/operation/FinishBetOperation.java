@@ -23,8 +23,10 @@ public class FinishBetOperation {
         DriverUtils.returnOnFinishLoadingGivenFinishingIndicator(driver, "下注的是");
         try {
             if (isMimic) {
-                DriverUtils.returnOnFindingElementEqualsValue(driver, By.tagName("input"), "取消下注").click();
+                logger.info("[Operation - Finish Bet] 模拟下注");
+                DriverUtils.returnOnFindingElementEqualsName(driver, By.tagName("input"), "reset").click();
             } else {
+                logger.info("[Operation - Finish Bet] 真实下注");
                 DriverUtils.returnOnFindingElementEqualsName(driver, By.tagName("input"), "submit").click();
             }
             logger.info("[Operation - Finish Bet] 下注成功");

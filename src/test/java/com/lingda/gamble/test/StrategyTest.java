@@ -17,17 +17,7 @@ public class StrategyTest {
 //            List<Integer> betList = Arrays.asList(1, 1, 1, 1, 1, 1, 1, 0, 0, 0);
 //
 //        }
-        Pattern p = Pattern.compile("^([0-9]+)\\s+期");
-
-        String l = "638423 期开奖";
-        Matcher m = p.matcher(l);
-
-        // if an occurrence if a pattern was found in a given string...
-        if (m.find()) {
-            // ...then you can use group() methods.
-            System.out.println(m.group(0)); // whole matched expression
-            System.out.println(m.group(1)); // first expression from round brackets (Testing)
-        }
+        System.out.println(2 << 6);
     }
 
     private static List<Integer> getRacingResult() {
