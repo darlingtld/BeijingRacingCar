@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class DriverUtils {
     private static final Logger logger = LoggerFactory.getLogger(DriverUtils.class);
-    private static final Integer POLLING_INTERVAL_MS = 100;
+    private static final Integer POLLING_INTERVAL_MS = 500;
 
     public static WebElement returnOnFindingElement(WebDriver driver, By selector) {
         while (true) {
@@ -66,6 +66,40 @@ public class DriverUtils {
         }
     }
 
+    public static WebElement returnOnFindingElementEqualsName(WebDriver driver, By selector, String name) {
+        while (true) {
+            try {
+                logger.debug("Finding element having exact name={} by {}", name, selector.toString());
+                Optional<WebElement> element = driver.findElements(selector).stream().filter(ele -> ele.getAttribute("name").equals(name)).findFirst();
+                return element.orElseThrow(
+                        () -> new RuntimeException(String.format("Failed to find element having exact name=%s by %s", name, selector.toString())));
+            } catch (NoSuchElementException e) {
+                try {
+                    Thread.sleep(POLLING_INTERVAL_MS);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static WebElement returnOnFindingElementEqualsType(WebDriver driver, By selector, String type) {
+        while (true) {
+            try {
+                logger.debug("Finding element having exact type={} by {}", type, selector.toString());
+                Optional<WebElement> element = driver.findElements(selector).stream().filter(ele -> ele.getAttribute("type").equals(type)).findFirst();
+                return element.orElseThrow(
+                        () -> new RuntimeException(String.format("Failed to find element having exact type=%s by %s", type, selector.toString())));
+            } catch (NoSuchElementException e) {
+                try {
+                    Thread.sleep(POLLING_INTERVAL_MS);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+    }
+
     public static WebElement returnOnFindingElementContainsValue(WebDriver driver, By selector, String value) {
         while (true) {
             try {
@@ -100,9 +134,20 @@ public class DriverUtils {
         }
     }
 
-    public static void returnOnFinishLoading(WebDriver driver, String loadingIndicator) {
+    public static void returnOnFinishLoadingGivenLoadingIndicator(WebDriver driver, String loadingIndicator) {
         while (driver.getPageSource().contains(loadingIndicator)) {
             logger.debug("Waiting for page finish loading indicator={}", loadingIndicator);
+            try {
+                Thread.sleep(POLLING_INTERVAL_MS);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    public static void returnOnFinishLoadingGivenFinishingIndicator(WebDriver driver, String finishIndicator) {
+        while (!driver.getPageSource().contains(finishIndicator)) {
+            logger.debug("Waiting for page finish finishing indicator={}", finishIndicator);
             try {
                 Thread.sleep(POLLING_INTERVAL_MS);
             } catch (InterruptedException e1) {
