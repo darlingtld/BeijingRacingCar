@@ -31,11 +31,11 @@ public class NavigationOperation {
         driver.switchTo().parentFrame();
         DriverUtils.returnOnFindingFrame(driver, "mainFrame");
         DriverUtils.returnOnFindingElementContainsValue(driver, By.tagName("td"), "北京赛车");
-        driver.switchTo().parentFrame().switchTo().frame("topFrame");
-        WebElement smpBtn = DriverUtils.returnOnFindingElementEqualsValue(driver, By.tagName("a"), "双面盘");
-        smpBtn.click();
-        Thread.sleep(500);
-        logger.info("[Operation - Navigate] Navigate to 双面盘");
+//        driver.switchTo().parentFrame().switchTo().frame("topFrame");
+//        WebElement smpBtn = DriverUtils.returnOnFindingElementEqualsValue(driver, By.tagName("a"), "双面盘");
+//        smpBtn.click();
+//        Thread.sleep(500);
+//        logger.info("[Operation - Navigate] Navigate to 双面盘");
 
 
     }

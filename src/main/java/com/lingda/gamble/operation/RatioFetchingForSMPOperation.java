@@ -41,6 +41,7 @@ public class RatioFetchingForSMPOperation {
     public Integer doFetchRatio(WebDriver driver) throws InterruptedException {
         driver.switchTo().parentFrame();
         DriverUtils.returnOnFindingFrame(driver, "mainFrame");
+        Thread.sleep(1000);
         logger.info("[Operation - FetchRatio] Fetch ratio for 北京赛车 - {}", PLAYGROUND);
 
         logger.info("[Operation - FetchRatio] Fetch lottery result for 北京赛车 - {} - 期数", PLAYGROUND);

@@ -27,7 +27,7 @@ public class SMPRatioRepositoryTest {
         smpRatio.setRatioSixth(new SMPSingleRatio(1.98, 1.98, 1.98, 1.98, 1.98, 1.98));
         smpRatio.setRatioSeventh(new SMPSingleRatio(1.98, 1.98, 1.98, 1.98, 1.98, 1.98));
         smpRatio.setRatioEighth(new SMPSingleRatio(1.98, 1.98, 1.98, 1.98, 1.98, 1.98));
-        smpRatio.setRatioNinth(new SMPSingleRatio(1.98, 1.98, 1.98, 1.98, 1.98, 1.98));
+        smpRatio.setRatioNineth(new SMPSingleRatio(1.98, 1.98, 1.98, 1.98, 1.98, 1.98));
         smpRatio.setRatioTenth(new SMPSingleRatio(1.98, 1.98, 1.98, 1.98, 1.98, 1.98));
         smpRatioRepository.save(smpRatio);
     }

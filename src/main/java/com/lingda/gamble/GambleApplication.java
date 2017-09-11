@@ -4,7 +4,10 @@ import com.lingda.gamble.operation.BetForSMPOperation;
 import com.lingda.gamble.operation.BrowserDriver;
 import com.lingda.gamble.operation.FinishBetOperation;
 import com.lingda.gamble.operation.LoginOperation;
+import com.lingda.gamble.operation.NavigationFirstSecondOperation;
 import com.lingda.gamble.operation.NavigationOperation;
+import com.lingda.gamble.operation.NavigationSMPOperation;
+import com.lingda.gamble.operation.RatioFetchingForFirstSecondOperation;
 import com.lingda.gamble.operation.RatioFetchingForSMPOperation;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -41,8 +44,11 @@ public class GambleApplication {
     @Bean
     public CommandLineRunner demo(LoginOperation loginOperation,
                                   NavigationOperation navigationOperation,
+                                  NavigationSMPOperation navigationSMPOperation,
                                   RatioFetchingForSMPOperation ratioFetchingForSMPOperation,
                                   BetForSMPOperation betForSMPOperation,
+                                  NavigationFirstSecondOperation navigationFirstSecondOperation,
+                                  RatioFetchingForFirstSecondOperation ratioFetchingForFirstSecondOperation,
                                   FinishBetOperation finishBetOperation) {
         return (args) -> {
             WebDriver driver = BrowserDriver.getDriver();
@@ -50,11 +56,14 @@ public class GambleApplication {
             navigationOperation.doNavigate(driver);
             while (true) {
                 try {
+                    navigationSMPOperation.doNavigate(driver);
                     Integer round = ratioFetchingForSMPOperation.doFetchRatio(driver);
                     boolean isBet = betForSMPOperation.doBet(driver, round);
                     if (isBet) {
                         finishBetOperation.doFinish(driver);
                     }
+                    navigationFirstSecondOperation.doNavigate(driver);
+                    ratioFetchingForFirstSecondOperation.doFetchRatio(driver);
                     Thread.sleep(15 * 1000);
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);

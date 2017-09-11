@@ -18,13 +18,20 @@ public class RatioFetchingOperationTest {
     private NavigationOperation navigationOperation;
 
     @Autowired
+    private NavigationFirstSecondOperation navigationFirstSecondOperation;
+    @Autowired
     private RatioFetchingForSMPOperation ratioFetchingForSMPOperation;
+
+    @Autowired
+    private RatioFetchingForFirstSecondOperation ratioFetchingForFirstSecondOperation;
 
     @Test
     public void shouldFetchRatio() throws InterruptedException {
         WebDriver driver = BrowserDriver.getDriver();
         loginOperation.doLogin(driver);
         navigationOperation.doNavigate(driver);
-        ratioFetchingForSMPOperation.doFetchRatio(driver);
+//        ratioFetchingForSMPOperation.doFetchRatio(driver);
+        navigationFirstSecondOperation.doNavigate(driver);
+        ratioFetchingForFirstSecondOperation.doFetchRatio(driver);
     }
 }
