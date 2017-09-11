@@ -16,7 +16,7 @@ public class SMPBet {
     private SMPSingleBet betSixth;
     private SMPSingleBet betSeventh;
     private SMPSingleBet betEighth;
-    private SMPSingleBet betNinth;
+    private SMPSingleBet betNineth;
     private SMPSingleBet betTenth;
 
     @Override
@@ -32,7 +32,7 @@ public class SMPBet {
                 ", betSixth=" + betSixth +
                 ", betSeventh=" + betSeventh +
                 ", betEighth=" + betEighth +
-                ", betNinth=" + betNinth +
+                ", betNineth=" + betNineth +
                 ", betTenth=" + betTenth +
                 '}';
     }
@@ -117,12 +117,12 @@ public class SMPBet {
         this.betEighth = betEighth;
     }
 
-    public SMPSingleBet getBetNinth() {
-        return betNinth;
+    public SMPSingleBet getBetNineth() {
+        return betNineth;
     }
 
-    public void setBetNinth(SMPSingleBet betNinth) {
-        this.betNinth = betNinth;
+    public void setBetNineth(SMPSingleBet betNineth) {
+        this.betNineth = betNineth;
     }
 
     public SMPSingleBet getBetTenth() {

@@ -17,7 +17,7 @@ public class SMPRatio {
     private SMPSingleRatio ratioSixth;
     private SMPSingleRatio ratioSeventh;
     private SMPSingleRatio ratioEighth;
-    private SMPSingleRatio ratioNinth;
+    private SMPSingleRatio ratioNineth;
     private SMPSingleRatio ratioTenth;
 
     @Override
@@ -33,7 +33,7 @@ public class SMPRatio {
                 ", ratioSixth=" + ratioSixth +
                 ", ratioSeventh=" + ratioSeventh +
                 ", ratioEighth=" + ratioEighth +
-                ", ratioNinth=" + ratioNinth +
+                ", ratioNineth=" + ratioNineth +
                 ", ratioTenth=" + ratioTenth +
                 '}';
     }
@@ -118,12 +118,12 @@ public class SMPRatio {
         this.ratioEighth = ratioEighth;
     }
 
-    public SMPSingleRatio getRatioNinth() {
-        return ratioNinth;
+    public SMPSingleRatio getRatioNineth() {
+        return ratioNineth;
     }
 
-    public void setRatioNinth(SMPSingleRatio ratioNinth) {
-        this.ratioNinth = ratioNinth;
+    public void setRatioNineth(SMPSingleRatio ratioNineth) {
+        this.ratioNineth = ratioNineth;
     }
 
     public SMPSingleRatio getRatioTenth() {

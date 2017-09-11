@@ -4,7 +4,6 @@ import com.lingda.gamble.model.LotteryResult;
 import com.lingda.gamble.model.SMPRatio;
 import com.lingda.gamble.model.SMPSingleRatio;
 import com.lingda.gamble.repository.LotteryResultRepository;
-import com.lingda.gamble.repository.SMPBetRepository;
 import com.lingda.gamble.repository.SMPRatioRepository;
 import com.lingda.gamble.util.DriverUtils;
 import org.openqa.selenium.By;
@@ -121,7 +120,7 @@ public class RatioFetchingForSMPOperation {
                     smpRatio.setRatioEighth(smpSingleRatio);
                     break;
                 case 8:
-                    smpRatio.setRatioNinth(smpSingleRatio);
+                    smpRatio.setRatioNineth(smpSingleRatio);
                     break;
                 case 9:
                     smpRatio.setRatioTenth(smpSingleRatio);
