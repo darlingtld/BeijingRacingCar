@@ -142,10 +142,10 @@ public class BetForFirstSecondOperation {
             List<Integer> firstNumberToRemoveList = new ArrayList<>();
             List<Integer> secondNumberToRemoveList = new ArrayList<>();
             for (int i = 1; i <= 10; i++) {
-                if (firstNumberCountMap.containsKey(i) && firstNumberCountMap.get(i).intValue() > 1) {
+                if (firstNumberCountMap.containsKey(i) && firstNumberCountMap.get(i).intValue() > 2) {
                     firstNumberToRemoveList.add(i);
                 }
-                if (secondNumberCountMap.containsKey(i) && secondNumberCountMap.get(i).intValue() > 1) {
+                if (secondNumberCountMap.containsKey(i) && secondNumberCountMap.get(i).intValue() > 2) {
                     secondNumberToRemoveList.add(i);
                 }
             }
@@ -206,34 +206,34 @@ public class BetForFirstSecondOperation {
         } else if (lastRankSingleBet.getTenth() > 0 && winningNumber == 10) {
             return chip;
         } else {
-//            if (betChip / chip == 1) {
-//                return chip * 5;
-//            } else if (betChip / chip == 5) {
-//                return chip * 17;
-//            } else if (betChip / chip == 17) {
-//                return chip * 57;
-//            } else if (betChip / chip == 57) {
-//                return chip * 193;
-//            } else if (betChip / chip == 193) {
-//                return chip * 572;
-//            } else {
-//                return chip;
-//            }
             if (betChip / chip == 1) {
-                return chip * 2;
-            } else if (betChip / chip == 2) {
-                return chip * 4;
-            } else if (betChip / chip == 4) {
-                return chip * 8;
-            } else if (betChip / chip == 8) {
-                return chip * 16;
-            } else if (betChip / chip == 16) {
-                return chip * 32;
-            } else if (betChip / chip == 32) {
-                return chip * 64;
+                return chip * 5;
+            } else if (betChip / chip == 5) {
+                return chip * 17;
+            } else if (betChip / chip == 17) {
+                return chip * 57;
+            } else if (betChip / chip == 57) {
+                return chip * 193;
+            } else if (betChip / chip == 193) {
+                return chip * 572;
             } else {
                 return chip;
             }
+//            if (betChip / chip == 1) {
+//                return chip * 2;
+//            } else if (betChip / chip == 2) {
+//                return chip * 4;
+//            } else if (betChip / chip == 4) {
+//                return chip * 8;
+//            } else if (betChip / chip == 8) {
+//                return chip * 16;
+//            } else if (betChip / chip == 16) {
+//                return chip * 32;
+//            } else if (betChip / chip == 32) {
+//                return chip * 64;
+//            } else {
+//                return chip;
+//            }
         }
     }
 
