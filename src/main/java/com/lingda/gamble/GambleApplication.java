@@ -2,6 +2,7 @@ package com.lingda.gamble;
 
 import com.lingda.gamble.operation.BetForFirstSecondOperation;
 import com.lingda.gamble.operation.BetForSMPOperation;
+import com.lingda.gamble.operation.BetForSMPSafeOperation;
 import com.lingda.gamble.operation.BrowserDriver;
 import com.lingda.gamble.operation.FinishBetOperation;
 import com.lingda.gamble.operation.LoginOperation;
@@ -48,6 +49,7 @@ public class GambleApplication {
                                   NavigationSMPOperation navigationSMPOperation,
                                   RatioFetchingForSMPOperation ratioFetchingForSMPOperation,
                                   BetForSMPOperation betForSMPOperation,
+                                  BetForSMPSafeOperation betForSMPSafeOperation,
                                   NavigationFirstSecondOperation navigationFirstSecondOperation,
                                   RatioFetchingForFirstSecondOperation ratioFetchingForFirstSecondOperation,
                                   BetForFirstSecondOperation betForFirstSecondOperation,
@@ -60,7 +62,8 @@ public class GambleApplication {
                 try {
                     navigationSMPOperation.doNavigate(driver);
                     Integer round = ratioFetchingForSMPOperation.doFetchRatio(driver);
-                    boolean isSMPBet = betForSMPOperation.doBet(driver, round);
+//                    boolean isSMPBet = betForSMPOperation.doBet(driver, round);
+                    boolean isSMPBet = betForSMPSafeOperation.doBet(driver, round);
                     if (isSMPBet) {
                         finishBetOperation.doFinish(driver,"双面盘");
                     }
