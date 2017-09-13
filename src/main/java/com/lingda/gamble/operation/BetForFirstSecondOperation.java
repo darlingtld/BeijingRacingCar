@@ -18,10 +18,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 //北京赛车 冠亚军下注
 @Component
@@ -129,6 +131,7 @@ public class BetForFirstSecondOperation {
         if (lastBet == null) {
             logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
             //      投注 冠-五 大
+
             betForFirst(bet, chip, Arrays.asList(1, 2, 3, 4, 5, 6, 7), driver);
             betForSecond(bet, chip, Arrays.asList(1, 2, 3, 4, 5, 6, 7), driver);
 
@@ -149,10 +152,15 @@ public class BetForFirstSecondOperation {
             firstNumberToBetList.removeAll(firstNumberToRemoveList);
             secondNumberToBetList.removeAll(secondNumberToRemoveList);
 
-            betForFirst(bet, chip, firstNumberToBetList.subList(0, 7), driver);
-            betForSecond(bet, chip, secondNumberToBetList.subList(0, 7), driver);
+            Collections.shuffle(firstNumberToBetList);
+            Collections.shuffle(secondNumberToBetList);
 
-            money = calculateMoney(money, -14 * chip);
+            Double firstMoneyBet = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst());
+            betForFirst(bet, firstMoneyBet, firstNumberToBetList.subList(0, 7), driver);
+            money = calculateMoney(money, -7 * firstMoneyBet);
+            Double secondMoneyBet = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond());
+            betForSecond(bet, secondMoneyBet, secondNumberToBetList.subList(0, 7), driver);
+            money = calculateMoney(money, -7 * secondMoneyBet);
 
         }
 
@@ -162,6 +170,71 @@ public class BetForFirstSecondOperation {
         firstSecondBetRepository.save(bet);
         return true;
 
+    }
+
+    private Double decideBetChip(Integer winningNumber, RankSingleBet lastRankSingleBet) {
+        double betChip = Stream.of(
+                lastRankSingleBet.getFirst(),
+                lastRankSingleBet.getSecond(),
+                lastRankSingleBet.getThird(),
+                lastRankSingleBet.getFourth(),
+                lastRankSingleBet.getFifth(),
+                lastRankSingleBet.getSixth(),
+                lastRankSingleBet.getSeventh(),
+                lastRankSingleBet.getEighth(),
+                lastRankSingleBet.getNineth(),
+                lastRankSingleBet.getTenth()).max(Double::compare).get();
+
+        if (lastRankSingleBet.getFirst() > 0 && winningNumber == 1) {
+            return chip;
+        } else if (lastRankSingleBet.getSecond() > 0 && winningNumber == 2) {
+            return chip;
+        } else if (lastRankSingleBet.getThird() > 0 && winningNumber == 3) {
+            return chip;
+        } else if (lastRankSingleBet.getFourth() > 0 && winningNumber == 4) {
+            return chip;
+        } else if (lastRankSingleBet.getFifth() > 0 && winningNumber == 5) {
+            return chip;
+        } else if (lastRankSingleBet.getSixth() > 0 && winningNumber == 6) {
+            return chip;
+        } else if (lastRankSingleBet.getSeventh() > 0 && winningNumber == 7) {
+            return chip;
+        } else if (lastRankSingleBet.getEighth() > 0 && winningNumber == 8) {
+            return chip;
+        } else if (lastRankSingleBet.getNineth() > 0 && winningNumber == 9) {
+            return chip;
+        } else if (lastRankSingleBet.getTenth() > 0 && winningNumber == 10) {
+            return chip;
+        } else {
+//            if (betChip / chip == 1) {
+//                return chip * 5;
+//            } else if (betChip / chip == 5) {
+//                return chip * 17;
+//            } else if (betChip / chip == 17) {
+//                return chip * 57;
+//            } else if (betChip / chip == 57) {
+//                return chip * 193;
+//            } else if (betChip / chip == 193) {
+//                return chip * 572;
+//            } else {
+//                return chip;
+//            }
+            if (betChip / chip == 1) {
+                return chip * 2;
+            } else if (betChip / chip == 2) {
+                return chip * 4;
+            } else if (betChip / chip == 4) {
+                return chip * 8;
+            } else if (betChip / chip == 8) {
+                return chip * 16;
+            } else if (betChip / chip == 16) {
+                return chip * 32;
+            } else if (betChip / chip == 32) {
+                return chip * 64;
+            } else {
+                return chip;
+            }
+        }
     }
 
     private double calculateLastLotteryResult(FirstSecondBet lastBet, LotteryResult lotteryResult) {
