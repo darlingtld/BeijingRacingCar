@@ -1,7 +1,7 @@
 package com.lingda.gamble.model;
 
 public enum SingleBetCategory {
-    DA("大"), XIAO("小"), DAN("单"), SHUANG("双"), LON("龙"), HU("虎");
+    FIRST("一"), SECOND("二"), THIRD("三"), FOURTH("四"), FIFTH("五"), SIXTH("六"), SEVENTH("七"), EIGHTH("八"), NINETH("九"), TENTH("十"), DA("大"), XIAO("小"), DAN("单"), SHUANG("双"), LON("龙"), HU("虎");
 
     private String category;
 

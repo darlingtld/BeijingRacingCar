@@ -1,5 +1,6 @@
 package com.lingda.gamble;
 
+import com.lingda.gamble.operation.BetForFirstSecondOperation;
 import com.lingda.gamble.operation.BetForSMPOperation;
 import com.lingda.gamble.operation.BrowserDriver;
 import com.lingda.gamble.operation.FinishBetOperation;
@@ -49,6 +50,7 @@ public class GambleApplication {
                                   BetForSMPOperation betForSMPOperation,
                                   NavigationFirstSecondOperation navigationFirstSecondOperation,
                                   RatioFetchingForFirstSecondOperation ratioFetchingForFirstSecondOperation,
+                                  BetForFirstSecondOperation betForFirstSecondOperation,
                                   FinishBetOperation finishBetOperation) {
         return (args) -> {
             WebDriver driver = BrowserDriver.getDriver();
@@ -58,15 +60,21 @@ public class GambleApplication {
                 try {
                     navigationSMPOperation.doNavigate(driver);
                     Integer round = ratioFetchingForSMPOperation.doFetchRatio(driver);
-                    boolean isBet = betForSMPOperation.doBet(driver, round);
-                    if (isBet) {
-                        finishBetOperation.doFinish(driver);
+                    boolean isSMPBet = betForSMPOperation.doBet(driver, round);
+                    if (isSMPBet) {
+                        finishBetOperation.doFinish(driver,"双面盘");
                     }
                     navigationFirstSecondOperation.doNavigate(driver);
-                    ratioFetchingForFirstSecondOperation.doFetchRatio(driver);
-                    Thread.sleep(15 * 1000);
+                    Integer firstSecondRound = ratioFetchingForFirstSecondOperation.doFetchRatio(driver);
+                    boolean isFirstSecondBet = betForFirstSecondOperation.doBet(driver, firstSecondRound);
+                    if (isFirstSecondBet) {
+                        finishBetOperation.doFinish(driver, "冠.亚军");
+                    }
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
+                } finally {
+                    Thread.sleep(15 * 1000);
+
                 }
             }
         };

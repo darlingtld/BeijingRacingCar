@@ -83,22 +83,26 @@ public class RatioFetchingForFirstSecondOperation {
 
         WebElement ratioTable = DriverUtils.returnOnFindingElement(driver, By.id("tblMy3DArea"));
         RankSingleRatio firstRatio = new RankSingleRatio();
-        firstRatio.setFirst(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_01")).getText()));
-        firstRatio.setSecond(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_02")).getText()));
-        firstRatio.setThird(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_03")).getText()));
-        firstRatio.setFourth(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_04")).getText()));
-        firstRatio.setFifth(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_05")).getText()));
-        firstRatio.setSixth(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_06")).getText()));
-        firstRatio.setSeventh(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_07")).getText()));
-        firstRatio.setEighth(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_08")).getText()));
-        firstRatio.setNineth(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_09")).getText()));
-        firstRatio.setTenth(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_10")).getText()));
-        firstRatio.setDan(Double.parseDouble(ratioTable.findElement(By.id("setR_1_1_1")).getText()));
-        firstRatio.setShuang(Double.parseDouble(ratioTable.findElement(By.id("setR_1_1_2")).getText()));
-        firstRatio.setDa(Double.parseDouble(ratioTable.findElement(By.id("setR_1_2_1")).getText()));
-        firstRatio.setXiao(Double.parseDouble(ratioTable.findElement(By.id("setR_1_2_2")).getText()));
-        firstRatio.setLon(Double.parseDouble(ratioTable.findElement(By.id("setR_1_6_1")).getText()));
-        firstRatio.setHu(Double.parseDouble(ratioTable.findElement(By.id("setR_1_6_2")).getText()));
+        try {
+            firstRatio.setFirst(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_01")).getText()));
+            firstRatio.setSecond(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_02")).getText()));
+            firstRatio.setThird(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_03")).getText()));
+            firstRatio.setFourth(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_04")).getText()));
+            firstRatio.setFifth(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_05")).getText()));
+            firstRatio.setSixth(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_06")).getText()));
+            firstRatio.setSeventh(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_07")).getText()));
+            firstRatio.setEighth(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_08")).getText()));
+            firstRatio.setNineth(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_09")).getText()));
+            firstRatio.setTenth(Double.parseDouble(ratioTable.findElement(By.id("setR_1_0_10")).getText()));
+            firstRatio.setDan(Double.parseDouble(ratioTable.findElement(By.id("setR_1_1_1")).getText()));
+            firstRatio.setShuang(Double.parseDouble(ratioTable.findElement(By.id("setR_1_1_2")).getText()));
+            firstRatio.setDa(Double.parseDouble(ratioTable.findElement(By.id("setR_1_2_1")).getText()));
+            firstRatio.setXiao(Double.parseDouble(ratioTable.findElement(By.id("setR_1_2_2")).getText()));
+            firstRatio.setLon(Double.parseDouble(ratioTable.findElement(By.id("setR_1_6_1")).getText()));
+            firstRatio.setHu(Double.parseDouble(ratioTable.findElement(By.id("setR_1_6_2")).getText()));
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Can not find lottery result");
+        }
         ratio.setRatioFirst(firstRatio);
 
         RankSingleRatio secondRatio = new RankSingleRatio();

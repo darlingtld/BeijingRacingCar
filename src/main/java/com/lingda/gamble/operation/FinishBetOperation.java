@@ -17,7 +17,7 @@ public class FinishBetOperation {
     @Value("${gamble.bet.mimic}")
     private boolean isMimic;
 
-    public void doFinish(WebDriver driver) throws InterruptedException {
+    public void doFinish(WebDriver driver, String playground) throws InterruptedException {
         logger.info("[Operation - Finish Bet] 确认下注");
         DriverUtils.returnOnFindingElementEqualsType(driver, By.tagName("input"), "submit").click();
         DriverUtils.returnOnFinishLoadingGivenFinishingIndicator(driver, "下注的是");
@@ -35,7 +35,7 @@ public class FinishBetOperation {
             logger.info("[Operation - Finish Bet] 下注失败");
             DriverUtils.returnOnFindingElementEqualsValue(driver, By.tagName("input"), "回上一页").click();
         } finally {
-            DriverUtils.returnOnFinishLoadingGivenFinishingIndicator(driver, "双面盘");
+            DriverUtils.returnOnFinishLoadingGivenFinishingIndicator(driver, playground);
         }
     }
 }
