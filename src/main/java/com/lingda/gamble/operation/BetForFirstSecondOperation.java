@@ -39,9 +39,6 @@ public class BetForFirstSecondOperation {
     @Value("${gamble.bet.chip}")
     private double chip;
 
-    @Value("${gamble.bet.smp.level}")
-    private int level;
-
     private LinkedHashMap<Integer, AtomicInteger> firstNumberCountMap = new LinkedHashMap<>();
 
     private LinkedHashMap<Integer, AtomicInteger> secondNumberCountMap = new LinkedHashMap<>();
@@ -61,7 +58,8 @@ public class BetForFirstSecondOperation {
         this.lotteryResultRepository = lotteryResultRepository;
     }
 
-    public boolean doBet(WebDriver driver, Integer round) throws InterruptedException {
+    public boolean doBet(WebDriver driver, Integer round, boolean isPlayTime) throws InterruptedException {
+        logger.info("[Operation - Bet] Play Time is {}", isPlayTime);
         if (round == null) {
             logger.info("[Operation - Bet] 当前无法下注");
             return false;
@@ -120,7 +118,7 @@ public class BetForFirstSecondOperation {
         logger.info("[Operation - Bet] Get last bet information for 北京赛车 - {}", PLAYGROUND);
         FirstSecondBet lastBet = firstSecondBetRepository.findByRound(round - 1);
         //            结算上次中奖情况
-        logger.info("=============== 金额 ===============");
+        logger.info("=============== 金额 (for test) ===============");
         money = calculateMoney(money, calculateLastLotteryResult(lastBet, lastLotteryResult));
         logger.info("我的余额:{}", money);
         logger.info("====================================");
@@ -129,13 +127,15 @@ public class BetForFirstSecondOperation {
         bet.setRound(round);
 //        ============== 策略逻辑 ==============
         if (lastBet == null) {
-            logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-            //      投注 冠-五 大
-
-            betForFirst(bet, chip, Arrays.asList(1, 2, 3, 4, 5, 6, 7), driver);
-            betForSecond(bet, chip, Arrays.asList(1, 2, 3, 4, 5, 6, 7), driver);
-
-            money = calculateMoney(money, -14 * chip);
+            if (!isPlayTime) {
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+            } else {
+                logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                //      投注 冠-五 大
+                betForFirst(bet, chip, Arrays.asList(1, 2, 3, 4, 5, 6, 7), driver);
+                betForSecond(bet, chip, Arrays.asList(1, 2, 3, 4, 5, 6, 7), driver);
+                money = calculateMoney(money, -14 * chip);
+            }
         } else {
             List<Integer> firstNumberToBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
             List<Integer> secondNumberToBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
@@ -155,16 +155,16 @@ public class BetForFirstSecondOperation {
             Collections.shuffle(firstNumberToBetList);
             Collections.shuffle(secondNumberToBetList);
 
-            Double firstMoneyBet = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst());
+            Double firstMoneyBet = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime);
             betForFirst(bet, firstMoneyBet, firstNumberToBetList.subList(0, 7), driver);
             money = calculateMoney(money, -7 * firstMoneyBet);
-            Double secondMoneyBet = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond());
+            Double secondMoneyBet = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime);
             betForSecond(bet, secondMoneyBet, secondNumberToBetList.subList(0, 7), driver);
             money = calculateMoney(money, -7 * secondMoneyBet);
 
         }
 
-        logger.info("=============== 金额 ===============");
+        logger.info("=============== 金额 (for test) ===============");
         logger.info("我的余额:{}", money);
         logger.info("====================================");
         firstSecondBetRepository.save(bet);
@@ -172,7 +172,7 @@ public class BetForFirstSecondOperation {
 
     }
 
-    private Double decideBetChip(Integer winningNumber, RankSingleBet lastRankSingleBet) {
+    private Double decideBetChip(Integer winningNumber, RankSingleBet lastRankSingleBet, boolean isPlayTime) {
         double betChip = Stream.of(
                 lastRankSingleBet.getFirst(),
                 lastRankSingleBet.getSecond(),
@@ -186,24 +186,64 @@ public class BetForFirstSecondOperation {
                 lastRankSingleBet.getTenth()).max(Double::compare).get();
 
         if (lastRankSingleBet.getFirst() > 0 && winningNumber == 1) {
+            if (!isPlayTime) {
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                return 0.0;
+            }
             return chip;
         } else if (lastRankSingleBet.getSecond() > 0 && winningNumber == 2) {
+            if (!isPlayTime) {
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                return 0.0;
+            }
             return chip;
         } else if (lastRankSingleBet.getThird() > 0 && winningNumber == 3) {
+            if (!isPlayTime) {
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                return 0.0;
+            }
             return chip;
         } else if (lastRankSingleBet.getFourth() > 0 && winningNumber == 4) {
+            if (!isPlayTime) {
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                return 0.0;
+            }
             return chip;
         } else if (lastRankSingleBet.getFifth() > 0 && winningNumber == 5) {
+            if (!isPlayTime) {
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                return 0.0;
+            }
             return chip;
         } else if (lastRankSingleBet.getSixth() > 0 && winningNumber == 6) {
+            if (!isPlayTime) {
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                return 0.0;
+            }
             return chip;
         } else if (lastRankSingleBet.getSeventh() > 0 && winningNumber == 7) {
+            if (!isPlayTime) {
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                return 0.0;
+            }
             return chip;
         } else if (lastRankSingleBet.getEighth() > 0 && winningNumber == 8) {
+            if (!isPlayTime) {
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                return 0.0;
+            }
             return chip;
         } else if (lastRankSingleBet.getNineth() > 0 && winningNumber == 9) {
+            if (!isPlayTime) {
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                return 0.0;
+            }
             return chip;
         } else if (lastRankSingleBet.getTenth() > 0 && winningNumber == 10) {
+            if (!isPlayTime) {
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                return 0.0;
+            }
             return chip;
         } else {
             if (betChip / chip == 1) {
@@ -219,21 +259,6 @@ public class BetForFirstSecondOperation {
             } else {
                 return chip;
             }
-//            if (betChip / chip == 1) {
-//                return chip * 2;
-//            } else if (betChip / chip == 2) {
-//                return chip * 4;
-//            } else if (betChip / chip == 4) {
-//                return chip * 8;
-//            } else if (betChip / chip == 8) {
-//                return chip * 16;
-//            } else if (betChip / chip == 16) {
-//                return chip * 32;
-//            } else if (betChip / chip == 32) {
-//                return chip * 64;
-//            } else {
-//                return chip;
-//            }
         }
     }
 

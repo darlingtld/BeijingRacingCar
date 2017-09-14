@@ -23,6 +23,7 @@ import org.springframework.core.io.ResourceLoader;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.time.LocalTime;
 
 @SpringBootApplication
 public class GambleApplication {
@@ -58,18 +59,24 @@ public class GambleApplication {
             WebDriver driver = BrowserDriver.getDriver();
             loginOperation.doLogin(driver);
             navigationOperation.doNavigate(driver);
+//            晚上八点四十后，逐渐收尾，不继续下注
+            LocalTime endTime = LocalTime.parse("14:45:00");
+            boolean isPlayTime = false;
             while (true) {
+                if (endTime.isAfter(LocalTime.now())) {
+                    isPlayTime = true;
+                }
                 try {
                     navigationSMPOperation.doNavigate(driver);
                     Integer round = ratioFetchingForSMPOperation.doFetchRatio(driver);
 //                    boolean isSMPBet = betForSMPOperation.doBet(driver, round);
-                    boolean isSMPBet = betForSMPSafeOperation.doBet(driver, round);
+                    boolean isSMPBet = betForSMPSafeOperation.doBet(driver, round, isPlayTime);
                     if (isSMPBet) {
-                        finishBetOperation.doFinish(driver,"双面盘");
+                        finishBetOperation.doFinish(driver, "双面盘");
                     }
                     navigationFirstSecondOperation.doNavigate(driver);
                     Integer firstSecondRound = ratioFetchingForFirstSecondOperation.doFetchRatio(driver);
-                    boolean isFirstSecondBet = betForFirstSecondOperation.doBet(driver, firstSecondRound);
+                    boolean isFirstSecondBet = betForFirstSecondOperation.doBet(driver, firstSecondRound, isPlayTime);
                     if (isFirstSecondBet) {
                         finishBetOperation.doFinish(driver, "冠.亚军");
                     }
@@ -77,7 +84,6 @@ public class GambleApplication {
                     logger.error(e.getMessage(), e);
                 } finally {
                     Thread.sleep(15 * 1000);
-
                 }
             }
         };
