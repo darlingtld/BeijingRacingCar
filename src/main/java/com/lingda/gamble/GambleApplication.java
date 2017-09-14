@@ -21,8 +21,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ResourceLoader;
 
-import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.time.LocalTime;
 
 @SpringBootApplication
@@ -32,13 +30,6 @@ public class GambleApplication {
 
     @Autowired
     private ResourceLoader resourceLoader;
-
-    @PostConstruct
-    public void postConstruct() throws IOException {
-        String chromeDriverPath = resourceLoader.getResource("classpath:chromedriver").getFile().getPath();
-        logger.info("Chrome driver path is {}", chromeDriverPath);
-        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(GambleApplication.class, args);
@@ -56,11 +47,21 @@ public class GambleApplication {
                                   BetForFirstSecondOperation betForFirstSecondOperation,
                                   FinishBetOperation finishBetOperation) {
         return (args) -> {
+            if (args.length == 0) {
+                String chromeDriverPath = resourceLoader.getResource("classpath:chromedriver").getFile().getPath();
+                logger.info("Chrome driver path is {}", chromeDriverPath);
+                System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+            } else {
+                String chromeDriverPath = args[0];
+                logger.info("Chrome driver path is {}", chromeDriverPath);
+                System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+            }
+
             WebDriver driver = BrowserDriver.getDriver();
             loginOperation.doLogin(driver);
             navigationOperation.doNavigate(driver);
 //            晚上八点四十后，逐渐收尾，不继续下注
-            LocalTime endTime = LocalTime.parse("14:45:00");
+            LocalTime endTime = LocalTime.parse("20:40:00");
             boolean isPlayTime = false;
             while (true) {
                 if (endTime.isAfter(LocalTime.now())) {
