@@ -1,9 +1,7 @@
 package com.lingda.gamble.operation;
 
-import com.lingda.gamble.util.DriverUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.openqa.selenium.By;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -19,19 +17,9 @@ public class LoginOperation {
     @Value("${gamble.website}")
     private String website;
 
-    @Value("${gamble.username}")
-    private String username;
-
-    @Value("${gamble.password}")
-    private String password;
-
     public void doLogin(WebDriver driver) {
         logger.info("[Operation - Login] Navigate to website={}", website);
         driver.get(website);
-        DriverUtils.returnOnFindingElement(driver, By.id("login")).sendKeys(username);
-        logger.info("[Operation - Login] Fill in username={}", username);
-        DriverUtils.returnOnFindingElement(driver, By.id("pass")).sendKeys(password);
-        logger.info("[Operation - Login] Fill in password={}", password);
 //        wait for the user to input authnumber
         try {
             waitForUserInputAuthNumber(driver);

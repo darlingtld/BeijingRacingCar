@@ -26,6 +26,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-logging')
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+    compile("org.springframework.boot:spring-boot-devtools")
     compile group: 'org.jsoup', name: 'jsoup', version: '1.10.2'
     compile group: 'com.google.guava', name: 'guava', version: '22.0'
     compile group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: '2.27'
