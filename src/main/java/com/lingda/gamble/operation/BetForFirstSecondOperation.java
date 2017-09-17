@@ -247,15 +247,15 @@ public class BetForFirstSecondOperation {
             return chip;
         } else {
             if (betChip / chip == 1) {
-                return chip * 5;
-            } else if (betChip / chip == 5) {
-                return chip * 17;
-            } else if (betChip / chip == 17) {
-                return chip * 57;
-            } else if (betChip / chip == 57) {
-                return chip * 193;
-            } else if (betChip / chip == 193) {
-                return chip * 572;
+                return chip * 3;
+            } else if (betChip / chip == 3) {
+                return chip * 9;
+            } else if (betChip / chip == 9) {
+                return chip * 27;
+            } else if (betChip / chip == 27) {
+                return chip * 81;
+            } else if (betChip / chip == 81) {
+                return chip * 197;
             } else {
                 return chip;
             }

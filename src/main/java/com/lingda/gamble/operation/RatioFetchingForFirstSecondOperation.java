@@ -5,10 +5,13 @@ import com.lingda.gamble.model.LotteryResult;
 import com.lingda.gamble.model.RankSingleRatio;
 import com.lingda.gamble.model.SMPRatio;
 import com.lingda.gamble.model.SMPSingleRatio;
+import com.lingda.gamble.model.WinLostMoney;
 import com.lingda.gamble.repository.FirstSecondRatioRepository;
 import com.lingda.gamble.repository.LotteryResultRepository;
 import com.lingda.gamble.repository.SMPRatioRepository;
+import com.lingda.gamble.repository.WinLostMoneyRepository;
 import com.lingda.gamble.util.DriverUtils;
+import com.lingda.gamble.util.Store;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -35,10 +38,13 @@ public class RatioFetchingForFirstSecondOperation {
 
     private final LotteryResultRepository lotteryResultRepository;
 
+    private final WinLostMoneyRepository winLostMoneyRepository;
+
     @Autowired
-    public RatioFetchingForFirstSecondOperation(FirstSecondRatioRepository firstSecondRatioRepository, LotteryResultRepository lotteryResultRepository) {
+    public RatioFetchingForFirstSecondOperation(FirstSecondRatioRepository firstSecondRatioRepository, LotteryResultRepository lotteryResultRepository, WinLostMoneyRepository winLostMoneyRepository) {
         this.firstSecondRatioRepository = firstSecondRatioRepository;
         this.lotteryResultRepository = lotteryResultRepository;
+        this.winLostMoneyRepository = winLostMoneyRepository;
     }
 
     public Integer doFetchRatio(WebDriver driver) throws InterruptedException {
@@ -75,16 +81,25 @@ public class RatioFetchingForFirstSecondOperation {
             lotteryResultRepository.save(lotteryResult);
         }
 
-        //        获取当前输赢情况
-        WebElement todayWinLost = DriverUtils.returnOnFindingElement(driver, By.id("todayWinLost"));
-        Double todayWinLostMoney = Double.parseDouble(todayWinLost.getText());
-        logger.info("[Operation - FetchRatio] Today win/lost for 北京赛车 - {} - {}", PLAYGROUND, todayWinLostMoney);
-        logger.info("[Operation - FetchRatio] Fetch round for 北京赛车 - {} - 期数", PLAYGROUND);
 
+        logger.info("[Operation - FetchRatio] Fetch round for 北京赛车 - {} - 期数", PLAYGROUND);
 //        获取当前下注期数
         WebElement element = DriverUtils.returnOnFindingElementContainsValue(driver, By.tagName("td"), "北京赛车");
         FirstSecondRatio ratio = new FirstSecondRatio();
         ratio.setRound(Integer.parseInt(element.findElements(By.tagName("span")).get(0).getText()));
+
+        //        获取当前输赢情况
+        WebElement todayWinLost = DriverUtils.returnOnFindingElement(driver, By.id("todayWinLost"));
+        Double todayWinLostMoney = Double.parseDouble(todayWinLost.getText());
+        logger.info("[Operation - FetchRatio] Today win/lost for 北京赛车 - {} - {}", PLAYGROUND, todayWinLostMoney);
+        WinLostMoney winLostMoney = new WinLostMoney();
+        winLostMoney.setAccountName(Store.getAccountName());
+        winLostMoney.setRound(ratio.getRound());
+        winLostMoney.setWinLostMoney(todayWinLostMoney);
+        if (winLostMoneyRepository.findByRoundAndAccountName(winLostMoney.getRound(), winLostMoney.getAccountName()) == null) {
+            logger.info("[Operation - FetchRatio] Save today win/lost for 北京赛车 - {}", PLAYGROUND);
+            winLostMoneyRepository.save(winLostMoney);
+        }
 
         WebElement ratioTable = DriverUtils.returnOnFindingElement(driver, By.id("tblMy3DArea"));
         RankSingleRatio firstRatio = new RankSingleRatio();

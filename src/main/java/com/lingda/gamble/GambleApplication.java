@@ -20,11 +20,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.LocalTime;
 import java.util.TimeZone;
 
 @SpringBootApplication
+@EnableScheduling
 public class GambleApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(GambleApplication.class);

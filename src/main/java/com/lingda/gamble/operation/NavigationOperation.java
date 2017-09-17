@@ -1,6 +1,7 @@
 package com.lingda.gamble.operation;
 
 import com.lingda.gamble.util.DriverUtils;
+import com.lingda.gamble.util.Store;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,6 +24,7 @@ public class NavigationOperation {
         DriverUtils.returnOnFindingFrame(driver, "leftFrame");
         WebElement accountEle = DriverUtils.returnOnFindingElement(driver, By.className("row1")).findElements(By.tagName("td")).get(1);
         logger.info("[Operation - Navigate] Username is {}", accountEle.getText());
+        Store.setAccountName(accountEle.getText());
 
         driver.switchTo().parentFrame();
 
