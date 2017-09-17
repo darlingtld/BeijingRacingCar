@@ -39,6 +39,19 @@ public class BetForFirstSecondOperation {
     @Value("${gamble.bet.chip}")
     private double chip;
 
+    @Value("${gamble.bet.12.level1}")
+    private int level1;
+    @Value("${gamble.bet.12.level2}")
+    private int level2;
+    @Value("${gamble.bet.12.level3}")
+    private int level3;
+    @Value("${gamble.bet.12.level4}")
+    private int level4;
+    @Value("${gamble.bet.12.level5}")
+    private int level5;
+    @Value("${gamble.numbers.exclude}")
+    private String numbersToExclude;
+
     private LinkedHashMap<Integer, AtomicInteger> firstNumberCountMap = new LinkedHashMap<>();
 
     private LinkedHashMap<Integer, AtomicInteger> secondNumberCountMap = new LinkedHashMap<>();
@@ -66,6 +79,15 @@ public class BetForFirstSecondOperation {
         }
         firstNumberCountMap.clear();
         secondNumberCountMap.clear();
+//        List<Integer> numbersToExcludeList = new ArrayList<>();
+//        String[] numbersToExcludeStr = numbersToExclude.split(",");
+//        for (String number : numbersToExcludeStr) {
+//            try {
+//                numbersToExcludeList.add(Integer.parseInt(number));
+//            } catch (Exception e) {
+//                logger.error("[Operation - Bet] {}", e.getMessage());
+//            }
+//        }
 
         logger.info("[Operation - Bet] Bet for 北京赛车 - {}", PLAYGROUND);
 
@@ -82,7 +104,7 @@ public class BetForFirstSecondOperation {
             logger.info("[Operation - Bet] No last lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
             return false;
         }
-//        take the last 5 lottery result into consideration
+//        take the last 6 lottery result into consideration
         markNumber(lastLotteryResult);
 
         LotteryResult lotteryResult2 = lotteryResultRepository.findByRound(round - 2);
@@ -101,6 +123,11 @@ public class BetForFirstSecondOperation {
         if (lotteryResult5 != null) {
             markNumber(lotteryResult5);
         }
+        LotteryResult lotteryResult6 = lotteryResultRepository.findByRound(round - 6);
+        if (lotteryResult6 != null) {
+            markNumber(lotteryResult6);
+        }
+
         logger.info("[Operation - Bet] Last 5 lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
         for (Map.Entry<Integer, AtomicInteger> entry : firstNumberCountMap.entrySet()) {
             logger.info("[Operation - Bet] Last 5 lottery result 冠军 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
@@ -122,6 +149,9 @@ public class BetForFirstSecondOperation {
         money = calculateMoney(money, calculateLastLotteryResult(lastBet, lastLotteryResult));
         logger.info("我的余额:{}", money);
         logger.info("====================================");
+
+//        TODO remove specified numbers
+//        List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
 
         FirstSecondBet bet = new FirstSecondBet();
         bet.setRound(round);
@@ -247,15 +277,15 @@ public class BetForFirstSecondOperation {
             return chip;
         } else {
             if (betChip / chip == 1) {
-                return chip * 3;
-            } else if (betChip / chip == 3) {
-                return chip * 9;
-            } else if (betChip / chip == 9) {
-                return chip * 27;
-            } else if (betChip / chip == 27) {
-                return chip * 81;
-            } else if (betChip / chip == 81) {
-                return chip * 197;
+                return chip * level1;
+            } else if (betChip / chip == level1) {
+                return chip * level2;
+            } else if (betChip / chip == level2) {
+                return chip * level3;
+            } else if (betChip / chip == level3) {
+                return chip * level4;
+            } else if (betChip / chip == level4) {
+                return chip * level5;
             } else {
                 return chip;
             }

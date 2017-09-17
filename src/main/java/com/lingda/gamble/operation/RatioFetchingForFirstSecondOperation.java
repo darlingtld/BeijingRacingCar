@@ -18,6 +18,7 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,6 +30,9 @@ import java.util.regex.Pattern;
 public class RatioFetchingForFirstSecondOperation {
 
     private static final Logger logger = LoggerFactory.getLogger(RatioFetchingForFirstSecondOperation.class);
+
+    @Value("${gamble.bet.lostshreshold}")
+    private double lostThreshold;
 
     private static final Pattern roundPattern = Pattern.compile("^([0-9]+)\\s+期");
 
@@ -99,6 +103,9 @@ public class RatioFetchingForFirstSecondOperation {
         if (winLostMoneyRepository.findByRoundAndAccountName(winLostMoney.getRound(), winLostMoney.getAccountName()) == null) {
             logger.info("[Operation - FetchRatio] Save today win/lost for 北京赛车 - {}", PLAYGROUND);
             winLostMoneyRepository.save(winLostMoney);
+            if (winLostMoney.getWinLostMoney() + lostThreshold < 0) {
+                throw new RuntimeException(String.format("!!!!!!!!! Blast %s !!!!!!!!!", winLostMoney.getWinLostMoney()));
+            }
         }
 
         WebElement ratioTable = DriverUtils.returnOnFindingElement(driver, By.id("tblMy3DArea"));

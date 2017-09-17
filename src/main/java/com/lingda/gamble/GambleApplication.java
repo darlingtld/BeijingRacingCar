@@ -69,6 +69,7 @@ public class GambleApplication {
             LocalTime endTime = LocalTime.parse("20:40:00");
             boolean isPlayTime = false;
             while (true) {
+                logger.info("Current time is {}. End Time is {}", LocalTime.now(), endTime);
                 if (endTime.isAfter(LocalTime.now())) {
                     isPlayTime = true;
                 }

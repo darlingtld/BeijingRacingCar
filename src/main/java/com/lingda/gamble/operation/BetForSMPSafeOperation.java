@@ -594,22 +594,22 @@ public class BetForSMPSafeOperation {
         double betChip = 0;
         switch (category) {
             case DA:
-                betChip = smpSingleBet.getDa() * 2;
+                betChip = smpSingleBet.getDa() * 2 + chip;
                 break;
             case XIAO:
-                betChip = smpSingleBet.getXiao() * 2;
+                betChip = smpSingleBet.getXiao() * 2 + chip;
                 break;
             case DAN:
-                betChip = smpSingleBet.getDan() * 2;
+                betChip = smpSingleBet.getDan() * 2 + chip;
                 break;
             case SHUANG:
-                betChip = smpSingleBet.getShuang() * 2;
+                betChip = smpSingleBet.getShuang() * 2 + chip;
                 break;
             case LON:
-                betChip = smpSingleBet.getLon() * 2;
+                betChip = smpSingleBet.getLon() * 2 + chip;
                 break;
             case HU:
-                betChip = smpSingleBet.getHu() * 2;
+                betChip = smpSingleBet.getHu() * 2 + chip;
                 break;
         }
         if (betChip / chip > 2 << (level - 1)) {
