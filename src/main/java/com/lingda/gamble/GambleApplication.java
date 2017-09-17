@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ResourceLoader;
 
 import java.time.LocalTime;
+import java.util.TimeZone;
 
 @SpringBootApplication
 public class GambleApplication {
@@ -56,6 +57,8 @@ public class GambleApplication {
                 logger.info("Chrome driver path is {}", chromeDriverPath);
                 System.setProperty("webdriver.chrome.driver", chromeDriverPath);
             }
+
+            TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
 
             WebDriver driver = BrowserDriver.getDriver();
             loginOperation.doLogin(driver);

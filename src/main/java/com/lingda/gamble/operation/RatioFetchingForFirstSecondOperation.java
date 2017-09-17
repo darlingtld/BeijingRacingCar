@@ -75,7 +75,12 @@ public class RatioFetchingForFirstSecondOperation {
             lotteryResultRepository.save(lotteryResult);
         }
 
+        //        获取当前输赢情况
+        WebElement todayWinLost = DriverUtils.returnOnFindingElement(driver, By.id("todayWinLost"));
+        Double todayWinLostMoney = Double.parseDouble(todayWinLost.getText());
+        logger.info("[Operation - FetchRatio] Today win/lost for 北京赛车 - {} - {}", PLAYGROUND, todayWinLostMoney);
         logger.info("[Operation - FetchRatio] Fetch round for 北京赛车 - {} - 期数", PLAYGROUND);
+
 //        获取当前下注期数
         WebElement element = DriverUtils.returnOnFindingElementContainsValue(driver, By.tagName("td"), "北京赛车");
         FirstSecondRatio ratio = new FirstSecondRatio();

@@ -19,6 +19,13 @@ public class NavigationOperation {
 
     public void doNavigate(WebDriver driver) throws InterruptedException {
         driver.get(String.format("%s/op.php?op=member", website));
+        logger.info("[Operation - Navigate] Get username of 北京赛车");
+        DriverUtils.returnOnFindingFrame(driver, "leftFrame");
+        WebElement accountEle = DriverUtils.returnOnFindingElement(driver, By.className("row1")).findElements(By.tagName("td")).get(1);
+        logger.info("[Operation - Navigate] Username is {}", accountEle.getText());
+
+        driver.switchTo().parentFrame();
+
         DriverUtils.returnOnFindingFrame(driver, "topFrame");
         WebElement klsfBtn = DriverUtils.returnOnFindingElementEqualsValue(driver, By.tagName("a"), "快乐十分");
         klsfBtn.click();
@@ -31,12 +38,5 @@ public class NavigationOperation {
         driver.switchTo().parentFrame();
         DriverUtils.returnOnFindingFrame(driver, "mainFrame");
         DriverUtils.returnOnFindingElementContainsValue(driver, By.tagName("td"), "北京赛车");
-//        driver.switchTo().parentFrame().switchTo().frame("topFrame");
-//        WebElement smpBtn = DriverUtils.returnOnFindingElementEqualsValue(driver, By.tagName("a"), "双面盘");
-//        smpBtn.click();
-//        Thread.sleep(500);
-//        logger.info("[Operation - Navigate] Navigate to 双面盘");
-
-
     }
 }
