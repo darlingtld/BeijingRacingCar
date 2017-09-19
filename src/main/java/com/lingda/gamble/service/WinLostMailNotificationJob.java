@@ -22,11 +22,11 @@ public class WinLostMailNotificationJob {
     @Autowired
     private WinLostMoneyRepository winLostMoneyRepository;
 
-    @Scheduled(fixedRate = 30 * 60 * 1000, initialDelay = 30 * 60 * 1000)
+    @Scheduled(fixedRate = 30 * 60 * 1000, initialDelay = 10 * 60 * 1000)
     public void scheduleWinLostMoneyNotificationJobs() {
         logger.info("[Operation - Win/Lost notification]");
         WinLostMoney winLostMoney = winLostMoneyRepository.findFirstByAccountNameOrderByRoundDesc(Store.getAccountName());
-        String subject = String.format("%s - 今日输赢: %s", Store.getAccountName(), winLostMoney.getWinLostMoney());
+        String subject = String.format("%s - Win/Lost: %s", Store.getAccountName(), winLostMoney.getWinLostMoney());
         SimpleMailSender.send(email, subject, "fyi");
     }
 }
