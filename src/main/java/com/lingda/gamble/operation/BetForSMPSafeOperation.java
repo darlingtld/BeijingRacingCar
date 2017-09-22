@@ -5,6 +5,7 @@ import com.lingda.gamble.model.SMPBet;
 import com.lingda.gamble.model.SMPRatio;
 import com.lingda.gamble.model.SMPSingleBet;
 import com.lingda.gamble.model.SingleBetCategory;
+import com.lingda.gamble.param.Config;
 import com.lingda.gamble.repository.LotteryResultRepository;
 import com.lingda.gamble.repository.SMPBetRepository;
 import com.lingda.gamble.repository.SMPRatioRepository;
@@ -29,12 +30,6 @@ public class BetForSMPSafeOperation {
     @Value("${gamble.bet.money}")
     private double money;
 
-    @Value("${gamble.bet.chip}")
-    private double chip;
-
-    @Value("${gamble.bet.smp.level}")
-    private int level;
-
     private final SMPBetRepository smpBetRepository;
 
     private final SMPRatioRepository smpRatioRepository;
@@ -51,6 +46,8 @@ public class BetForSMPSafeOperation {
     }
 
     public boolean doBet(WebDriver driver, Integer round, boolean isPlayTime) throws InterruptedException {
+        Double chip = Double.valueOf(Config.getSmpChip());
+        logger.info("[Operation - Bet] Base chip is {}", chip);
         logger.info("[Operation - Bet] Play Time is {}", isPlayTime);
         if (round == null) {
             logger.info("[Operation - Bet] 当前无法下注");
@@ -591,6 +588,7 @@ public class BetForSMPSafeOperation {
     }
 
     private double decideBetChip(SMPSingleBet smpSingleBet, SingleBetCategory category) {
+        Double chip = Double.valueOf(Config.getSmpChip());
         double betChip = 0;
         switch (category) {
             case DA:
@@ -612,7 +610,7 @@ public class BetForSMPSafeOperation {
                 betChip = smpSingleBet.getHu() * 2 + chip;
                 break;
         }
-        if (betChip / chip > 2 << (level - 1)) {
+        if (betChip / chip > 2 << (Config.getSmpLevels() - 1)) {
             return chip;
         } else {
             return betChip;

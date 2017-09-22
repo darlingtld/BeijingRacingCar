@@ -1,7 +1,7 @@
 package com.lingda.gamble;
 
 import com.lingda.gamble.operation.BetForFirstSecondOperation;
-import com.lingda.gamble.operation.BetForSMPOperation;
+import com.lingda.gamble.operation.BetForSMPBasicOperation;
 import com.lingda.gamble.operation.BetForSMPSafeOperation;
 import com.lingda.gamble.operation.BrowserDriver;
 import com.lingda.gamble.operation.FinishBetOperation;
@@ -11,6 +11,7 @@ import com.lingda.gamble.operation.NavigationOperation;
 import com.lingda.gamble.operation.NavigationSMPOperation;
 import com.lingda.gamble.operation.RatioFetchingForFirstSecondOperation;
 import com.lingda.gamble.operation.RatioFetchingForSMPOperation;
+import com.lingda.gamble.param.Config;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public class GambleApplication {
                                   NavigationOperation navigationOperation,
                                   NavigationSMPOperation navigationSMPOperation,
                                   RatioFetchingForSMPOperation ratioFetchingForSMPOperation,
-                                  BetForSMPOperation betForSMPOperation,
+                                  BetForSMPBasicOperation betForSMPBasicOperation,
                                   BetForSMPSafeOperation betForSMPSafeOperation,
                                   NavigationFirstSecondOperation navigationFirstSecondOperation,
                                   RatioFetchingForFirstSecondOperation ratioFetchingForFirstSecondOperation,
@@ -76,16 +77,19 @@ public class GambleApplication {
                 try {
                     navigationSMPOperation.doNavigate(driver);
                     Integer round = ratioFetchingForSMPOperation.doFetchRatio(driver);
-//                    boolean isSMPBet = betForSMPOperation.doBet(driver, round);
-                    boolean isSMPBet = betForSMPSafeOperation.doBet(driver, round, isPlayTime);
-                    if (isSMPBet) {
-                        finishBetOperation.doFinish(driver, "双面盘");
+                    if (Config.getSmpEnabled()) {
+                        boolean isSMPBet = betForSMPBasicOperation.doBet(driver, round, isPlayTime);
+                        if (isSMPBet) {
+                            finishBetOperation.doFinish(driver, "双面盘");
+                        }
                     }
                     navigationFirstSecondOperation.doNavigate(driver);
                     Integer firstSecondRound = ratioFetchingForFirstSecondOperation.doFetchRatio(driver);
-                    boolean isFirstSecondBet = betForFirstSecondOperation.doBet(driver, firstSecondRound, isPlayTime);
-                    if (isFirstSecondBet) {
-                        finishBetOperation.doFinish(driver, "冠.亚军");
+                    if (Config.getFirstSecondEnabled()) {
+                        boolean isFirstSecondBet = betForFirstSecondOperation.doBet(driver, firstSecondRound, isPlayTime);
+                        if (isFirstSecondBet) {
+                            finishBetOperation.doFinish(driver, "冠.亚军");
+                        }
                     }
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);

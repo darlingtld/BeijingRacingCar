@@ -4,6 +4,7 @@ import com.lingda.gamble.model.FirstSecondBet;
 import com.lingda.gamble.model.FirstSecondRatio;
 import com.lingda.gamble.model.LotteryResult;
 import com.lingda.gamble.model.RankSingleBet;
+import com.lingda.gamble.param.Config;
 import com.lingda.gamble.repository.FirstSecondBetRepository;
 import com.lingda.gamble.repository.FirstSecondRatioRepository;
 import com.lingda.gamble.repository.LotteryResultRepository;
@@ -36,22 +37,6 @@ public class BetForFirstSecondOperation {
     @Value("${gamble.bet.money}")
     private double money;
 
-    @Value("${gamble.bet.chip}")
-    private double chip;
-
-    @Value("${gamble.bet.12.level1}")
-    private int level1;
-    @Value("${gamble.bet.12.level2}")
-    private int level2;
-    @Value("${gamble.bet.12.level3}")
-    private int level3;
-    @Value("${gamble.bet.12.level4}")
-    private int level4;
-    @Value("${gamble.bet.12.level5}")
-    private int level5;
-    @Value("${gamble.numbers.exclude}")
-    private String numbersToExclude;
-
     private LinkedHashMap<Integer, AtomicInteger> firstNumberCountMap = new LinkedHashMap<>();
 
     private LinkedHashMap<Integer, AtomicInteger> secondNumberCountMap = new LinkedHashMap<>();
@@ -72,6 +57,8 @@ public class BetForFirstSecondOperation {
     }
 
     public boolean doBet(WebDriver driver, Integer round, boolean isPlayTime) throws InterruptedException {
+        Integer chip = Config.getSmpChip();
+        logger.info("[Operation - Bet] Base chip is {}", chip);
         logger.info("[Operation - Bet] Play Time is {}", isPlayTime);
         if (round == null) {
             logger.info("[Operation - Bet] 当前无法下注");
@@ -79,15 +66,7 @@ public class BetForFirstSecondOperation {
         }
         firstNumberCountMap.clear();
         secondNumberCountMap.clear();
-//        List<Integer> numbersToExcludeList = new ArrayList<>();
-//        String[] numbersToExcludeStr = numbersToExclude.split(",");
-//        for (String number : numbersToExcludeStr) {
-//            try {
-//                numbersToExcludeList.add(Integer.parseInt(number));
-//            } catch (Exception e) {
-//                logger.error("[Operation - Bet] {}", e.getMessage());
-//            }
-//        }
+        logger.info("[Operation - Bet] First second numbers to exclude is {}", Config.getFirstSecondExcludeNumbers());
 
         logger.info("[Operation - Bet] Bet for 北京赛车 - {}", PLAYGROUND);
 
@@ -150,8 +129,8 @@ public class BetForFirstSecondOperation {
         logger.info("我的余额:{}", money);
         logger.info("====================================");
 
-//        TODO remove specified numbers
-//        List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+        List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+        numberBetList.removeAll(Config.getFirstSecondExcludeNumbers());
 
         FirstSecondBet bet = new FirstSecondBet();
         bet.setRound(round);
@@ -162,13 +141,15 @@ public class BetForFirstSecondOperation {
             } else {
                 logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
                 //      投注 冠-五 大
-                betForFirst(bet, chip, Arrays.asList(1, 2, 3, 4, 5, 6, 7), driver);
-                betForSecond(bet, chip, Arrays.asList(1, 2, 3, 4, 5, 6, 7), driver);
-                money = calculateMoney(money, -14 * chip);
+                Collections.shuffle(numberBetList);
+                betForFirst(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
+                Collections.shuffle(numberBetList);
+                betForSecond(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
+                money = calculateMoney(money, -2 * Math.min(numberBetList.size(), 7) * chip);
             }
         } else {
-            List<Integer> firstNumberToBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
-            List<Integer> secondNumberToBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+            List<Integer> firstNumberToBetList = new ArrayList<>(numberBetList);
+            List<Integer> secondNumberToBetList = new ArrayList<>(numberBetList);
             List<Integer> firstNumberToRemoveList = new ArrayList<>();
             List<Integer> secondNumberToRemoveList = new ArrayList<>();
             for (int i = 1; i <= 10; i++) {
@@ -185,12 +166,12 @@ public class BetForFirstSecondOperation {
             Collections.shuffle(firstNumberToBetList);
             Collections.shuffle(secondNumberToBetList);
 
-            Double firstMoneyBet = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime);
-            betForFirst(bet, firstMoneyBet, firstNumberToBetList.subList(0, 7), driver);
-            money = calculateMoney(money, -7 * firstMoneyBet);
-            Double secondMoneyBet = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime);
-            betForSecond(bet, secondMoneyBet, secondNumberToBetList.subList(0, 7), driver);
-            money = calculateMoney(money, -7 * secondMoneyBet);
+            Integer firstMoneyBet = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime);
+            betForFirst(bet, firstMoneyBet, firstNumberToBetList.subList(0, Math.min(firstNumberToBetList.size(), 7)), driver);
+            money = calculateMoney(money, -Math.min(firstNumberToBetList.size(), 7) * firstMoneyBet);
+            Integer secondMoneyBet = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime);
+            betForSecond(bet, secondMoneyBet, secondNumberToBetList.subList(0, Math.min(secondNumberToBetList.size(), 7)), driver);
+            money = calculateMoney(money, -Math.min(secondNumberToBetList.size(), 7) * secondMoneyBet);
 
         }
 
@@ -202,7 +183,8 @@ public class BetForFirstSecondOperation {
 
     }
 
-    private Double decideBetChip(Integer winningNumber, RankSingleBet lastRankSingleBet, boolean isPlayTime) {
+    private Integer decideBetChip(Integer winningNumber, RankSingleBet lastRankSingleBet, boolean isPlayTime) {
+        Integer chip = Config.getFirstSecondChip();
         double betChip = Stream.of(
                 lastRankSingleBet.getFirst(),
                 lastRankSingleBet.getSecond(),
@@ -218,74 +200,74 @@ public class BetForFirstSecondOperation {
         if (lastRankSingleBet.getFirst() > 0 && winningNumber == 1) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
-                return 0.0;
+                return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getSecond() > 0 && winningNumber == 2) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
-                return 0.0;
+                return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getThird() > 0 && winningNumber == 3) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
-                return 0.0;
+                return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getFourth() > 0 && winningNumber == 4) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
-                return 0.0;
+                return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getFifth() > 0 && winningNumber == 5) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
-                return 0.0;
+                return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getSixth() > 0 && winningNumber == 6) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
-                return 0.0;
+                return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getSeventh() > 0 && winningNumber == 7) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
-                return 0.0;
+                return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getEighth() > 0 && winningNumber == 8) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
-                return 0.0;
+                return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getNineth() > 0 && winningNumber == 9) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
-                return 0.0;
+                return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getTenth() > 0 && winningNumber == 10) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
-                return 0.0;
+                return 0;
             }
             return chip;
         } else {
             if (betChip / chip == 1) {
-                return chip * level1;
-            } else if (betChip / chip == level1) {
-                return chip * level2;
-            } else if (betChip / chip == level2) {
-                return chip * level3;
-            } else if (betChip / chip == level3) {
-                return chip * level4;
-            } else if (betChip / chip == level4) {
-                return chip * level5;
+                return chip * Config.getFirstSecondLevelAccList().get(0);
+            } else if (betChip / chip == Config.getFirstSecondLevelAccList().get(0)) {
+                return chip * Config.getFirstSecondLevelAccList().get(1);
+            } else if (betChip / chip == Config.getFirstSecondLevelAccList().get(1)) {
+                return chip * Config.getFirstSecondLevelAccList().get(2);
+            } else if (betChip / chip == Config.getFirstSecondLevelAccList().get(2)) {
+                return chip * Config.getFirstSecondLevelAccList().get(3);
+            } else if (betChip / chip == Config.getFirstSecondLevelAccList().get(3)) {
+                return chip * Config.getFirstSecondLevelAccList().get(4);
             } else {
                 return chip;
             }
@@ -376,7 +358,7 @@ public class BetForFirstSecondOperation {
         return money + value;
     }
 
-    private void betForFirst(FirstSecondBet bet, Double chip, List<Integer> numbers, WebDriver driver) {
+    private void betForFirst(FirstSecondBet bet, Integer chip, List<Integer> numbers, WebDriver driver) {
         logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "冠军", numbers, PLAYGROUND, bet.getRound(), chip);
         bet.setBetFirst(generateSingleBet(numbers, chip));
         RankSingleBet singleBet = bet.getBetFirst();
@@ -422,7 +404,7 @@ public class BetForFirstSecondOperation {
         }
     }
 
-    private void betForSecond(FirstSecondBet bet, Double chip, List<Integer> numbers, WebDriver driver) {
+    private void betForSecond(FirstSecondBet bet, Integer chip, List<Integer> numbers, WebDriver driver) {
         logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "亚军", numbers, PLAYGROUND, bet.getRound(), chip);
         bet.setBetSecond(generateSingleBet(numbers, chip));
         RankSingleBet singleBet = bet.getBetSecond();
@@ -468,7 +450,7 @@ public class BetForFirstSecondOperation {
         }
     }
 
-    private RankSingleBet generateSingleBet(List<Integer> numberList, Double chip) {
+    private RankSingleBet generateSingleBet(List<Integer> numberList, Integer chip) {
         RankSingleBet rankSingleBet = new RankSingleBet();
         for (Integer number : numberList) {
             switch (number) {
