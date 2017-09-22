@@ -462,7 +462,7 @@ public class BetForSMPBasicOperation {
                         logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "胜利");
 //                winner.  继续下注大
                         //      投注 十 大
-                    double betChip = decideBetChip(lastSmpBet.getBetTenth(), SingleBetCategory.DA);
+                        double betChip = decideBetChip(lastSmpBet.getBetTenth(), SingleBetCategory.DA);
                         betForTenth(smpBet, betChip, SingleBetCategory.DA, driver);
                         money = calculateMoney(money, -betChip);
                     }
@@ -480,7 +480,7 @@ public class BetForSMPBasicOperation {
                         logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "胜利");
 //                winner.  继续下注小
                         //      投注 十 小
-                    double betChip = decideBetChip(lastSmpBet.getBetTenth(), SingleBetCategory.XIAO);
+                        double betChip = decideBetChip(lastSmpBet.getBetTenth(), SingleBetCategory.XIAO);
                         betForTenth(smpBet, betChip, SingleBetCategory.XIAO, driver);
                         money = calculateMoney(money, -betChip);
                     }
@@ -578,22 +578,22 @@ public class BetForSMPBasicOperation {
         double betChip = 0;
         switch (category) {
             case DA:
-                betChip = smpSingleBet.getDa() * 2 + chip;
+                betChip = smpSingleBet.getDa() * 2;
                 break;
             case XIAO:
-                betChip = smpSingleBet.getXiao() * 2 + chip;
+                betChip = smpSingleBet.getXiao() * 2;
                 break;
             case DAN:
-                betChip = smpSingleBet.getDan() * 2 + chip;
+                betChip = smpSingleBet.getDan() * 2;
                 break;
             case SHUANG:
-                betChip = smpSingleBet.getShuang() * 2 + chip;
+                betChip = smpSingleBet.getShuang() * 2;
                 break;
             case LON:
-                betChip = smpSingleBet.getLon() * 2 + chip;
+                betChip = smpSingleBet.getLon() * 2;
                 break;
             case HU:
-                betChip = smpSingleBet.getHu() * 2 + chip;
+                betChip = smpSingleBet.getHu() * 2;
                 break;
         }
         if (betChip / chip > 2 << (Config.getSmpLevels() - 1)) {
