@@ -22,11 +22,22 @@ public class WinLostMailNotificationJob {
     @Autowired
     private WinLostMoneyRepository winLostMoneyRepository;
 
-    @Scheduled(fixedRate = 30 * 60 * 1000, initialDelay = 10 * 60 * 1000)
+    @Scheduled(fixedRate = 10 * 60 * 1000, initialDelay = 5 * 60 * 1000)
     public void scheduleWinLostMoneyNotificationJobs() {
         logger.info("[Operation - Win/Lost notification]");
-        WinLostMoney winLostMoney = winLostMoneyRepository.findFirstByAccountNameOrderByRoundDesc(Store.getAccountName());
-        String subject = String.format("%s - Win/Lost: %s", Store.getAccountName(), winLostMoney.getWinLostMoney());
-        SimpleMailSender.send(email, subject, "fyi");
+        for (String mailAddress : email.split(",")) {
+            WinLostMoney winLostMoney = winLostMoneyRepository.findFirstByAccountNameOrderByRoundDesc(Store.getAccountName());
+            String subject = String.format("%s - Win/Lost: %s", Store.getAccountName(), winLostMoney.getWinLostMoney());
+            SimpleMailSender.send(mailAddress, subject, "fyi");
+        }
     }
+
+    public void sendDangerousNotificationJobs(String message) {
+        logger.info("[Operation - Dangerous notification]");
+        for (String mailAddress : email.split(",")) {
+            String subject = String.format("%s - %s", Store.getAccountName(), message);
+            SimpleMailSender.send(mailAddress, subject, "fyi");
+        }
+    }
+
 }

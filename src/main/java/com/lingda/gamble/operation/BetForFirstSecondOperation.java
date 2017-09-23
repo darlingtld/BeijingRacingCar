@@ -1,14 +1,18 @@
 package com.lingda.gamble.operation;
 
+import com.lingda.gamble.mail.SimpleMailSender;
 import com.lingda.gamble.model.FirstSecondBet;
 import com.lingda.gamble.model.FirstSecondRatio;
 import com.lingda.gamble.model.LotteryResult;
 import com.lingda.gamble.model.RankSingleBet;
+import com.lingda.gamble.model.WinLostMoney;
 import com.lingda.gamble.param.Config;
 import com.lingda.gamble.repository.FirstSecondBetRepository;
 import com.lingda.gamble.repository.FirstSecondRatioRepository;
 import com.lingda.gamble.repository.LotteryResultRepository;
+import com.lingda.gamble.service.WinLostMailNotificationJob;
 import com.lingda.gamble.util.DriverUtils;
+import com.lingda.gamble.util.Store;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -36,6 +40,9 @@ public class BetForFirstSecondOperation {
 
     @Value("${gamble.bet.money}")
     private double money;
+
+    @Autowired
+    private WinLostMailNotificationJob winLostMailNotificationJob;
 
     private LinkedHashMap<Integer, AtomicInteger> firstNumberCountMap = new LinkedHashMap<>();
 
@@ -260,6 +267,10 @@ public class BetForFirstSecondOperation {
         } else {
             for (int i = 0; i < Config.getFirstSecondLevelAccList().size(); i++) {
                 if (Config.getFirstSecondLevelAccList().get(i) > betChip) {
+                    if (i >= 4) {
+                        String message = String.format("%s - %s 第%s关 当前每一注为 %s", Store.getAccountName(), PLAYGROUND, i, Config.getFirstSecondLevelAccList().get(i));
+                        winLostMailNotificationJob.sendDangerousNotificationJobs(message);
+                    }
                     return Config.getFirstSecondLevelAccList().get(i);
                 }
             }

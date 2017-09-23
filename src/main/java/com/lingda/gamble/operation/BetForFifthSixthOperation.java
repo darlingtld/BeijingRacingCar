@@ -8,7 +8,10 @@ import com.lingda.gamble.param.Config;
 import com.lingda.gamble.repository.LotteryResultRepository;
 import com.lingda.gamble.repository.FifthSixthBetRepository;
 import com.lingda.gamble.repository.FifthSixthRatioRepository;
+import com.lingda.gamble.repository.WinLostMoneyRepository;
+import com.lingda.gamble.service.WinLostMailNotificationJob;
 import com.lingda.gamble.util.DriverUtils;
+import com.lingda.gamble.util.Store;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -36,6 +39,9 @@ public class BetForFifthSixthOperation {
 
     @Value("${gamble.bet.money}")
     private double money;
+
+    @Autowired
+    private WinLostMailNotificationJob winLostMailNotificationJob;
 
     private LinkedHashMap<Integer, AtomicInteger> fifthNumberCountMap = new LinkedHashMap<>();
 
@@ -260,6 +266,10 @@ public class BetForFifthSixthOperation {
         } else {
             for (int i = 0; i < Config.getFifthSixthLevelAccList().size(); i++) {
                 if (Config.getFifthSixthLevelAccList().get(i) > betChip) {
+                    if (i >= 4) {
+                        String message = String.format("%s - %s 第%s关 当前每一注为 %s", Store.getAccountName(), PLAYGROUND, i, Config.getFifthSixthLevelAccList().get(i));
+                        winLostMailNotificationJob.sendDangerousNotificationJobs(message);
+                    }
                     return Config.getFifthSixthLevelAccList().get(i);
                 }
             }
