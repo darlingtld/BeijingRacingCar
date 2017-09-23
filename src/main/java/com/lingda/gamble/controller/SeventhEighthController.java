@@ -14,34 +14,34 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/first_second")
-public class FirstSecondController {
+@RequestMapping("/seventh_eighth")
+public class SeventhEighthController {
 
-    private static Logger logger = LoggerFactory.getLogger(FirstSecondController.class);
+    private static Logger logger = LoggerFactory.getLogger(SeventhEighthController.class);
 
     @RequestMapping(value="chip", method = RequestMethod.POST)
     public void adjustChip(@RequestParam("chip") Integer chip) {
-        logger.info("Adjust first second chip={}", chip);
-        Config.setFirstSecondChip(chip);
+        logger.info("Adjust seventh_eighth chip={}", chip);
+        Config.setSeventhEighthChip(chip);
     }
 
     @RequestMapping(value="enable", method = RequestMethod.POST)
     public void enable() {
-        logger.info("Enable first second");
-        Config.setFirstSecondEnabled(true);
+        logger.info("Enable seventh_eighth");
+        Config.setSeventhEighthEnabled(true);
     }
 
     @RequestMapping(value="disable", method = RequestMethod.POST)
     public void disable() {
-        logger.info("Disable first second");
-        Config.setFirstSecondEnabled(false);
+        logger.info("Disable seventh_eighth");
+        Config.setSeventhEighthEnabled(false);
     }
 
     @RequestMapping(value="exclude", method = RequestMethod.POST)
     public void excludeNumbers(@RequestParam("nums") String excludeNumStr) {
         logger.info("Exclude numbers={}", excludeNumStr);
         List<Integer> excludeNumberList = Arrays.stream(excludeNumStr.split(",")).map(Integer::parseInt).collect(Collectors.toList());
-        Config.setFirstSecondExcludeNumbers(excludeNumberList);
+        Config.setSeventhEighthExcludeNumbers(excludeNumberList);
     }
 
 }

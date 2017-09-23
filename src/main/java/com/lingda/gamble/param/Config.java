@@ -24,7 +24,7 @@ public class Config {
     private static List<Integer> fifthSixthExcludeNumbers = new ArrayList<>();
     private static List<Integer> fifthSixthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
 
-    private static Integer sevenEighthChip = 5;
+    private static Integer seventhEighthChip = 5;
     private static Boolean seventhEighthEnabled = false;
     private static List<Integer> seventhEighthExcludeNumbers = new ArrayList<>();
     private static List<Integer> seventhEighthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
@@ -180,12 +180,12 @@ public class Config {
         Config.fifthSixthExcludeNumbers = fifthSixthExcludeNumbers;
     }
 
-    public static Integer getSevenEighthChip() {
-        return sevenEighthChip;
+    public static Integer getSeventhEighthChip() {
+        return seventhEighthChip;
     }
 
-    public static void setSevenEighthChip(Integer sevenEighthChip) {
-        Config.sevenEighthChip = sevenEighthChip;
+    public static void setSeventhEighthChip(Integer seventhEighthChip) {
+        Config.seventhEighthChip = seventhEighthChip;
     }
 
     public static Boolean getSeventhEighthEnabled() {

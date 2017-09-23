@@ -1,13 +1,13 @@
 package com.lingda.gamble.operation;
 
-import com.lingda.gamble.model.FirstSecondBet;
-import com.lingda.gamble.model.FirstSecondRatio;
 import com.lingda.gamble.model.LotteryResult;
 import com.lingda.gamble.model.RankSingleBet;
+import com.lingda.gamble.model.NinethTenthBet;
+import com.lingda.gamble.model.NinethTenthRatio;
 import com.lingda.gamble.param.Config;
-import com.lingda.gamble.repository.FirstSecondBetRepository;
-import com.lingda.gamble.repository.FirstSecondRatioRepository;
 import com.lingda.gamble.repository.LotteryResultRepository;
+import com.lingda.gamble.repository.NinethTenthBetRepository;
+import com.lingda.gamble.repository.NinethTenthRatioRepository;
 import com.lingda.gamble.util.DriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -26,52 +26,52 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-//北京赛车 冠亚军下注
+//北京赛车 九十名下注
 @Component
-public class BetForFirstSecondOperation {
+public class BetForNinethTenthOperation {
 
-    private static final Logger logger = LoggerFactory.getLogger(BetForFirstSecondOperation.class);
+    private static final Logger logger = LoggerFactory.getLogger(BetForNinethTenthOperation.class);
 
-    private static final String PLAYGROUND = "冠亚军";
+    private static final String PLAYGROUND = "九十名";
 
     @Value("${gamble.bet.money}")
     private double money;
 
-    private LinkedHashMap<Integer, AtomicInteger> firstNumberCountMap = new LinkedHashMap<>();
+    private LinkedHashMap<Integer, AtomicInteger> ninethNumberCountMap = new LinkedHashMap<>();
 
-    private LinkedHashMap<Integer, AtomicInteger> secondNumberCountMap = new LinkedHashMap<>();
+    private LinkedHashMap<Integer, AtomicInteger> tenthNumberCountMap = new LinkedHashMap<>();
 
-    private final FirstSecondBetRepository firstSecondBetRepository;
+    private final NinethTenthBetRepository ninethTenthBetRepository;
 
-    private final FirstSecondRatioRepository firstSecondRatioRepository;
+    private final NinethTenthRatioRepository ninethTenthRatioRepository;
 
     private final LotteryResultRepository lotteryResultRepository;
 
     @Autowired
-    public BetForFirstSecondOperation(FirstSecondBetRepository firstSecondBetRepository,
-                                      FirstSecondRatioRepository firstSecondRatioRepository,
+    public BetForNinethTenthOperation(NinethTenthBetRepository ninethTenthBetRepository,
+                                      NinethTenthRatioRepository ninethTenthRatioRepository,
                                       LotteryResultRepository lotteryResultRepository) {
-        this.firstSecondBetRepository = firstSecondBetRepository;
-        this.firstSecondRatioRepository = firstSecondRatioRepository;
+        this.ninethTenthBetRepository = ninethTenthBetRepository;
+        this.ninethTenthRatioRepository = ninethTenthRatioRepository;
         this.lotteryResultRepository = lotteryResultRepository;
     }
 
     public boolean doBet(WebDriver driver, Integer round, boolean isPlayTime) throws InterruptedException {
-        Integer chip = Config.getFirstSecondChip();
+        Integer chip = Config.getNinethTenthChip();
         logger.info("[Operation - Bet] Base chip is {}", chip);
         logger.info("[Operation - Bet] Play Time is {}", isPlayTime);
         if (round == null) {
             logger.info("[Operation - Bet] 当前无法下注");
             return false;
         }
-        firstNumberCountMap.clear();
-        secondNumberCountMap.clear();
-        logger.info("[Operation - Bet] First second numbers to exclude is {}", Config.getFirstSecondExcludeNumbers());
+        ninethNumberCountMap.clear();
+        tenthNumberCountMap.clear();
+        logger.info("[Operation - Bet] Third fourth numbers to exclude is {}", Config.getNinethTenthExcludeNumbers());
 
         logger.info("[Operation - Bet] Bet for 北京赛车 - {}", PLAYGROUND);
 
         logger.info("[Operation - Bet] Get fetched ratio for 北京赛车 - {} - 期数 {}", PLAYGROUND, round);
-        FirstSecondRatio ratio = firstSecondRatioRepository.findByRound(round);
+        NinethTenthRatio ratio = ninethTenthRatioRepository.findByRound(round);
         if (ratio == null) {
             logger.info("[Operation - Bet] No ratio information for 北京赛车 - {} - 期数 {}", PLAYGROUND, round);
             return false;
@@ -108,21 +108,21 @@ public class BetForFirstSecondOperation {
         }
 
         logger.info("[Operation - Bet] Last 5 lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-        for (Map.Entry<Integer, AtomicInteger> entry : firstNumberCountMap.entrySet()) {
-            logger.info("[Operation - Bet] Last 5 lottery result 冠军 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
+        for (Map.Entry<Integer, AtomicInteger> entry : ninethNumberCountMap.entrySet()) {
+            logger.info("[Operation - Bet] Last 5 lottery result 第九名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
         }
-        for (Map.Entry<Integer, AtomicInteger> entry : secondNumberCountMap.entrySet()) {
-            logger.info("[Operation - Bet] Last 5 lottery result 亚军 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
+        for (Map.Entry<Integer, AtomicInteger> entry : tenthNumberCountMap.entrySet()) {
+            logger.info("[Operation - Bet] Last 5 lottery result 第十名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
         }
 
 //      check if the bet is already done
-        if (firstSecondBetRepository.findByRound(round) != null) {
+        if (ninethTenthBetRepository.findByRound(round) != null) {
             logger.info("[Operation - Bet] Already bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round);
             return false;
         }
 
         logger.info("[Operation - Bet] Get last bet information for 北京赛车 - {}", PLAYGROUND);
-        FirstSecondBet lastBet = firstSecondBetRepository.findByRound(round - 1);
+        NinethTenthBet lastBet = ninethTenthBetRepository.findByRound(round - 1);
         //            结算上次中奖情况
         logger.info("=============== 金额 (for test) ===============");
         money = calculateMoney(money, calculateLastLotteryResult(lastBet, lastLotteryResult));
@@ -130,9 +130,9 @@ public class BetForFirstSecondOperation {
         logger.info("====================================");
 
         List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
-        numberBetList.removeAll(Config.getFirstSecondExcludeNumbers());
+        numberBetList.removeAll(Config.getNinethTenthExcludeNumbers());
 
-        FirstSecondBet bet = new FirstSecondBet();
+        NinethTenthBet bet = new NinethTenthBet();
         bet.setRound(round);
 //        ============== 策略逻辑 ==============
         if (lastBet == null) {
@@ -142,49 +142,49 @@ public class BetForFirstSecondOperation {
                 logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
                 //      投注 冠-五 大
                 Collections.shuffle(numberBetList);
-                betForFirst(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
+                betForNineth(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
                 Collections.shuffle(numberBetList);
-                betForSecond(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
+                betForTenth(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
                 money = calculateMoney(money, -2 * Math.min(numberBetList.size(), 7) * chip);
             }
         } else {
-            List<Integer> firstNumberToBetList = new ArrayList<>(numberBetList);
-            List<Integer> secondNumberToBetList = new ArrayList<>(numberBetList);
-            List<Integer> firstNumberToRemoveList = new ArrayList<>();
-            List<Integer> secondNumberToRemoveList = new ArrayList<>();
+            List<Integer> ninethNumberToBetList = new ArrayList<>(numberBetList);
+            List<Integer> tenthNumberToBetList = new ArrayList<>(numberBetList);
+            List<Integer> ninethNumberToRemoveList = new ArrayList<>();
+            List<Integer> tenthNumberToRemoveList = new ArrayList<>();
             for (int i = 1; i <= 10; i++) {
-                if (firstNumberCountMap.containsKey(i) && firstNumberCountMap.get(i).intValue() > 2) {
-                    firstNumberToRemoveList.add(i);
+                if (ninethNumberCountMap.containsKey(i) && ninethNumberCountMap.get(i).intValue() > 2) {
+                    ninethNumberToRemoveList.add(i);
                 }
-                if (secondNumberCountMap.containsKey(i) && secondNumberCountMap.get(i).intValue() > 2) {
-                    secondNumberToRemoveList.add(i);
+                if (tenthNumberCountMap.containsKey(i) && tenthNumberCountMap.get(i).intValue() > 2) {
+                    tenthNumberToRemoveList.add(i);
                 }
             }
-            firstNumberToBetList.removeAll(firstNumberToRemoveList);
-            secondNumberToBetList.removeAll(secondNumberToRemoveList);
+            ninethNumberToBetList.removeAll(ninethNumberToRemoveList);
+            tenthNumberToBetList.removeAll(tenthNumberToRemoveList);
 
-            Collections.shuffle(firstNumberToBetList);
-            Collections.shuffle(secondNumberToBetList);
+            Collections.shuffle(ninethNumberToBetList);
+            Collections.shuffle(tenthNumberToBetList);
 
-            Integer firstMoneyBet = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime);
-            betForFirst(bet, firstMoneyBet, firstNumberToBetList.subList(0, Math.min(firstNumberToBetList.size(), 7)), driver);
-            money = calculateMoney(money, -Math.min(firstNumberToBetList.size(), 7) * firstMoneyBet);
-            Integer secondMoneyBet = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime);
-            betForSecond(bet, secondMoneyBet, secondNumberToBetList.subList(0, Math.min(secondNumberToBetList.size(), 7)), driver);
-            money = calculateMoney(money, -Math.min(secondNumberToBetList.size(), 7) * secondMoneyBet);
+            Integer thirdMoneyBet = decideBetChip(lastLotteryResult.getNineth(), lastBet.getBetNineth(), isPlayTime);
+            betForNineth(bet, thirdMoneyBet, ninethNumberToBetList.subList(0, Math.min(ninethNumberToBetList.size(), 7)), driver);
+            money = calculateMoney(money, -Math.min(ninethNumberToBetList.size(), 7) * thirdMoneyBet);
+            Integer fourthMoneyBet = decideBetChip(lastLotteryResult.getTenth(), lastBet.getBetTenth(), isPlayTime);
+            betForTenth(bet, fourthMoneyBet, tenthNumberToBetList.subList(0, Math.min(tenthNumberToBetList.size(), 7)), driver);
+            money = calculateMoney(money, -Math.min(tenthNumberToBetList.size(), 7) * fourthMoneyBet);
 
         }
 
         logger.info("=============== 金额 (for test) ===============");
         logger.info("我的余额:{}", money);
         logger.info("====================================");
-        firstSecondBetRepository.save(bet);
+        ninethTenthBetRepository.save(bet);
         return true;
 
     }
 
     private Integer decideBetChip(Integer winningNumber, RankSingleBet lastRankSingleBet, boolean isPlayTime) {
-        Integer chip = Config.getFirstSecondChip();
+        Integer chip = Config.getNinethTenthChip();
         double betChip = Stream.of(
                 lastRankSingleBet.getFirst(),
                 lastRankSingleBet.getSecond(),
@@ -209,13 +209,13 @@ public class BetForFirstSecondOperation {
                 return 0;
             }
             return chip;
-        } else if (lastRankSingleBet.getThird() > 0 && winningNumber == 3) {
+        } else if (lastRankSingleBet.getThird() > 0 && winningNumber == 5) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
                 return 0;
             }
             return chip;
-        } else if (lastRankSingleBet.getFourth() > 0 && winningNumber == 4) {
+        } else if (lastRankSingleBet.getFourth() > 0 && winningNumber == 6) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
                 return 0;
@@ -259,81 +259,81 @@ public class BetForFirstSecondOperation {
             return chip;
         } else {
             if (betChip / chip == 1) {
-                return chip * Config.getFirstSecondLevelAccList().get(0);
-            } else if (betChip / chip == Config.getFirstSecondLevelAccList().get(0)) {
-                return chip * Config.getFirstSecondLevelAccList().get(1);
-            } else if (betChip / chip == Config.getFirstSecondLevelAccList().get(1)) {
-                return chip * Config.getFirstSecondLevelAccList().get(2);
-            } else if (betChip / chip == Config.getFirstSecondLevelAccList().get(2)) {
-                return chip * Config.getFirstSecondLevelAccList().get(3);
-            } else if (betChip / chip == Config.getFirstSecondLevelAccList().get(3)) {
-                return chip * Config.getFirstSecondLevelAccList().get(4);
+                return chip * Config.getNinethTenthLevelAccList().get(0);
+            } else if (betChip / chip == Config.getNinethTenthLevelAccList().get(0)) {
+                return chip * Config.getNinethTenthLevelAccList().get(1);
+            } else if (betChip / chip == Config.getNinethTenthLevelAccList().get(1)) {
+                return chip * Config.getNinethTenthLevelAccList().get(2);
+            } else if (betChip / chip == Config.getNinethTenthLevelAccList().get(2)) {
+                return chip * Config.getNinethTenthLevelAccList().get(5);
+            } else if (betChip / chip == Config.getNinethTenthLevelAccList().get(5)) {
+                return chip * Config.getNinethTenthLevelAccList().get(6);
             } else {
                 return chip;
             }
         }
     }
 
-    private double calculateLastLotteryResult(FirstSecondBet lastBet, LotteryResult lotteryResult) {
+    private double calculateLastLotteryResult(NinethTenthBet lastBet, LotteryResult lotteryResult) {
         if (lastBet == null) {
             return 0;
         }
         double winningMoney = 0;
-        FirstSecondRatio lastRatio = firstSecondRatioRepository.findByRound(lastBet.getRound());
-        if (lotteryResult.getFirst() > 5) {
-            winningMoney += lastBet.getBetFirst().getDa() * lastRatio.getRatioFirst().getDa();
+        NinethTenthRatio lastRatio = ninethTenthRatioRepository.findByRound(lastBet.getRound());
+        if (lotteryResult.getFifth() > 5) {
+            winningMoney += lastBet.getBetNineth().getDa() * lastRatio.getRatioNineth().getDa();
         } else {
-            winningMoney += lastBet.getBetFirst().getXiao() * lastRatio.getRatioFirst().getXiao();
+            winningMoney += lastBet.getBetNineth().getXiao() * lastRatio.getRatioNineth().getXiao();
         }
 
-        if (lotteryResult.getSecond() > 5) {
-            winningMoney += lastBet.getBetSecond().getDa() * lastRatio.getRatioSecond().getDa();
+        if (lotteryResult.getSixth() > 5) {
+            winningMoney += lastBet.getBetTenth().getDa() * lastRatio.getRatioTenth().getDa();
         } else {
-            winningMoney += lastBet.getBetSecond().getXiao() * lastRatio.getRatioSecond().getXiao();
+            winningMoney += lastBet.getBetTenth().getXiao() * lastRatio.getRatioTenth().getXiao();
         }
 
-        if (lotteryResult.getFirst() == 1) {
-            winningMoney += lastBet.getBetFirst().getFirst() * lastRatio.getRatioFirst().getFirst();
-        } else if (lotteryResult.getFirst() == 2) {
-            winningMoney += lastBet.getBetFirst().getSecond() * lastRatio.getRatioFirst().getSecond();
-        } else if (lotteryResult.getFirst() == 3) {
-            winningMoney += lastBet.getBetFirst().getThird() * lastRatio.getRatioFirst().getThird();
-        } else if (lotteryResult.getFirst() == 4) {
-            winningMoney += lastBet.getBetFirst().getFourth() * lastRatio.getRatioFirst().getFourth();
-        } else if (lotteryResult.getFirst() == 5) {
-            winningMoney += lastBet.getBetFirst().getFifth() * lastRatio.getRatioFirst().getFifth();
-        } else if (lotteryResult.getFirst() == 6) {
-            winningMoney += lastBet.getBetFirst().getSixth() * lastRatio.getRatioFirst().getSixth();
-        } else if (lotteryResult.getFirst() == 7) {
-            winningMoney += lastBet.getBetFirst().getSeventh() * lastRatio.getRatioFirst().getSeventh();
-        } else if (lotteryResult.getFirst() == 8) {
-            winningMoney += lastBet.getBetFirst().getEighth() * lastRatio.getRatioFirst().getEighth();
-        } else if (lotteryResult.getFirst() == 9) {
-            winningMoney += lastBet.getBetFirst().getNineth() * lastRatio.getRatioFirst().getNineth();
-        } else if (lotteryResult.getFirst() == 10) {
-            winningMoney += lastBet.getBetFirst().getTenth() * lastRatio.getRatioFirst().getTenth();
+        if (lotteryResult.getFifth() == 1) {
+            winningMoney += lastBet.getBetNineth().getFirst() * lastRatio.getRatioNineth().getFirst();
+        } else if (lotteryResult.getThird() == 2) {
+            winningMoney += lastBet.getBetNineth().getSecond() * lastRatio.getRatioNineth().getSecond();
+        } else if (lotteryResult.getThird() == 3) {
+            winningMoney += lastBet.getBetNineth().getThird() * lastRatio.getRatioNineth().getThird();
+        } else if (lotteryResult.getThird() == 4) {
+            winningMoney += lastBet.getBetNineth().getFourth() * lastRatio.getRatioNineth().getFourth();
+        } else if (lotteryResult.getThird() == 5) {
+            winningMoney += lastBet.getBetNineth().getFifth() * lastRatio.getRatioNineth().getFifth();
+        } else if (lotteryResult.getThird() == 6) {
+            winningMoney += lastBet.getBetNineth().getSixth() * lastRatio.getRatioNineth().getSixth();
+        } else if (lotteryResult.getThird() == 7) {
+            winningMoney += lastBet.getBetNineth().getSeventh() * lastRatio.getRatioNineth().getSeventh();
+        } else if (lotteryResult.getThird() == 8) {
+            winningMoney += lastBet.getBetNineth().getEighth() * lastRatio.getRatioNineth().getEighth();
+        } else if (lotteryResult.getThird() == 9) {
+            winningMoney += lastBet.getBetNineth().getNineth() * lastRatio.getRatioNineth().getNineth();
+        } else if (lotteryResult.getThird() == 10) {
+            winningMoney += lastBet.getBetNineth().getTenth() * lastRatio.getRatioNineth().getTenth();
         }
 
-        if (lotteryResult.getSecond() == 1) {
-            winningMoney += lastBet.getBetSecond().getFirst() * lastRatio.getRatioSecond().getFirst();
-        } else if (lotteryResult.getSecond() == 2) {
-            winningMoney += lastBet.getBetSecond().getSecond() * lastRatio.getRatioSecond().getSecond();
-        } else if (lotteryResult.getSecond() == 3) {
-            winningMoney += lastBet.getBetSecond().getThird() * lastRatio.getRatioSecond().getThird();
-        } else if (lotteryResult.getSecond() == 4) {
-            winningMoney += lastBet.getBetSecond().getFourth() * lastRatio.getRatioSecond().getFourth();
-        } else if (lotteryResult.getSecond() == 5) {
-            winningMoney += lastBet.getBetSecond().getFifth() * lastRatio.getRatioSecond().getFifth();
-        } else if (lotteryResult.getSecond() == 6) {
-            winningMoney += lastBet.getBetSecond().getSixth() * lastRatio.getRatioSecond().getSixth();
-        } else if (lotteryResult.getSecond() == 7) {
-            winningMoney += lastBet.getBetSecond().getSeventh() * lastRatio.getRatioSecond().getSeventh();
-        } else if (lotteryResult.getSecond() == 8) {
-            winningMoney += lastBet.getBetSecond().getEighth() * lastRatio.getRatioSecond().getEighth();
-        } else if (lotteryResult.getSecond() == 9) {
-            winningMoney += lastBet.getBetSecond().getNineth() * lastRatio.getRatioSecond().getNineth();
-        } else if (lotteryResult.getSecond() == 10) {
-            winningMoney += lastBet.getBetSecond().getTenth() * lastRatio.getRatioSecond().getTenth();
+        if (lotteryResult.getSixth() == 1) {
+            winningMoney += lastBet.getBetTenth().getFirst() * lastRatio.getRatioTenth().getFirst();
+        } else if (lotteryResult.getFourth() == 2) {
+            winningMoney += lastBet.getBetTenth().getSecond() * lastRatio.getRatioTenth().getSecond();
+        } else if (lotteryResult.getFourth() == 3) {
+            winningMoney += lastBet.getBetTenth().getThird() * lastRatio.getRatioTenth().getThird();
+        } else if (lotteryResult.getFourth() == 4) {
+            winningMoney += lastBet.getBetTenth().getFourth() * lastRatio.getRatioTenth().getFourth();
+        } else if (lotteryResult.getFourth() == 5) {
+            winningMoney += lastBet.getBetTenth().getFifth() * lastRatio.getRatioTenth().getFifth();
+        } else if (lotteryResult.getFourth() == 6) {
+            winningMoney += lastBet.getBetTenth().getSixth() * lastRatio.getRatioTenth().getSixth();
+        } else if (lotteryResult.getFourth() == 7) {
+            winningMoney += lastBet.getBetTenth().getSeventh() * lastRatio.getRatioTenth().getSeventh();
+        } else if (lotteryResult.getFourth() == 8) {
+            winningMoney += lastBet.getBetTenth().getEighth() * lastRatio.getRatioTenth().getEighth();
+        } else if (lotteryResult.getFourth() == 9) {
+            winningMoney += lastBet.getBetTenth().getNineth() * lastRatio.getRatioTenth().getNineth();
+        } else if (lotteryResult.getFourth() == 10) {
+            winningMoney += lastBet.getBetTenth().getTenth() * lastRatio.getRatioTenth().getTenth();
         }
 
         logger.info("[Operation - Summary] Winning money for round {} is {}", lastBet.getRound(), winningMoney);
@@ -342,15 +342,15 @@ public class BetForFirstSecondOperation {
     }
 
     private void markNumber(LotteryResult lotteryResult) {
-        if (firstNumberCountMap.containsKey(lotteryResult.getFirst())) {
-            firstNumberCountMap.get(lotteryResult.getFirst()).getAndIncrement();
+        if (ninethNumberCountMap.containsKey(lotteryResult.getNineth())) {
+            ninethNumberCountMap.get(lotteryResult.getNineth()).getAndIncrement();
         } else {
-            firstNumberCountMap.put(lotteryResult.getFirst(), new AtomicInteger(1));
+            ninethNumberCountMap.put(lotteryResult.getNineth(), new AtomicInteger(1));
         }
-        if (secondNumberCountMap.containsKey(lotteryResult.getSecond())) {
-            secondNumberCountMap.get(lotteryResult.getSecond()).getAndIncrement();
+        if (tenthNumberCountMap.containsKey(lotteryResult.getTenth())) {
+            tenthNumberCountMap.get(lotteryResult.getTenth()).getAndIncrement();
         } else {
-            secondNumberCountMap.put(lotteryResult.getSecond(), new AtomicInteger(1));
+            tenthNumberCountMap.put(lotteryResult.getTenth(), new AtomicInteger(1));
         }
     }
 
@@ -358,94 +358,94 @@ public class BetForFirstSecondOperation {
         return money + value;
     }
 
-    private void betForFirst(FirstSecondBet bet, Integer chip, List<Integer> numbers, WebDriver driver) {
-        logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "冠军", numbers, PLAYGROUND, bet.getRound(), chip);
-        bet.setBetFirst(generateSingleBet(numbers, chip));
-        RankSingleBet singleBet = bet.getBetFirst();
+    private void betForNineth(NinethTenthBet bet, Integer chip, List<Integer> numbers, WebDriver driver) {
+        logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "第九名", numbers, PLAYGROUND, bet.getRound(), chip);
+        bet.setBetNineth(generateSingleBet(numbers, chip));
+        RankSingleBet singleBet = bet.getBetNineth();
         if (singleBet.getFirst() > 0) {
-            String name = getInputName(1, 1);
+            String name = getInputName(1, 9);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getSecond() > 0) {
-            String name = getInputName(2, 1);
+            String name = getInputName(2, 9);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getThird() > 0) {
-            String name = getInputName(3, 1);
+            String name = getInputName(3, 9);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getFourth() > 0) {
-            String name = getInputName(4, 1);
+            String name = getInputName(4, 9);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getFifth() > 0) {
-            String name = getInputName(5, 1);
+            String name = getInputName(5, 9);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getSixth() > 0) {
-            String name = getInputName(6, 1);
+            String name = getInputName(6, 9);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getSeventh() > 0) {
-            String name = getInputName(7, 1);
+            String name = getInputName(7, 9);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getEighth() > 0) {
-            String name = getInputName(8, 1);
+            String name = getInputName(8, 9);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getNineth() > 0) {
-            String name = getInputName(9, 1);
+            String name = getInputName(9, 9);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getTenth() > 0) {
-            String name = getInputName(10, 1);
+            String name = getInputName(10, 9);
             sendKeys(driver, name, String.valueOf(chip));
         }
     }
 
-    private void betForSecond(FirstSecondBet bet, Integer chip, List<Integer> numbers, WebDriver driver) {
-        logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "亚军", numbers, PLAYGROUND, bet.getRound(), chip);
-        bet.setBetSecond(generateSingleBet(numbers, chip));
-        RankSingleBet singleBet = bet.getBetSecond();
+    private void betForTenth(NinethTenthBet bet, Integer chip, List<Integer> numbers, WebDriver driver) {
+        logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "第十名", numbers, PLAYGROUND, bet.getRound(), chip);
+        bet.setBetTenth(generateSingleBet(numbers, chip));
+        RankSingleBet singleBet = bet.getBetTenth();
         if (singleBet.getFirst() > 0) {
-            String name = getInputName(1, 2);
+            String name = getInputName(1, 10);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getSecond() > 0) {
-            String name = getInputName(2, 2);
+            String name = getInputName(2, 10);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getThird() > 0) {
-            String name = getInputName(3, 2);
+            String name = getInputName(3, 10);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getFourth() > 0) {
-            String name = getInputName(4, 2);
+            String name = getInputName(4, 10);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getFifth() > 0) {
-            String name = getInputName(5, 2);
+            String name = getInputName(5, 10);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getSixth() > 0) {
-            String name = getInputName(6, 2);
+            String name = getInputName(6, 10);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getSeventh() > 0) {
-            String name = getInputName(7, 2);
+            String name = getInputName(7, 10);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getEighth() > 0) {
-            String name = getInputName(8, 2);
+            String name = getInputName(8, 10);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getNineth() > 0) {
-            String name = getInputName(9, 2);
+            String name = getInputName(9, 10);
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getTenth() > 0) {
-            String name = getInputName(10, 2);
+            String name = getInputName(10, 10);
             sendKeys(driver, name, String.valueOf(chip));
         }
     }

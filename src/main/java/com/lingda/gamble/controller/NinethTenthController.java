@@ -14,34 +14,34 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/first_second")
-public class FirstSecondController {
+@RequestMapping("/nineth_tenth")
+public class NinethTenthController {
 
-    private static Logger logger = LoggerFactory.getLogger(FirstSecondController.class);
+    private static Logger logger = LoggerFactory.getLogger(NinethTenthController.class);
 
     @RequestMapping(value="chip", method = RequestMethod.POST)
     public void adjustChip(@RequestParam("chip") Integer chip) {
-        logger.info("Adjust first second chip={}", chip);
-        Config.setFirstSecondChip(chip);
+        logger.info("Adjust nineth_tenth chip={}", chip);
+        Config.setNinethTenthChip(chip);
     }
 
     @RequestMapping(value="enable", method = RequestMethod.POST)
     public void enable() {
-        logger.info("Enable first second");
-        Config.setFirstSecondEnabled(true);
+        logger.info("Enable nineth_tenth");
+        Config.setNinethTenthEnabled(true);
     }
 
     @RequestMapping(value="disable", method = RequestMethod.POST)
     public void disable() {
-        logger.info("Disable first second");
-        Config.setFirstSecondEnabled(false);
+        logger.info("Disable nineth_tenth");
+        Config.setNinethTenthEnabled(false);
     }
 
     @RequestMapping(value="exclude", method = RequestMethod.POST)
     public void excludeNumbers(@RequestParam("nums") String excludeNumStr) {
         logger.info("Exclude numbers={}", excludeNumStr);
         List<Integer> excludeNumberList = Arrays.stream(excludeNumStr.split(",")).map(Integer::parseInt).collect(Collectors.toList());
-        Config.setFirstSecondExcludeNumbers(excludeNumberList);
+        Config.setNinethTenthExcludeNumbers(excludeNumberList);
     }
 
 }

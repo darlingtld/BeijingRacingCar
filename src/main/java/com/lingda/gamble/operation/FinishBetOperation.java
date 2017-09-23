@@ -22,6 +22,7 @@ public class FinishBetOperation {
         DriverUtils.returnOnFindingElementEqualsType(driver, By.tagName("input"), "submit").click();
         DriverUtils.returnOnFinishLoadingGivenFinishingIndicator(driver, "下注的是");
         try {
+            Thread.sleep(6000);
             if (isMimic) {
                 logger.info("[Operation - Finish Bet] 模拟下注");
                 DriverUtils.returnOnFindingElementEqualsName(driver, By.tagName("input"), "reset").click();
