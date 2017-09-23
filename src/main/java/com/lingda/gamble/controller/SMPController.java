@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/smp")
@@ -37,6 +40,12 @@ public class SMPController {
     public void setSMPLevel(@RequestParam("level") Integer level) {
         logger.info("Set smp level={}", level);
         Config.setSmpLevels(level);
+    }
+
+    @RequestMapping(value="level_chip", method = RequestMethod.POST)
+    public void setSMPLevel(@RequestParam("level_chip") String levelChips) {
+        logger.info("Set smp level_chips={}", levelChips);
+        Config.setSmpLevelChips(Arrays.stream(levelChips.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
     }
 
 }

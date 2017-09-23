@@ -44,4 +44,10 @@ public class SeventhEighthController {
         Config.setSeventhEighthExcludeNumbers(excludeNumberList);
     }
 
+    @RequestMapping(value="level_chip", method = RequestMethod.POST)
+    public void setSMPLevel(@RequestParam("level_chip") String levelChips) {
+        logger.info("Set seventh_eighth level_chips={}", levelChips);
+        Config.setSeventhEighthLevelAccList(Arrays.stream(levelChips.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
+    }
+
 }

@@ -8,6 +8,15 @@ public class Config {
     private static Integer smpChip = 5;
     private static Integer smpLevels = 7;
     private static Boolean smpEnabled = false;
+    private static List<Integer> smpLevelChips = Arrays.asList(5, 17, 57, 193, 572);
+
+    public static List<Integer> getSmpLevelChips() {
+        return smpLevelChips;
+    }
+
+    public static void setSmpLevelChips(List<Integer> smpLevelChips) {
+        Config.smpLevelChips = smpLevelChips;
+    }
 
     private static Integer firstSecondChip = 5;
     private static Boolean firstSecondEnabled = false;

@@ -16,8 +16,12 @@ public class DriverUtils {
     private static final Integer POLLING_INTERVAL_MS = 500;
 
     public static WebElement returnOnFindingElement(WebDriver driver, By selector) {
+        int i = 0;
         while (true) {
             try {
+                if (i++ > 50) {
+                    throw new RuntimeException("Cannot find element within expected time");
+                }
                 logger.debug("Finding element by {}", selector.toString());
                 WebElement element = driver.findElement(selector);
                 logger.debug("Found element by {}", selector.toString());
@@ -33,8 +37,12 @@ public class DriverUtils {
     }
 
     public static List<WebElement> returnOnFindingElements(WebDriver driver, By selector) {
+        int i = 0;
         while (true) {
             try {
+                if (i++ > 50) {
+                    throw new RuntimeException("Cannot find element within expected time");
+                }
                 logger.debug("Finding element by {}", selector.toString());
                 List<WebElement> elementList = driver.findElements(selector);
                 logger.debug("Found element by {}", selector.toString());
@@ -50,8 +58,12 @@ public class DriverUtils {
     }
 
     public static WebElement returnOnFindingElementEqualsValue(WebDriver driver, By selector, String value) {
+        int i = 0;
         while (true) {
             try {
+                if (i++ > 50) {
+                    throw new RuntimeException("Cannot find element within expected time");
+                }
                 logger.debug("Finding element having exact value={} by {}", value, selector.toString());
                 Optional<WebElement> element = driver.findElements(selector).stream().filter(ele -> ele.getText().equals(value)).findFirst();
                 return element.orElseThrow(
@@ -67,8 +79,12 @@ public class DriverUtils {
     }
 
     public static WebElement returnOnFindingElementEqualsName(WebDriver driver, By selector, String name) {
+        int i = 0;
         while (true) {
             try {
+                if (i++ > 50) {
+                    throw new RuntimeException("Cannot find element within expected time");
+                }
                 logger.debug("Finding element having exact name={} by {}", name, selector.toString());
                 Optional<WebElement> element = driver.findElements(selector).stream().filter(ele -> ele.getAttribute("name").equals(name)).findFirst();
                 return element.orElseThrow(
@@ -84,8 +100,12 @@ public class DriverUtils {
     }
 
     public static WebElement returnOnFindingElementEqualsType(WebDriver driver, By selector, String type) {
+        int i = 0;
         while (true) {
             try {
+                if (i++ > 50) {
+                    throw new RuntimeException("Cannot find element within expected time");
+                }
                 logger.debug("Finding element having exact type={} by {}", type, selector.toString());
                 Optional<WebElement> element = driver.findElements(selector).stream().filter(ele -> ele.getAttribute("type").equals(type)).findFirst();
                 return element.orElseThrow(
@@ -101,8 +121,12 @@ public class DriverUtils {
     }
 
     public static WebElement returnOnFindingElementContainsValue(WebDriver driver, By selector, String value) {
+        int i = 0;
         while (true) {
             try {
+                if (i++ > 50) {
+                    throw new RuntimeException("Cannot find element within expected time");
+                }
                 logger.debug("Finding element having value={} by {}", value, selector.toString());
                 Optional<WebElement> element = driver.findElements(selector).stream().filter(ele -> ele.getText().contains(value)).findFirst();
                 return element.orElseThrow(
@@ -118,8 +142,12 @@ public class DriverUtils {
     }
 
     public static WebDriver returnOnFindingFrame(WebDriver driver, String frame) {
+        int i = 0;
         while (true) {
             try {
+                if (i++ > 50) {
+                    throw new RuntimeException("Cannot find element within expected time");
+                }
                 logger.debug("Finding frame by name={}", frame);
                 WebDriver webDriver = driver.switchTo().frame(frame);
                 logger.debug("Found frame by {}", frame);
@@ -135,9 +163,13 @@ public class DriverUtils {
     }
 
     public static void returnOnFinishLoadingGivenLoadingIndicator(WebDriver driver, String loadingIndicator) {
+        int i = 0;
         while (driver.getPageSource().contains(loadingIndicator)) {
             logger.debug("Waiting for page finish loading indicator={}", loadingIndicator);
             try {
+                if (i++ > 50) {
+                    throw new RuntimeException("Cannot find element within expected time");
+                }
                 Thread.sleep(POLLING_INTERVAL_MS);
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
@@ -146,9 +178,13 @@ public class DriverUtils {
     }
 
     public static void returnOnFinishLoadingGivenFinishingIndicator(WebDriver driver, String finishIndicator) {
+        int i = 0;
         while (!driver.getPageSource().contains(finishIndicator)) {
             logger.debug("Waiting for page finish finishing indicator={}", finishIndicator);
             try {
+                if (i++ > 50) {
+                    throw new RuntimeException("Cannot find element within expected time");
+                }
                 Thread.sleep(POLLING_INTERVAL_MS);
             } catch (InterruptedException e1) {
                 e1.printStackTrace();

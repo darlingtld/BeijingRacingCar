@@ -44,4 +44,10 @@ public class ThirdFourthController {
         Config.setThirdFourthExcludeNumbers(excludeNumberList);
     }
 
+    @RequestMapping(value="level_chip", method = RequestMethod.POST)
+    public void setSMPLevel(@RequestParam("level_chip") String levelChips) {
+        logger.info("Set third_fourth level_chips={}", levelChips);
+        Config.setThirdFourthLevelAccList(Arrays.stream(levelChips.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
+    }
+
 }

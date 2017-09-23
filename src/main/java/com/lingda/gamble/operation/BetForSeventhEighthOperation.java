@@ -57,7 +57,7 @@ public class BetForSeventhEighthOperation {
     }
 
     public boolean doBet(WebDriver driver, Integer round, boolean isPlayTime) throws InterruptedException {
-        Integer chip = Config.getSeventhEighthChip();
+        Integer chip = Config.getSeventhEighthLevelAccList().get(0);
         logger.info("[Operation - Bet] Base chip is {}", chip);
         logger.info("[Operation - Bet] Play Time is {}", isPlayTime);
         if (round == null) {
@@ -184,7 +184,7 @@ public class BetForSeventhEighthOperation {
     }
 
     private Integer decideBetChip(Integer winningNumber, RankSingleBet lastRankSingleBet, boolean isPlayTime) {
-        Integer chip = Config.getSeventhEighthChip();
+        Integer chip = Config.getSeventhEighthLevelAccList().get(0);
         double betChip = Stream.of(
                 lastRankSingleBet.getFirst(),
                 lastRankSingleBet.getSecond(),
@@ -258,19 +258,12 @@ public class BetForSeventhEighthOperation {
             }
             return chip;
         } else {
-            if (betChip / chip == 1) {
-                return chip * Config.getSeventhEighthLevelAccList().get(0);
-            } else if (betChip / chip == Config.getSeventhEighthLevelAccList().get(0)) {
-                return chip * Config.getSeventhEighthLevelAccList().get(1);
-            } else if (betChip / chip == Config.getSeventhEighthLevelAccList().get(1)) {
-                return chip * Config.getSeventhEighthLevelAccList().get(2);
-            } else if (betChip / chip == Config.getSeventhEighthLevelAccList().get(2)) {
-                return chip * Config.getSeventhEighthLevelAccList().get(5);
-            } else if (betChip / chip == Config.getSeventhEighthLevelAccList().get(5)) {
-                return chip * Config.getSeventhEighthLevelAccList().get(6);
-            } else {
-                return chip;
+            for (int i = 0; i < Config.getSeventhEighthLevelAccList().size(); i++) {
+                if (Config.getSeventhEighthLevelAccList().get(i) > betChip) {
+                    return Config.getSeventhEighthLevelAccList().get(i);
+                }
             }
+            return chip;
         }
     }
 

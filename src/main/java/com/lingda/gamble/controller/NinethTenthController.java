@@ -44,4 +44,10 @@ public class NinethTenthController {
         Config.setNinethTenthExcludeNumbers(excludeNumberList);
     }
 
+    @RequestMapping(value="level_chip", method = RequestMethod.POST)
+    public void setSMPLevel(@RequestParam("level_chip") String levelChips) {
+        logger.info("Set nineth_tenth level_chips={}", levelChips);
+        Config.setNinethTenthLevelAccList(Arrays.stream(levelChips.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
+    }
+
 }

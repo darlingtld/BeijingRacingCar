@@ -44,4 +44,9 @@ public class FifthSixthController {
         Config.setFifthSixthExcludeNumbers(excludeNumberList);
     }
 
+    @RequestMapping(value="level_chip", method = RequestMethod.POST)
+    public void setSMPLevel(@RequestParam("level_chip") String levelChips) {
+        logger.info("Set fifth_sixth level_chips={}", levelChips);
+        Config.setFifthSixthLevelAccList(Arrays.stream(levelChips.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
+    }
 }

@@ -57,7 +57,7 @@ public class BetForNinethTenthOperation {
     }
 
     public boolean doBet(WebDriver driver, Integer round, boolean isPlayTime) throws InterruptedException {
-        Integer chip = Config.getNinethTenthChip();
+        Integer chip = Config.getNinethTenthLevelAccList().get(0);
         logger.info("[Operation - Bet] Base chip is {}", chip);
         logger.info("[Operation - Bet] Play Time is {}", isPlayTime);
         if (round == null) {
@@ -184,7 +184,7 @@ public class BetForNinethTenthOperation {
     }
 
     private Integer decideBetChip(Integer winningNumber, RankSingleBet lastRankSingleBet, boolean isPlayTime) {
-        Integer chip = Config.getNinethTenthChip();
+        Integer chip = Config.getNinethTenthLevelAccList().get(0);
         double betChip = Stream.of(
                 lastRankSingleBet.getFirst(),
                 lastRankSingleBet.getSecond(),
@@ -258,19 +258,12 @@ public class BetForNinethTenthOperation {
             }
             return chip;
         } else {
-            if (betChip / chip == 1) {
-                return chip * Config.getNinethTenthLevelAccList().get(0);
-            } else if (betChip / chip == Config.getNinethTenthLevelAccList().get(0)) {
-                return chip * Config.getNinethTenthLevelAccList().get(1);
-            } else if (betChip / chip == Config.getNinethTenthLevelAccList().get(1)) {
-                return chip * Config.getNinethTenthLevelAccList().get(2);
-            } else if (betChip / chip == Config.getNinethTenthLevelAccList().get(2)) {
-                return chip * Config.getNinethTenthLevelAccList().get(5);
-            } else if (betChip / chip == Config.getNinethTenthLevelAccList().get(5)) {
-                return chip * Config.getNinethTenthLevelAccList().get(6);
-            } else {
-                return chip;
+            for (int i = 0; i < Config.getNinethTenthLevelAccList().size(); i++) {
+                if (Config.getNinethTenthLevelAccList().get(i) > betChip) {
+                    return Config.getNinethTenthLevelAccList().get(i);
+                }
             }
+            return chip;
         }
     }
 

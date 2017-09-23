@@ -44,4 +44,9 @@ public class FirstSecondController {
         Config.setFirstSecondExcludeNumbers(excludeNumberList);
     }
 
+    @RequestMapping(value="level_chip", method = RequestMethod.POST)
+    public void setSMPLevel(@RequestParam("level_chip") String levelChips) {
+        logger.info("Set first_second level_chips={}", levelChips);
+        Config.setFirstSecondLevelAccList(Arrays.stream(levelChips.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
+    }
 }
