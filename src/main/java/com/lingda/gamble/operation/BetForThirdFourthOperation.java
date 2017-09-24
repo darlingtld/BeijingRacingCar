@@ -112,12 +112,12 @@ public class BetForThirdFourthOperation {
             markNumber(lotteryResult6);
         }
 
-        logger.info("[Operation - Bet] Last 5 lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+        logger.info("[Operation - Bet] Last 6 lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
         for (Map.Entry<Integer, AtomicInteger> entry : thirdNumberCountMap.entrySet()) {
-            logger.info("[Operation - Bet] Last 5 lottery result 第三名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
+            logger.info("[Operation - Bet] Last 6 lottery result 第三名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
         }
         for (Map.Entry<Integer, AtomicInteger> entry : fourthNumberCountMap.entrySet()) {
-            logger.info("[Operation - Bet] Last 5 lottery result 第四名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
+            logger.info("[Operation - Bet] Last 6 lottery result 第四名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
         }
 
 //      check if the bet is already done
@@ -134,50 +134,159 @@ public class BetForThirdFourthOperation {
         logger.info("我的余额:{}", money);
         logger.info("====================================");
 
-        List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
-        numberBetList.removeAll(Config.getThirdFourthExcludeNumbers());
-
         ThirdFourthBet bet = new ThirdFourthBet();
         bet.setRound(round);
-//        ============== 策略逻辑 ==============
-        if (lastBet == null) {
+        if (Config.getThirdFourthSmartMode()) {
+            logger.info("[Operation - Bet] Bet in smart mode");
+            if (lotteryResult2 == null) {
+                logger.info("[Operation - Bet] Cannot find lottery result for 2 consecutive round");
+                return false;
+            }
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round);
+                return false;
+            }
+//            no last bet or last time is a win
+            if (lastBet == null || decideBetChip(lastLotteryResult.getThird(), lastBet.getBetThird(), isPlayTime).equals(chip)) {
+//            Third
+                if (!Arrays.asList(1, 3, 5).contains(lastLotteryResult.getThird()) && !Arrays.asList(6, 8, 10).contains(lotteryResult2.getThird())) {
+                    logger.info("[Operation - Bet] Bingo! Bet for third exclude 6,8,10");
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 9));
+                    logger.info("[Operation - Bet] Bet third for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForThird(bet, chip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * chip);
+                    if (bet.getBetFourth() == null) {
+                        betForFourth(bet, chip, Collections.emptyList(), driver);
+                    }
+                } else if (!Arrays.asList(6, 8, 10).contains(lastLotteryResult.getThird()) && !Arrays.asList(1, 3, 5).contains(lotteryResult2.getThird())) {
+                    logger.info("[Operation - Bet] Bingo! Bet for third exclude 1,3,5");
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(2, 4, 6, 7, 8, 9, 10));
+                    logger.info("[Operation - Bet] Bet third for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForThird(bet, chip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * chip);
+                    if (bet.getBetFourth() == null) {
+                        betForFourth(bet, chip, Collections.emptyList(), driver);
+                    }
+                }
             } else {
-                logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                //      投注 冠-五 大
-                Collections.shuffle(numberBetList);
-                betForThird(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                Collections.shuffle(numberBetList);
-                betForFourth(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                money = calculateMoney(money, -2 * Math.min(numberBetList.size(), 7) * chip);
+//                last bet is a loser
+//                exclude 6,8,10
+                if (lastBet.getBetThird().getFirst() > 0) {
+                    logger.info("[Operation - Bet] Continue! Bet for third exclude 6,8,10");
+                    Integer betChip = decideBetChip(lastLotteryResult.getThird(), lastBet.getBetThird(), isPlayTime);
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 9));
+                    logger.info("[Operation - Bet] Bet third for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForThird(bet, betChip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * betChip);
+                    if (bet.getBetFourth() == null) {
+                        betForFourth(bet, chip, Collections.emptyList(), driver);
+                    }
+                }
+                //                exclude 1,3,5
+                else if (lastBet.getBetThird().getSixth() > 0) {
+                    logger.info("[Operation - Bet] Continue! Bet for third exclude 1,3,5");
+                    Integer betChip = decideBetChip(lastLotteryResult.getThird(), lastBet.getBetThird(), isPlayTime);
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(2, 4, 6, 7, 8, 9, 10));
+                    logger.info("[Operation - Bet] Bet third for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForThird(bet, betChip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * betChip);
+                    if (bet.getBetFourth() == null) {
+                        betForFourth(bet, chip, Collections.emptyList(), driver);
+                    }
+                }
             }
+            //            no last bet or last time is a win
+            if (lastBet == null || decideBetChip(lastLotteryResult.getFourth(), lastBet.getBetFourth(), isPlayTime).equals(chip)) {
+//            Second
+                if (!Arrays.asList(1, 3, 5).contains(lastLotteryResult.getFourth()) && !Arrays.asList(6, 8, 10).contains(lotteryResult2.getFourth())) {
+                    logger.info("[Operation - Bet] Bingo! Bet for fourth exclude 6,8,10");
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 9));
+                    logger.info("[Operation - Bet] Bet Fourth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForFourth(bet, chip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * chip);
+                    if (bet.getBetThird() == null) {
+                        betForThird(bet, chip, Collections.emptyList(), driver);
+                    }
+                } else if (!Arrays.asList(6, 8, 10).contains(lastLotteryResult.getFourth()) && !Arrays.asList(1, 3, 5).contains(lotteryResult2.getFourth())) {
+                    logger.info("[Operation - Bet] Bingo! Bet for fourth exclude 1,3,5");
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(2, 4, 6, 7, 8, 9, 10));
+                    logger.info("[Operation - Bet] Bet Fourth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForFourth(bet, chip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * chip);
+                    if (bet.getBetThird() == null) {
+                        betForThird(bet, chip, Collections.emptyList(), driver);
+                    }
+                }
+            } else {
+//                last bet is a loser
+//                exclude 6,8,10
+                if (lastBet.getBetFourth().getFirst() > 0) {
+                    logger.info("[Operation - Bet] Continue! Bet for Fourth exclude 6,8,10");
+                    Integer betChip = decideBetChip(lastLotteryResult.getFourth(), lastBet.getBetFourth(), isPlayTime);
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 9));
+                    logger.info("[Operation - Bet] Bet Second for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForFourth(bet, betChip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * betChip);
+                    if (bet.getBetThird() == null) {
+                        betForThird(bet, chip, Collections.emptyList(), driver);
+                    }
+                } else if (lastBet.getBetFourth().getSixth() > 0) {
+                    logger.info("[Operation - Bet] Continue! Bet for Fourth exclude 1,3,5");
+                    Integer betChip = decideBetChip(lastLotteryResult.getFourth(), lastBet.getBetFourth(), isPlayTime);
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(2, 4, 6, 7, 8, 9, 10));
+                    logger.info("[Operation - Bet] Bet Fourth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForFourth(bet, betChip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * betChip);
+                    if (bet.getBetThird() == null) {
+                        betForThird(bet, chip, Collections.emptyList(), driver);
+                    }
+                }
+            }
+
         } else {
-            List<Integer> thirdNumberToBetList = new ArrayList<>(numberBetList);
-            List<Integer> fourthNumberToBetList = new ArrayList<>(numberBetList);
-            List<Integer> thirdNumberToRemoveList = new ArrayList<>();
-            List<Integer> fourthNumberToRemoveList = new ArrayList<>();
-            for (int i = 1; i <= 10; i++) {
-                if (thirdNumberCountMap.containsKey(i) && thirdNumberCountMap.get(i).intValue() > 2) {
-                    thirdNumberToRemoveList.add(i);
+            logger.info("[Operation - Bet] Bet in basic mode");
+            List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+            numberBetList.removeAll(Config.getFirstSecondExcludeNumbers());
+
+            if (lastBet == null) {
+                if (!isPlayTime) {
+                    logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                } else {
+                    logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                    //      投注 冠-五 大
+                    Collections.shuffle(numberBetList);
+                    betForThird(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
+                    Collections.shuffle(numberBetList);
+                    betForFourth(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
+                    money = calculateMoney(money, -2 * Math.min(numberBetList.size(), 7) * chip);
                 }
-                if (fourthNumberCountMap.containsKey(i) && fourthNumberCountMap.get(i).intValue() > 2) {
-                    fourthNumberToRemoveList.add(i);
+            } else {
+                List<Integer> thirdNumberToBetList = new ArrayList<>(numberBetList);
+                List<Integer> fourthNumberToBetList = new ArrayList<>(numberBetList);
+                List<Integer> thirdNumberToRemoveList = new ArrayList<>();
+                List<Integer> fourthNumberToRemoveList = new ArrayList<>();
+                for (int i = 1; i <= 10; i++) {
+                    if (thirdNumberCountMap.containsKey(i) && thirdNumberCountMap.get(i).intValue() > 2) {
+                        thirdNumberToRemoveList.add(i);
+                    }
+                    if (fourthNumberCountMap.containsKey(i) && fourthNumberCountMap.get(i).intValue() > 2) {
+                        fourthNumberToRemoveList.add(i);
+                    }
                 }
+                thirdNumberToBetList.removeAll(thirdNumberToRemoveList);
+                fourthNumberToBetList.removeAll(fourthNumberToRemoveList);
+
+                Collections.shuffle(thirdNumberToBetList);
+                Collections.shuffle(fourthNumberToBetList);
+
+                Integer thirdMoneyBet = decideBetChip(lastLotteryResult.getThird(), lastBet.getBetThird(), isPlayTime);
+                betForThird(bet, thirdMoneyBet, thirdNumberToBetList.subList(0, Math.min(thirdNumberToBetList.size(), 7)), driver);
+                money = calculateMoney(money, -Math.min(thirdNumberToBetList.size(), 7) * thirdMoneyBet);
+                Integer fourthMoneyBet = decideBetChip(lastLotteryResult.getFourth(), lastBet.getBetFourth(), isPlayTime);
+                betForFourth(bet, fourthMoneyBet, fourthNumberToBetList.subList(0, Math.min(fourthNumberToBetList.size(), 7)), driver);
+                money = calculateMoney(money, -Math.min(fourthNumberToBetList.size(), 7) * fourthMoneyBet);
+
             }
-            thirdNumberToBetList.removeAll(thirdNumberToRemoveList);
-            fourthNumberToBetList.removeAll(fourthNumberToRemoveList);
-
-            Collections.shuffle(thirdNumberToBetList);
-            Collections.shuffle(fourthNumberToBetList);
-
-            Integer thirdMoneyBet = decideBetChip(lastLotteryResult.getThird(), lastBet.getBetThird(), isPlayTime);
-            betForThird(bet, thirdMoneyBet, thirdNumberToBetList.subList(0, Math.min(thirdNumberToBetList.size(), 7)), driver);
-            money = calculateMoney(money, -Math.min(thirdNumberToBetList.size(), 7) * thirdMoneyBet);
-            Integer fourthMoneyBet = decideBetChip(lastLotteryResult.getFourth(), lastBet.getBetFourth(), isPlayTime);
-            betForFourth(bet, fourthMoneyBet, fourthNumberToBetList.subList(0, Math.min(fourthNumberToBetList.size(), 7)), driver);
-            money = calculateMoney(money, -Math.min(fourthNumberToBetList.size(), 7) * fourthMoneyBet);
-
         }
 
         logger.info("=============== 金额 (for test) ===============");

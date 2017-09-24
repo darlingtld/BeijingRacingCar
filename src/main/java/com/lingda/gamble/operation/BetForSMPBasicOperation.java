@@ -92,404 +92,810 @@ public class BetForSMPBasicOperation {
                 return false;
             }
             logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-            //      投注 冠-五 大
-            betForFirst(smpBet, chip, SingleBetCategory.DA, driver);
-            betForSecond(smpBet, chip, SingleBetCategory.DA, driver);
-            betForThird(smpBet, chip, SingleBetCategory.DA, driver);
-            betForFourth(smpBet, chip, SingleBetCategory.DA, driver);
-            betForFifth(smpBet, chip, SingleBetCategory.DA, driver);
-            //      投注 六-十 小
-            betForSixth(smpBet, chip, SingleBetCategory.XIAO, driver);
-            betForSeventh(smpBet, chip, SingleBetCategory.XIAO, driver);
-            betForEighth(smpBet, chip, SingleBetCategory.XIAO, driver);
-            betForNineth(smpBet, chip, SingleBetCategory.XIAO, driver);
-            betForTenth(smpBet, chip, SingleBetCategory.XIAO, driver);
-            money = calculateMoney(money, -10 * chip);
+            if (Config.getSmpDaXiao()) {
+                //      投注 冠-五 大
+                betForFirst(smpBet, chip, SingleBetCategory.DA, driver);
+                betForSecond(smpBet, chip, SingleBetCategory.DA, driver);
+                betForThird(smpBet, chip, SingleBetCategory.DA, driver);
+                betForFourth(smpBet, chip, SingleBetCategory.DA, driver);
+                betForFifth(smpBet, chip, SingleBetCategory.DA, driver);
+                //      投注 六-十 小
+                betForSixth(smpBet, chip, SingleBetCategory.XIAO, driver);
+                betForSeventh(smpBet, chip, SingleBetCategory.XIAO, driver);
+                betForEighth(smpBet, chip, SingleBetCategory.XIAO, driver);
+                betForNineth(smpBet, chip, SingleBetCategory.XIAO, driver);
+                betForTenth(smpBet, chip, SingleBetCategory.XIAO, driver);
+                money = calculateMoney(money, -10 * chip);
+            }
+            if (Config.getSmpDanShuang()) {
+                //      投注 冠-五 大
+                betForFirst(smpBet, chip, SingleBetCategory.DAN, driver);
+                betForSecond(smpBet, chip, SingleBetCategory.DAN, driver);
+                betForThird(smpBet, chip, SingleBetCategory.DAN, driver);
+                betForFourth(smpBet, chip, SingleBetCategory.DAN, driver);
+                betForFifth(smpBet, chip, SingleBetCategory.DAN, driver);
+                //      投注 六-十 小
+                betForSixth(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                betForSeventh(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                betForEighth(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                betForNineth(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                betForTenth(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                money = calculateMoney(money, -10 * chip);
+            }
         } else {
 //            check if last bet is a winner
 //            check 冠军
-            if (lastLotteryResult.getFirst() > 5) {
-                if (lastSmpBet.getBetFirst().getDa() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "冠军", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFirst(), "胜利");
+            if (Config.getSmpDaXiao()) {
+                if (lastLotteryResult.getFirst() > 5) {
+                    if (lastSmpBet.getBetFirst().getDa() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "冠军", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFirst(), "胜利");
 //                winner.  继续下注大
-                        //      投注 冠军 大
-                        Integer betChip = decideBetChip(lastSmpBet.getBetFirst(), SingleBetCategory.DA);
-                        betForFirst(smpBet, betChip, SingleBetCategory.DA, driver);
-                        money = calculateMoney(money, -betChip);
-                    }
-                } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "冠军", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFirst(), "失败");
+                            //      投注 冠军 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetFirst(), SingleBetCategory.DA);
+                            betForFirst(smpBet, betChip, SingleBetCategory.DA, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "冠军", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFirst(), "失败");
 //                    //      投注 冠军 小
-                    betForFirst(smpBet, chip, SingleBetCategory.XIAO, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            } else {
-                if (lastSmpBet.getBetFirst().getXiao() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "冠军", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFirst(), "胜利");
+                        betForFirst(smpBet, chip, SingleBetCategory.XIAO, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                } else {
+                    if (lastSmpBet.getBetFirst().getXiao() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "冠军", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFirst(), "胜利");
 //                winner.  继续下注小，
-                        //      投注 冠军 小
-                        Integer betChip = decideBetChip(lastSmpBet.getBetFirst(), SingleBetCategory.XIAO);
-                        betForFirst(smpBet, betChip, SingleBetCategory.XIAO, driver);
-                        money = calculateMoney(money, -betChip);
-                    }
-                } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "冠军", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFirst(), "失败");
-//                loser.  不加筹码
-                    //      投注 冠军 大
-                    betForFirst(smpBet, chip, SingleBetCategory.DA, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            }
-
-            //            check 亚军
-            if (lastLotteryResult.getSecond() > 5) {
-                if (lastSmpBet.getBetSecond().getDa() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                            //      投注 冠军 小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetFirst(), SingleBetCategory.XIAO);
+                            betForFirst(smpBet, betChip, SingleBetCategory.XIAO, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
                     } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "亚军", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSecond(), "胜利");
-//                winner.  继续下注大，增加筹码
-                        //      投注 亚军 大
-                        Integer betChip = decideBetChip(lastSmpBet.getBetSecond(), SingleBetCategory.DA);
-                        betForSecond(smpBet, betChip, SingleBetCategory.DA, driver);
-                        money = calculateMoney(money, -betChip);
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "冠军", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFirst(), "失败");
+//                loser.  不加筹码
+                        //      投注 冠军 大
+                        betForFirst(smpBet, chip, SingleBetCategory.DA, driver);
+                        money = calculateMoney(money, -chip);
                     }
-                } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "亚军", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSecond(), "失败");
+                }
+
+                //            check 亚军
+                if (lastLotteryResult.getSecond() > 5) {
+                    if (lastSmpBet.getBetSecond().getDa() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "亚军", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSecond(), "胜利");
+//                winner.  继续下注大，增加筹码
+                            //      投注 亚军 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetSecond(), SingleBetCategory.DA);
+                            betForSecond(smpBet, betChip, SingleBetCategory.DA, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "亚军", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSecond(), "失败");
 //                    //      投注 亚军 大
-                    betForSecond(smpBet, chip, SingleBetCategory.XIAO, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            } else {
-                if (lastSmpBet.getBetSecond().getXiao() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "亚军", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSecond(), "胜利");
-//                winner.  继续下注小
-                        //      投注 亚军 小
-                        Integer betChip = decideBetChip(lastSmpBet.getBetSecond(), SingleBetCategory.XIAO);
-                        betForSecond(smpBet, betChip, SingleBetCategory.XIAO, driver);
-                        money = calculateMoney(money, -betChip);
+                        betForSecond(smpBet, chip, SingleBetCategory.XIAO, driver);
+                        money = calculateMoney(money, -chip);
                     }
                 } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "亚军", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSecond(), "失败");
-//                loser.  不加筹码
-                    //      投注 亚军 大
-                    betForSecond(smpBet, chip, SingleBetCategory.DA, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            }
-
-            //            check 季军
-            if (lastLotteryResult.getThird() > 5) {
-                if (lastSmpBet.getBetThird().getDa() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                    if (lastSmpBet.getBetSecond().getXiao() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "亚军", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSecond(), "胜利");
+//                winner.  继续下注小
+                            //      投注 亚军 小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetSecond(), SingleBetCategory.XIAO);
+                            betForSecond(smpBet, betChip, SingleBetCategory.XIAO, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
                     } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "季军", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getThird(), "胜利");
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "亚军", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSecond(), "失败");
+//                loser.  不加筹码
+                        //      投注 亚军 大
+                        betForSecond(smpBet, chip, SingleBetCategory.DA, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                }
+
+                //            check 季军
+                if (lastLotteryResult.getThird() > 5) {
+                    if (lastSmpBet.getBetThird().getDa() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "季军", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getThird(), "胜利");
 //                winner.  继续下注大，增加筹码
-                        //      投注 季军 大
-                        Integer betChip = decideBetChip(lastSmpBet.getBetThird(), SingleBetCategory.DA);
-                        betForThird(smpBet, betChip, SingleBetCategory.DA, driver);
-                        money = calculateMoney(money, -betChip);
-                    }
-                } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "季军", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getThird(), "失败");
+                            //      投注 季军 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetThird(), SingleBetCategory.DA);
+                            betForThird(smpBet, betChip, SingleBetCategory.DA, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "季军", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getThird(), "失败");
 //                    //      投注 季军 小
-                    betForThird(smpBet, chip, SingleBetCategory.XIAO, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            } else {
-                if (lastSmpBet.getBetThird().getXiao() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "季军", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getThird(), "胜利");
+                        betForThird(smpBet, chip, SingleBetCategory.XIAO, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                } else {
+                    if (lastSmpBet.getBetThird().getXiao() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "季军", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getThird(), "胜利");
 //                winner.  继续下注小，增加筹码
-                        Integer betChip = decideBetChip(lastSmpBet.getBetThird(), SingleBetCategory.XIAO);
-                        betForThird(smpBet, betChip, SingleBetCategory.XIAO, driver);
-                        money = calculateMoney(money, -betChip);
-                    }
-                } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "季军", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getThird(), "失败");
-//                loser.  不加筹码
-                    betForThird(smpBet, chip, SingleBetCategory.DA, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            }
-
-            //            check 四
-            if (lastLotteryResult.getFourth() > 5) {
-                if (lastSmpBet.getBetFourth().getDa() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                            Integer betChip = decideBetChip(lastSmpBet.getBetThird(), SingleBetCategory.XIAO);
+                            betForThird(smpBet, betChip, SingleBetCategory.XIAO, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
                     } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "四", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFourth(), "胜利");
-//                winner.  继续下注大
-                        //      投注 四 大
-                        Integer betChip = decideBetChip(lastSmpBet.getBetFourth(), SingleBetCategory.DA);
-                        betForFourth(smpBet, betChip, SingleBetCategory.DA, driver);
-                        money = calculateMoney(money, -betChip);
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "季军", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getThird(), "失败");
+//                loser.  不加筹码
+                        betForThird(smpBet, chip, SingleBetCategory.DA, driver);
+                        money = calculateMoney(money, -chip);
                     }
-                } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "四", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFourth(), "失败");
+                }
+
+                //            check 四
+                if (lastLotteryResult.getFourth() > 5) {
+                    if (lastSmpBet.getBetFourth().getDa() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "四", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFourth(), "胜利");
+//                winner.  继续下注大
+                            //      投注 四 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetFourth(), SingleBetCategory.DA);
+                            betForFourth(smpBet, betChip, SingleBetCategory.DA, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "四", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFourth(), "失败");
 //                    //      投注 四 大
-                    betForFourth(smpBet, chip, SingleBetCategory.XIAO, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            } else {
-                if (lastSmpBet.getBetFourth().getXiao() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "四", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFourth(), "胜利");
-//                winner.  继续下注小
-                        //      投注 四 小
-                        Integer betChip = decideBetChip(lastSmpBet.getBetFourth(), SingleBetCategory.XIAO);
-                        betForFourth(smpBet, betChip, SingleBetCategory.XIAO, driver);
-                        money = calculateMoney(money, -betChip);
+                        betForFourth(smpBet, chip, SingleBetCategory.XIAO, driver);
+                        money = calculateMoney(money, -chip);
                     }
                 } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "四", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFourth(), "失败");
+                    if (lastSmpBet.getBetFourth().getXiao() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "四", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFourth(), "胜利");
+//                winner.  继续下注小
+                            //      投注 四 小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetFourth(), SingleBetCategory.XIAO);
+                            betForFourth(smpBet, betChip, SingleBetCategory.XIAO, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "四", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFourth(), "失败");
 //                loser.
-                    //      投注 四 小
-                    betForFourth(smpBet, chip, SingleBetCategory.DA, driver);
-                    money = calculateMoney(money, -chip);
+                        //      投注 四 小
+                        betForFourth(smpBet, chip, SingleBetCategory.DA, driver);
+                        money = calculateMoney(money, -chip);
+                    }
                 }
-            }
 
-            //            check 五
-            if (lastLotteryResult.getFifth() > 5) {
-                if (lastSmpBet.getBetFifth().getDa() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "五", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFifth(), "胜利");
+                //            check 五
+                if (lastLotteryResult.getFifth() > 5) {
+                    if (lastSmpBet.getBetFifth().getDa() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "五", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFifth(), "胜利");
 //                winner.  继续下注大
-                        //      投注 五 大
-                        Integer betChip = decideBetChip(lastSmpBet.getBetFifth(), SingleBetCategory.DA);
-                        betForFifth(smpBet, betChip, SingleBetCategory.DA, driver);
-                        money = calculateMoney(money, -betChip);
-                    }
-                } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "五", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFifth(), "失败");
-//                    //      投注 五 大
-                    betForFifth(smpBet, chip, SingleBetCategory.XIAO, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            } else {
-                if (lastSmpBet.getBetFifth().getXiao() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                            //      投注 五 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetFifth(), SingleBetCategory.DA);
+                            betForFifth(smpBet, betChip, SingleBetCategory.DA, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
                     } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "五", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFifth(), "胜利");
-//                winner.  继续下注小
-                        Integer betChip = decideBetChip(lastSmpBet.getBetFifth(), SingleBetCategory.XIAO);
-                        betForFifth(smpBet, betChip, SingleBetCategory.XIAO, driver);
-                        money = calculateMoney(money, -betChip);
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "五", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFifth(), "失败");
+//                    //      投注 五 大
+                        betForFifth(smpBet, chip, SingleBetCategory.XIAO, driver);
+                        money = calculateMoney(money, -chip);
                     }
                 } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "五", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFifth(), "失败");
+                    if (lastSmpBet.getBetFifth().getXiao() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "五", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFifth(), "胜利");
+//                winner.  继续下注小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetFifth(), SingleBetCategory.XIAO);
+                            betForFifth(smpBet, betChip, SingleBetCategory.XIAO, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "五", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFifth(), "失败");
 //                loser.  不加筹码
-                    //      投注 五 小
-                    betForFifth(smpBet, chip, SingleBetCategory.DA, driver);
-                    money = calculateMoney(money, -chip);
+                        //      投注 五 小
+                        betForFifth(smpBet, chip, SingleBetCategory.DA, driver);
+                        money = calculateMoney(money, -chip);
+                    }
                 }
-            }
 
 //            check 六
-            if (lastLotteryResult.getSixth() > 5) {
-                if (lastSmpBet.getBetSixth().getDa() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "六", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSixth(), "胜利");
+                if (lastLotteryResult.getSixth() > 5) {
+                    if (lastSmpBet.getBetSixth().getDa() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "六", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSixth(), "胜利");
 //                winner.  继续下注大
-                        //      投注 六 大
-                        Integer betChip = decideBetChip(lastSmpBet.getBetSixth(), SingleBetCategory.DA);
-                        betForSixth(smpBet, betChip, SingleBetCategory.DA, driver);
-                        money = calculateMoney(money, -betChip);
-                    }
-                } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "六", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSixth(), "失败");
+                            //      投注 六 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetSixth(), SingleBetCategory.DA);
+                            betForSixth(smpBet, betChip, SingleBetCategory.DA, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "六", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSixth(), "失败");
 //                    //      投注 六 大
-                    betForSixth(smpBet, chip, SingleBetCategory.XIAO, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            } else {
-                if (lastSmpBet.getBetSixth().getXiao() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "六", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSixth(), "胜利");
-//                winner.  继续下注小
-                        Integer betChip = decideBetChip(lastSmpBet.getBetSixth(), SingleBetCategory.XIAO);
-                        betForSixth(smpBet, betChip, SingleBetCategory.XIAO, driver);
-                        money = calculateMoney(money, -betChip);
+                        betForSixth(smpBet, chip, SingleBetCategory.XIAO, driver);
+                        money = calculateMoney(money, -chip);
                     }
                 } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "六", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSixth(), "失败");
+                    if (lastSmpBet.getBetSixth().getXiao() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "六", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSixth(), "胜利");
+//                winner.  继续下注小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetSixth(), SingleBetCategory.XIAO);
+                            betForSixth(smpBet, betChip, SingleBetCategory.XIAO, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "六", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSixth(), "失败");
 //                loser.  不加筹码
-                    betForSixth(smpBet, chip, SingleBetCategory.DA, driver);
-                    money = calculateMoney(money, -chip);
+                        betForSixth(smpBet, chip, SingleBetCategory.DA, driver);
+                        money = calculateMoney(money, -chip);
+                    }
                 }
-            }
 
-            //            check 七
-            if (lastLotteryResult.getSeventh() > 5) {
-                if (lastSmpBet.getBetSeventh().getDa() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "七", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSeventh(), "胜利");
+                //            check 七
+                if (lastLotteryResult.getSeventh() > 5) {
+                    if (lastSmpBet.getBetSeventh().getDa() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "七", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSeventh(), "胜利");
 //                winner.  继续下注大
-                        //      投注 七 大
-                        Integer betChip = decideBetChip(lastSmpBet.getBetSeventh(), SingleBetCategory.DA);
-                        betForSeventh(smpBet, betChip, SingleBetCategory.DA, driver);
-                        money = calculateMoney(money, -betChip);
-                    }
-                } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "七", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSeventh(), "失败");
-                    betForSeventh(smpBet, chip, SingleBetCategory.XIAO, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            } else {
-                if (lastSmpBet.getBetSeventh().getXiao() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                            //      投注 七 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetSeventh(), SingleBetCategory.DA);
+                            betForSeventh(smpBet, betChip, SingleBetCategory.DA, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
                     } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "七", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSeventh(), "胜利");
-//                winner.  继续下注小
-                        Integer betChip = decideBetChip(lastSmpBet.getBetSeventh(), SingleBetCategory.XIAO);
-                        betForSeventh(smpBet, betChip, SingleBetCategory.XIAO, driver);
-                        money = calculateMoney(money, -betChip);
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "七", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSeventh(), "失败");
+                        betForSeventh(smpBet, chip, SingleBetCategory.XIAO, driver);
+                        money = calculateMoney(money, -chip);
                     }
                 } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "七", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSeventh(), "失败");
+                    if (lastSmpBet.getBetSeventh().getXiao() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "七", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSeventh(), "胜利");
+//                winner.  继续下注小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetSeventh(), SingleBetCategory.XIAO);
+                            betForSeventh(smpBet, betChip, SingleBetCategory.XIAO, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "七", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSeventh(), "失败");
 //                loser.
-                    betForSeventh(smpBet, chip, SingleBetCategory.DA, driver);
-                    money = calculateMoney(money, -chip);
+                        betForSeventh(smpBet, chip, SingleBetCategory.DA, driver);
+                        money = calculateMoney(money, -chip);
+                    }
                 }
-            }
 
-            //            check 八
-            if (lastLotteryResult.getEighth() > 5) {
-                if (lastSmpBet.getBetEighth().getDa() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "八", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getEighth(), "胜利");
+                //            check 八
+                if (lastLotteryResult.getEighth() > 5) {
+                    if (lastSmpBet.getBetEighth().getDa() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "八", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getEighth(), "胜利");
 //                winner.  继续下注大
-                        Integer betChip = decideBetChip(lastSmpBet.getBetEighth(), SingleBetCategory.DA);
-                        betForEighth(smpBet, betChip, SingleBetCategory.DA, driver);
-                        money = calculateMoney(money, -betChip);
-                    }
-                } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "八", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getEighth(), "失败");
-                    betForEighth(smpBet, chip, SingleBetCategory.XIAO, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            } else {
-                if (lastSmpBet.getBetEighth().getXiao() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                            Integer betChip = decideBetChip(lastSmpBet.getBetEighth(), SingleBetCategory.DA);
+                            betForEighth(smpBet, betChip, SingleBetCategory.DA, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
                     } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "八", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getEighth(), "胜利");
-//                winner.  继续下注小
-                        Integer betChip = decideBetChip(lastSmpBet.getBetEighth(), SingleBetCategory.XIAO);
-                        betForEighth(smpBet, betChip, SingleBetCategory.XIAO, driver);
-                        money = calculateMoney(money, -betChip);
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "八", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getEighth(), "失败");
+                        betForEighth(smpBet, chip, SingleBetCategory.XIAO, driver);
+                        money = calculateMoney(money, -chip);
                     }
                 } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "八", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getEighth(), "失败");
+                    if (lastSmpBet.getBetEighth().getXiao() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "八", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getEighth(), "胜利");
+//                winner.  继续下注小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetEighth(), SingleBetCategory.XIAO);
+                            betForEighth(smpBet, betChip, SingleBetCategory.XIAO, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "八", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getEighth(), "失败");
 //                loser
-                    betForEighth(smpBet, chip, SingleBetCategory.DA, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            }
-
-            //            check 九
-            if (lastLotteryResult.getNineth() > 5) {
-                if (lastSmpBet.getBetNineth().getDa() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "九", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getNineth(), "胜利");
-//                winner.  继续下注大
-                        //      投注 九 大
-                        Integer betChip = decideBetChip(lastSmpBet.getBetNineth(), SingleBetCategory.DA);
-                        betForNineth(smpBet, betChip, SingleBetCategory.DA, driver);
-                        money = calculateMoney(money, -betChip);
+                        betForEighth(smpBet, chip, SingleBetCategory.DA, driver);
+                        money = calculateMoney(money, -chip);
                     }
-                } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "九", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getNineth(), "失败");
+                }
+
+                //            check 九
+                if (lastLotteryResult.getNineth() > 5) {
+                    if (lastSmpBet.getBetNineth().getDa() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "九", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getNineth(), "胜利");
+//                winner.  继续下注大
+                            //      投注 九 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetNineth(), SingleBetCategory.DA);
+                            betForNineth(smpBet, betChip, SingleBetCategory.DA, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "九", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getNineth(), "失败");
 //                    //      投注 九 大
-                    betForNineth(smpBet, chip, SingleBetCategory.XIAO, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            } else {
-                if (lastSmpBet.getBetNineth().getXiao() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "九", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getNineth(), "胜利");
-//                winner.  继续下注小
-                        Integer betChip = decideBetChip(lastSmpBet.getBetNineth(), SingleBetCategory.XIAO);
-                        betForNineth(smpBet, betChip, SingleBetCategory.XIAO, driver);
-                        money = calculateMoney(money, -betChip);
+                        betForNineth(smpBet, chip, SingleBetCategory.XIAO, driver);
+                        money = calculateMoney(money, -chip);
                     }
                 } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "九", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getNineth(), "失败");
+                    if (lastSmpBet.getBetNineth().getXiao() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "九", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getNineth(), "胜利");
+//                winner.  继续下注小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetNineth(), SingleBetCategory.XIAO);
+                            betForNineth(smpBet, betChip, SingleBetCategory.XIAO, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "九", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getNineth(), "失败");
 //                loser.
-                    betForNineth(smpBet, chip, SingleBetCategory.DA, driver);
-                    money = calculateMoney(money, -chip);
+                        betForNineth(smpBet, chip, SingleBetCategory.DA, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                }
+
+                //            check 十
+                if (lastLotteryResult.getTenth() > 5) {
+                    if (lastSmpBet.getBetTenth().getDa() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "胜利");
+//                winner.  继续下注大
+                            //      投注 十 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetTenth(), SingleBetCategory.DA);
+                            betForTenth(smpBet, betChip, SingleBetCategory.DA, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "失败");
+//                    //      投注 十 大
+                        betForTenth(smpBet, chip, SingleBetCategory.XIAO, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                } else {
+                    if (lastSmpBet.getBetTenth().getXiao() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "胜利");
+//                winner.  继续下注小
+                            //      投注 十 小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetTenth(), SingleBetCategory.XIAO);
+                            betForTenth(smpBet, betChip, SingleBetCategory.XIAO, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "失败");
+//                loser.  不加筹码
+                        //      投注 十 小
+                        betForTenth(smpBet, chip, SingleBetCategory.DA, driver);
+                        money = calculateMoney(money, -chip);
+                    }
                 }
             }
-
-            //            check 十
-            if (lastLotteryResult.getTenth() > 5) {
-                if (lastSmpBet.getBetTenth().getDa() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "胜利");
+            // ==================================== //
+            if (Config.getSmpDanShuang()) {
+                if (lastLotteryResult.getFirst() % 2 == 1) {
+                    if (lastSmpBet.getBetFirst().getDan() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "冠军", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFirst(), "胜利");
 //                winner.  继续下注大
-                        //      投注 十 大
-                        Integer betChip = decideBetChip(lastSmpBet.getBetTenth(), SingleBetCategory.DA);
-                        betForTenth(smpBet, betChip, SingleBetCategory.DA, driver);
-                        money = calculateMoney(money, -betChip);
-                    }
-                } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.DA.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "失败");
-//                    //      投注 十 大
-                    betForTenth(smpBet, chip, SingleBetCategory.XIAO, driver);
-                    money = calculateMoney(money, -chip);
-                }
-            } else {
-                if (lastSmpBet.getBetTenth().getXiao() > 0) {
-                    if (!isPlayTime) {
-                        logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                            //      投注 冠军 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetFirst(), SingleBetCategory.DAN);
+                            betForFirst(smpBet, betChip, SingleBetCategory.DAN, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
                     } else {
-                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "胜利");
-//                winner.  继续下注小
-                        //      投注 十 小
-                        Integer betChip = decideBetChip(lastSmpBet.getBetTenth(), SingleBetCategory.XIAO);
-                        betForTenth(smpBet, betChip, SingleBetCategory.XIAO, driver);
-                        money = calculateMoney(money, -betChip);
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "冠军", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFirst(), "失败");
+//                    //      投注 冠军 小
+                        betForFirst(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                        money = calculateMoney(money, -chip);
                     }
                 } else {
-                    logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.XIAO.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "失败");
+                    if (lastSmpBet.getBetFirst().getShuang() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "冠军", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFirst(), "胜利");
+//                winner.  继续下注小，
+                            //      投注 冠军 小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetFirst(), SingleBetCategory.SHUANG);
+                            betForFirst(smpBet, betChip, SingleBetCategory.SHUANG, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "冠军", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFirst(), "失败");
 //                loser.  不加筹码
-                    //      投注 十 小
-                    betForTenth(smpBet, chip, SingleBetCategory.DA, driver);
-                    money = calculateMoney(money, -chip);
+                        //      投注 冠军 大
+                        betForFirst(smpBet, chip, SingleBetCategory.DAN, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                }
+
+                //            check 亚军
+                if (lastLotteryResult.getSecond() % 2 == 1) {
+                    if (lastSmpBet.getBetSecond().getDan() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "亚军", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSecond(), "胜利");
+//                winner.  继续下注大，增加筹码
+                            //      投注 亚军 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetSecond(), SingleBetCategory.DAN);
+                            betForSecond(smpBet, betChip, SingleBetCategory.DAN, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "亚军", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSecond(), "失败");
+//                    //      投注 亚军 大
+                        betForSecond(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                } else {
+                    if (lastSmpBet.getBetSecond().getShuang() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "亚军", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSecond(), "胜利");
+//                winner.  继续下注小
+                            //      投注 亚军 小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetSecond(), SingleBetCategory.SHUANG);
+                            betForSecond(smpBet, betChip, SingleBetCategory.SHUANG, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "亚军", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSecond(), "失败");
+//                loser.  不加筹码
+                        //      投注 亚军 大
+                        betForSecond(smpBet, chip, SingleBetCategory.DAN, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                }
+
+                //            check 季军
+                if (lastLotteryResult.getThird() % 2 == 1) {
+                    if (lastSmpBet.getBetThird().getDan() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "季军", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getThird(), "胜利");
+//                winner.  继续下注大，增加筹码
+                            //      投注 季军 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetThird(), SingleBetCategory.DAN);
+                            betForThird(smpBet, betChip, SingleBetCategory.DAN, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "季军", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getThird(), "失败");
+//                    //      投注 季军 小
+                        betForThird(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                } else {
+                    if (lastSmpBet.getBetThird().getShuang() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "季军", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getThird(), "胜利");
+//                winner.  继续下注小，增加筹码
+                            Integer betChip = decideBetChip(lastSmpBet.getBetThird(), SingleBetCategory.SHUANG);
+                            betForThird(smpBet, betChip, SingleBetCategory.SHUANG, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "季军", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getThird(), "失败");
+//                loser.  不加筹码
+                        betForThird(smpBet, chip, SingleBetCategory.DAN, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                }
+
+                //            check 四
+                if (lastLotteryResult.getFourth() % 2 == 1) {
+                    if (lastSmpBet.getBetFourth().getDan() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "四", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFourth(), "胜利");
+//                winner.  继续下注大
+                            //      投注 四 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetFourth(), SingleBetCategory.DAN);
+                            betForFourth(smpBet, betChip, SingleBetCategory.DAN, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "四", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFourth(), "失败");
+//                    //      投注 四 大
+                        betForFourth(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                } else {
+                    if (lastSmpBet.getBetFourth().getShuang() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "四", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFourth(), "胜利");
+//                winner.  继续下注小
+                            //      投注 四 小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetFourth(), SingleBetCategory.SHUANG);
+                            betForFourth(smpBet, betChip, SingleBetCategory.SHUANG, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "四", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFourth(), "失败");
+//                loser.
+                        //      投注 四 小
+                        betForFourth(smpBet, chip, SingleBetCategory.DAN, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                }
+
+                //            check 五
+                if (lastLotteryResult.getFifth() % 2 == 1) {
+                    if (lastSmpBet.getBetFifth().getDan() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "五", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFifth(), "胜利");
+//                winner.  继续下注大
+                            //      投注 五 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetFifth(), SingleBetCategory.DAN);
+                            betForFifth(smpBet, betChip, SingleBetCategory.DAN, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "五", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFifth(), "失败");
+//                    //      投注 五 大
+                        betForFifth(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                } else {
+                    if (lastSmpBet.getBetFifth().getShuang() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "五", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFifth(), "胜利");
+//                winner.  继续下注小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetFifth(), SingleBetCategory.SHUANG);
+                            betForFifth(smpBet, betChip, SingleBetCategory.SHUANG, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "五", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getFifth(), "失败");
+//                loser.  不加筹码
+                        //      投注 五 小
+                        betForFifth(smpBet, chip, SingleBetCategory.DAN, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                }
+
+//            check 六
+                if (lastLotteryResult.getSixth() % 2 == 1) {
+                    if (lastSmpBet.getBetSixth().getDan() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "六", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSixth(), "胜利");
+//                winner.  继续下注大
+                            //      投注 六 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetSixth(), SingleBetCategory.DAN);
+                            betForSixth(smpBet, betChip, SingleBetCategory.DAN, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "六", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSixth(), "失败");
+//                    //      投注 六 大
+                        betForSixth(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                } else {
+                    if (lastSmpBet.getBetSixth().getShuang() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "六", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSixth(), "胜利");
+//                winner.  继续下注小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetSixth(), SingleBetCategory.SHUANG);
+                            betForSixth(smpBet, betChip, SingleBetCategory.SHUANG, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "六", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSixth(), "失败");
+//                loser.  不加筹码
+                        betForSixth(smpBet, chip, SingleBetCategory.DAN, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                }
+
+                //            check 七
+                if (lastLotteryResult.getSeventh() % 2 == 1) {
+                    if (lastSmpBet.getBetSeventh().getDan() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "七", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSeventh(), "胜利");
+//                winner.  继续下注大
+                            //      投注 七 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetSeventh(), SingleBetCategory.DAN);
+                            betForSeventh(smpBet, betChip, SingleBetCategory.DAN, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "七", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSeventh(), "失败");
+                        betForSeventh(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                } else {
+                    if (lastSmpBet.getBetSeventh().getShuang() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "七", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSeventh(), "胜利");
+//                winner.  继续下注小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetSeventh(), SingleBetCategory.SHUANG);
+                            betForSeventh(smpBet, betChip, SingleBetCategory.SHUANG, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "七", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getSeventh(), "失败");
+//                loser.
+                        betForSeventh(smpBet, chip, SingleBetCategory.DAN, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                }
+
+                //            check 八
+                if (lastLotteryResult.getEighth() % 2 == 1) {
+                    if (lastSmpBet.getBetEighth().getDan() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "八", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getEighth(), "胜利");
+//                winner.  继续下注大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetEighth(), SingleBetCategory.DAN);
+                            betForEighth(smpBet, betChip, SingleBetCategory.DAN, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "八", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getEighth(), "失败");
+                        betForEighth(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                } else {
+                    if (lastSmpBet.getBetEighth().getShuang() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "八", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getEighth(), "胜利");
+//                winner.  继续下注小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetEighth(), SingleBetCategory.SHUANG);
+                            betForEighth(smpBet, betChip, SingleBetCategory.SHUANG, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "八", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getEighth(), "失败");
+//                loser
+                        betForEighth(smpBet, chip, SingleBetCategory.DAN, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                }
+
+                //            check 九
+                if (lastLotteryResult.getNineth() % 2 == 1) {
+                    if (lastSmpBet.getBetNineth().getDan() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "九", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getNineth(), "胜利");
+//                winner.  继续下注大
+                            //      投注 九 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetNineth(), SingleBetCategory.DAN);
+                            betForNineth(smpBet, betChip, SingleBetCategory.DAN, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "九", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getNineth(), "失败");
+//                    //      投注 九 大
+                        betForNineth(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                } else {
+                    if (lastSmpBet.getBetNineth().getShuang() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "九", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getNineth(), "胜利");
+//                winner.  继续下注小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetNineth(), SingleBetCategory.SHUANG);
+                            betForNineth(smpBet, betChip, SingleBetCategory.SHUANG, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "九", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getNineth(), "失败");
+//                loser.
+                        betForNineth(smpBet, chip, SingleBetCategory.DAN, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                }
+
+                //            check 十
+                if (lastLotteryResult.getTenth() % 2 == 1) {
+                    if (lastSmpBet.getBetTenth().getDan() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "胜利");
+//                winner.  继续下注大
+                            //      投注 十 大
+                            Integer betChip = decideBetChip(lastSmpBet.getBetTenth(), SingleBetCategory.DAN);
+                            betForTenth(smpBet, betChip, SingleBetCategory.DAN, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.DAN.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "失败");
+//                    //      投注 十 大
+                        betForTenth(smpBet, chip, SingleBetCategory.SHUANG, driver);
+                        money = calculateMoney(money, -chip);
+                    }
+                } else {
+                    if (lastSmpBet.getBetTenth().getShuang() > 0) {
+                        if (!isPlayTime) {
+                            logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                        } else {
+                            logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "胜利");
+//                winner.  继续下注小
+                            //      投注 十 小
+                            Integer betChip = decideBetChip(lastSmpBet.getBetTenth(), SingleBetCategory.SHUANG);
+                            betForTenth(smpBet, betChip, SingleBetCategory.SHUANG, driver);
+                            money = calculateMoney(money, -betChip);
+                        }
+                    } else {
+                        logger.info("[Operation - Bet] Last bet [{} {}] for 北京赛车 - {} - 期数 {} - 结果 - [{} {}]", "十", SingleBetCategory.SHUANG.getCategory(), PLAYGROUND, round - 1, lastLotteryResult.getTenth(), "失败");
+//                loser.  不加筹码
+                        //      投注 十 小
+                        betForTenth(smpBet, chip, SingleBetCategory.DAN, driver);
+                        money = calculateMoney(money, -chip);
+                    }
                 }
             }
         }

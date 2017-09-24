@@ -43,7 +43,7 @@ public class SMPController {
         Config.setSmpLevels(level);
     }
 
-    @RequestMapping(value="enable/{category}", method = RequestMethod.POST)
+    @RequestMapping(value="enable/category/{category}", method = RequestMethod.POST)
     public void enableSMPCategory(@PathVariable("category") String category) {
         logger.info("Enable smp category={}", category);
         switch (category){

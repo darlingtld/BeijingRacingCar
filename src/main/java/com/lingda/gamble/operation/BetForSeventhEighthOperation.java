@@ -134,52 +134,159 @@ public class BetForSeventhEighthOperation {
         logger.info("我的余额:{}", money);
         logger.info("====================================");
 
-        List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
-        numberBetList.removeAll(Config.getSeventhEighthExcludeNumbers());
-
         SeventhEighthBet bet = new SeventhEighthBet();
         bet.setRound(round);
-//        ============== 策略逻辑 ==============
-        if (lastBet == null) {
+        if (Config.getSeventhEighthSmartMode()) {
+            logger.info("[Operation - Bet] Bet in smart mode");
+            if (lotteryResult2 == null) {
+                logger.info("[Operation - Bet] Cannot find lottery result for 2 consecutive round");
+                return false;
+            }
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round);
+                return false;
+            }
+//            no last bet or last time is a win
+            if (lastBet == null || decideBetChip(lastLotteryResult.getSeventh(), lastBet.getBetSeventh(), isPlayTime).equals(chip)) {
+//            Seventh
+                if (!Arrays.asList(1, 3, 5).contains(lastLotteryResult.getSeventh()) && !Arrays.asList(6, 8, 10).contains(lotteryResult2.getSeventh())) {
+                    logger.info("[Operation - Bet] Bingo! Bet for Seventh exclude 6,8,10");
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 9));
+                    logger.info("[Operation - Bet] Bet Seventh for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForSeventh(bet, chip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * chip);
+                    if (bet.getBetEighth() == null) {
+                        betForEighth(bet, chip, Collections.emptyList(), driver);
+                    }
+                } else if (!Arrays.asList(6, 8, 10).contains(lastLotteryResult.getSeventh()) && !Arrays.asList(1, 3, 5).contains(lotteryResult2.getSeventh())) {
+                    logger.info("[Operation - Bet] Bingo! Bet for Seventh exclude 1,3,5");
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(2, 4, 6, 7, 8, 9, 10));
+                    logger.info("[Operation - Bet] Bet Seventh for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForSeventh(bet, chip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * chip);
+                    if (bet.getBetEighth() == null) {
+                        betForEighth(bet, chip, Collections.emptyList(), driver);
+                    }
+                }
             } else {
-                logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                //      投注 冠-五 大
-                Collections.shuffle(numberBetList);
-                betForSeventh(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                Collections.shuffle(numberBetList);
-                betForEighth(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                money = calculateMoney(money, -2 * Math.min(numberBetList.size(), 7) * chip);
+//                last bet is a loser
+//                exclude 6,8,10
+                if (lastBet.getBetSeventh().getFirst() > 0) {
+                    logger.info("[Operation - Bet] Continue! Bet for Seventh exclude 6,8,10");
+                    Integer betChip = decideBetChip(lastLotteryResult.getSeventh(), lastBet.getBetSeventh(), isPlayTime);
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 9));
+                    logger.info("[Operation - Bet] Bet Seventh for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForSeventh(bet, betChip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * betChip);
+                    if (bet.getBetEighth() == null) {
+                        betForEighth(bet, chip, Collections.emptyList(), driver);
+                    }
+                }
+                //                exclude 1,3,5
+                else if (lastBet.getBetSeventh().getSixth() > 0) {
+                    logger.info("[Operation - Bet] Continue! Bet for Seventh exclude 1,3,5");
+                    Integer betChip = decideBetChip(lastLotteryResult.getSeventh(), lastBet.getBetSeventh(), isPlayTime);
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(2, 4, 6, 7, 8, 9, 10));
+                    logger.info("[Operation - Bet] Bet Seventh for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForSeventh(bet, betChip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * betChip);
+                    if (bet.getBetEighth() == null) {
+                        betForEighth(bet, chip, Collections.emptyList(), driver);
+                    }
+                }
             }
+            //            no last bet or last time is a win
+            if (lastBet == null || decideBetChip(lastLotteryResult.getEighth(), lastBet.getBetEighth(), isPlayTime).equals(chip)) {
+//            Second
+                if (!Arrays.asList(1, 3, 5).contains(lastLotteryResult.getEighth()) && !Arrays.asList(6, 8, 10).contains(lotteryResult2.getEighth())) {
+                    logger.info("[Operation - Bet] Bingo! Bet for Eighth exclude 6,8,10");
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 9));
+                    logger.info("[Operation - Bet] Bet Eighth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForEighth(bet, chip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * chip);
+                    if (bet.getBetSeventh() == null) {
+                        betForSeventh(bet, chip, Collections.emptyList(), driver);
+                    }
+                } else if (!Arrays.asList(6, 8, 10).contains(lastLotteryResult.getEighth()) && !Arrays.asList(1, 3, 5).contains(lotteryResult2.getEighth())) {
+                    logger.info("[Operation - Bet] Bingo! Bet for Eighth exclude 1,3,5");
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(2, 4, 6, 7, 8, 9, 10));
+                    logger.info("[Operation - Bet] Bet Eighth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForEighth(bet, chip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * chip);
+                    if (bet.getBetSeventh() == null) {
+                        betForSeventh(bet, chip, Collections.emptyList(), driver);
+                    }
+                }
+            } else {
+//                last bet is a loser
+//                exclude 6,8,10
+                if (lastBet.getBetEighth().getFirst() > 0) {
+                    logger.info("[Operation - Bet] Continue! Bet for Eighth exclude 6,8,10");
+                    Integer betChip = decideBetChip(lastLotteryResult.getEighth(), lastBet.getBetEighth(), isPlayTime);
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 9));
+                    logger.info("[Operation - Bet] Bet Second for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForEighth(bet, betChip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * betChip);
+                    if (bet.getBetSeventh() == null) {
+                        betForSeventh(bet, chip, Collections.emptyList(), driver);
+                    }
+                } else if (lastBet.getBetEighth().getSixth() > 0) {
+                    logger.info("[Operation - Bet] Continue! Bet for Eighth exclude 1,3,5");
+                    Integer betChip = decideBetChip(lastLotteryResult.getEighth(), lastBet.getBetEighth(), isPlayTime);
+                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(2, 4, 6, 7, 8, 9, 10));
+                    logger.info("[Operation - Bet] Bet Eighth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    betForEighth(bet, betChip, numberBetList, driver);
+                    money = calculateMoney(money, -7 * betChip);
+                    if (bet.getBetSeventh() == null) {
+                        betForSeventh(bet, chip, Collections.emptyList(), driver);
+                    }
+                }
+            }
+
         } else {
-            List<Integer> seventhNumberToBetList = new ArrayList<>(numberBetList);
-            List<Integer> eighthNumberToBetList = new ArrayList<>(numberBetList);
-            List<Integer> seventhNumberToRemoveList = new ArrayList<>();
-            List<Integer> eighthNumberToRemoveList = new ArrayList<>();
-            for (int i = 1; i <= 10; i++) {
-                if (seventhNumberCountMap.containsKey(i) && seventhNumberCountMap.get(i).intValue() > 2) {
-                    seventhNumberToRemoveList.add(i);
+            List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+            numberBetList.removeAll(Config.getSeventhEighthExcludeNumbers());
+//        ============== 策略逻辑 ==============
+            if (lastBet == null) {
+                if (!isPlayTime) {
+                    logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                } else {
+                    logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                    //      投注 冠-五 大
+                    Collections.shuffle(numberBetList);
+                    betForSeventh(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
+                    Collections.shuffle(numberBetList);
+                    betForEighth(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
+                    money = calculateMoney(money, -2 * Math.min(numberBetList.size(), 7) * chip);
                 }
-                if (eighthNumberCountMap.containsKey(i) && eighthNumberCountMap.get(i).intValue() > 2) {
-                    eighthNumberToRemoveList.add(i);
+            } else {
+                List<Integer> seventhNumberToBetList = new ArrayList<>(numberBetList);
+                List<Integer> eighthNumberToBetList = new ArrayList<>(numberBetList);
+                List<Integer> seventhNumberToRemoveList = new ArrayList<>();
+                List<Integer> eighthNumberToRemoveList = new ArrayList<>();
+                for (int i = 1; i <= 10; i++) {
+                    if (seventhNumberCountMap.containsKey(i) && seventhNumberCountMap.get(i).intValue() > 2) {
+                        seventhNumberToRemoveList.add(i);
+                    }
+                    if (eighthNumberCountMap.containsKey(i) && eighthNumberCountMap.get(i).intValue() > 2) {
+                        eighthNumberToRemoveList.add(i);
+                    }
                 }
+                seventhNumberToBetList.removeAll(seventhNumberToRemoveList);
+                eighthNumberToBetList.removeAll(eighthNumberToRemoveList);
+
+                Collections.shuffle(seventhNumberToBetList);
+                Collections.shuffle(eighthNumberToBetList);
+
+                Integer seventhMoneyBet = decideBetChip(lastLotteryResult.getSeventh(), lastBet.getBetSeventh(), isPlayTime);
+                betForSeventh(bet, seventhMoneyBet, seventhNumberToBetList.subList(0, Math.min(seventhNumberToBetList.size(), 7)), driver);
+                money = calculateMoney(money, -Math.min(seventhNumberToBetList.size(), 7) * seventhMoneyBet);
+                Integer eighthMoneyBet = decideBetChip(lastLotteryResult.getEighth(), lastBet.getBetEighth(), isPlayTime);
+                betForEighth(bet, eighthMoneyBet, eighthNumberToBetList.subList(0, Math.min(eighthNumberToBetList.size(), 7)), driver);
+                money = calculateMoney(money, -Math.min(eighthNumberToBetList.size(), 7) * eighthMoneyBet);
+
             }
-            seventhNumberToBetList.removeAll(seventhNumberToRemoveList);
-            eighthNumberToBetList.removeAll(eighthNumberToRemoveList);
-
-            Collections.shuffle(seventhNumberToBetList);
-            Collections.shuffle(eighthNumberToBetList);
-
-            Integer seventhMoneyBet = decideBetChip(lastLotteryResult.getSeventh(), lastBet.getBetSeventh(), isPlayTime);
-            betForSeventh(bet, seventhMoneyBet, seventhNumberToBetList.subList(0, Math.min(seventhNumberToBetList.size(), 7)), driver);
-            money = calculateMoney(money, -Math.min(seventhNumberToBetList.size(), 7) * seventhMoneyBet);
-            Integer eighthMoneyBet = decideBetChip(lastLotteryResult.getEighth(), lastBet.getBetEighth(), isPlayTime);
-            betForEighth(bet, eighthMoneyBet, eighthNumberToBetList.subList(0, Math.min(eighthNumberToBetList.size(), 7)), driver);
-            money = calculateMoney(money, -Math.min(eighthNumberToBetList.size(), 7) * eighthMoneyBet);
-
         }
-
         logger.info("=============== 金额 (for test) ===============");
         logger.info("我的余额:{}", money);
         logger.info("====================================");
