@@ -28,6 +28,7 @@ import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,7 +36,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.TimeZone;
 
 @SpringBootApplication
@@ -46,6 +49,15 @@ public class GambleApplication {
 
     @Autowired
     private ResourceLoader resourceLoader;
+
+    @Value("${gamble.expiration.year}")
+    private Integer year;
+
+    @Value("${gamble.expiration.month}")
+    private Integer month;
+
+    @Value("${gamble.expiration.day}")
+    private Integer day;
 
     public static void main(String[] args) {
         SpringApplication.run(GambleApplication.class, args);
@@ -91,7 +103,7 @@ public class GambleApplication {
             }
 
             TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
-
+            LocalDate endDate = LocalDate.of(year, month, day);
             WebDriver driver = BrowserDriver.getDriver();
             loginOperation.doLogin(driver);
             navigationOperation.doNavigate(driver);
@@ -99,6 +111,10 @@ public class GambleApplication {
             LocalTime endTime = LocalTime.parse("20:40:00");
             boolean isPlayTime = false;
             while (true) {
+                logger.info("Current Date is {}. End Date is {}", LocalDate.now(), endDate);
+                if(LocalDate.now().isAfter(endDate)){
+                    break;
+                }
                 logger.info("Current time is {}. End Time is {}", LocalTime.now(), endTime);
                 if (endTime.isAfter(LocalTime.now())) {
                     isPlayTime = true;
