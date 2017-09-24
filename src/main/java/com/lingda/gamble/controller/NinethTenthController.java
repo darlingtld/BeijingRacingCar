@@ -45,9 +45,21 @@ public class NinethTenthController {
     }
 
     @RequestMapping(value="level_chip", method = RequestMethod.POST)
-    public void setSMPLevel(@RequestParam("level_chip") String levelChips) {
+    public void setNinethTenthLevel(@RequestParam("level_chip") String levelChips) {
         logger.info("Set nineth_tenth level_chips={}", levelChips);
         Config.setNinethTenthLevelAccList(Arrays.stream(levelChips.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
+    }
+
+    @RequestMapping(value="enable/smart_mode", method = RequestMethod.POST)
+    public void enableNinethTenthSmartMode() {
+        logger.info("Enable nineth_tenth smart mode");
+        Config.setNinethTenthSmartMode(true);
+    }
+
+    @RequestMapping(value="disable/smart_mode", method = RequestMethod.POST)
+    public void disableNinethTenthSmartMode() {
+        logger.info("Disable nineth_tenth smart mode");
+        Config.setNinethTenthSmartMode(false);
     }
 
 }

@@ -45,8 +45,20 @@ public class FifthSixthController {
     }
 
     @RequestMapping(value="level_chip", method = RequestMethod.POST)
-    public void setSMPLevel(@RequestParam("level_chip") String levelChips) {
+    public void setFifthSixthLevel(@RequestParam("level_chip") String levelChips) {
         logger.info("Set fifth_sixth level_chips={}", levelChips);
         Config.setFifthSixthLevelAccList(Arrays.stream(levelChips.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
+    }
+
+    @RequestMapping(value="enable/smart_mode", method = RequestMethod.POST)
+    public void enableFifthSixthSmartMode() {
+        logger.info("Enable fifth_sixth smart mode");
+        Config.setFifthSixthSmartMode(true);
+    }
+
+    @RequestMapping(value="disable/smart_mode", method = RequestMethod.POST)
+    public void disableFifthSixthSmartMode() {
+        logger.info("Disable fifth_sixth smart mode");
+        Config.setFifthSixthSmartMode(false);
     }
 }

@@ -9,67 +9,131 @@ public class ConfigDTO {
     private Integer smpChip;
     private Integer smpLevels;
     private Boolean smpEnabled;
+    private Boolean smpDaXiao;
+    private Boolean smpDanShuang;
     private List<Integer> smpLevelChips;
-
     private Integer firstSecondChip;
     private Boolean firstSecondEnabled;
+    private Boolean firstSecondSmartMode;
     private List<Integer> firstSecondExcludeNumbers;
     private List<Integer> firstSecondLevelAccList;
-
     private Integer thirdFourthChip;
     private Boolean thirdFourthEnabled;
+    private Boolean thirdFourthSmartMode;
     private List<Integer> thirdFourthExcludeNumbers;
     private List<Integer> thirdFourthLevelAccList;
-
     private Integer fifthSixthChip;
     private Boolean fifthSixthEnabled;
+    private Boolean fifthSixthSmartMode;
     private List<Integer> fifthSixthExcludeNumbers;
     private List<Integer> fifthSixthLevelAccList;
-
     private Integer seventhEighthChip;
     private Boolean seventhEighthEnabled;
+    private Boolean seventhEighthSmartMode;
     private List<Integer> seventhEighthExcludeNumbers;
     private List<Integer> seventhEighthLevelAccList;
-
     private Integer ninethTenthChip;
     private Boolean ninethTenthEnabled;
+    private Boolean ninethTenthSmartMode;
     private List<Integer> ninethTenthExcludeNumbers;
     private List<Integer> ninethTenthLevelAccList;
-
     private Integer lostThreshold;
 
     public ConfigDTO() {
         setSmpChip(Config.getSmpChip());
         setSmpLevels(Config.getSmpLevels());
         setSmpEnabled(Config.getSmpEnabled());
+        setSmpDaXiao(Config.getSmpDaXiao());
+        setSmpDanShuang(Config.getSmpDanShuang());
         setSmpLevelChips(Config.getSmpLevelChips());
 
         setFirstSecondChip(Config.getFirstSecondChip());
         setFirstSecondEnabled(Config.getFirstSecondEnabled());
+        setFirstSecondSmartMode(Config.getFirstSecondSmartMode());
         setFirstSecondExcludeNumbers(Config.getFirstSecondExcludeNumbers());
         setFirstSecondLevelAccList(Config.getFirstSecondLevelAccList());
 
         setThirdFourthChip(Config.getThirdFourthChip());
         setThirdFourthEnabled(Config.getThirdFourthEnabled());
+        setThirdFourthSmartMode(Config.getThirdFourthSmartMode());
         setThirdFourthExcludeNumbers(Config.getThirdFourthExcludeNumbers());
         setThirdFourthLevelAccList(Config.getThirdFourthLevelAccList());
 
         setFifthSixthChip(Config.getFifthSixthChip());
         setFifthSixthEnabled(Config.getFifthSixthEnabled());
+        setFifthSixthEnabled(Config.getFifthSixthSmartMode());
         setFifthSixthExcludeNumbers(Config.getFifthSixthExcludeNumbers());
         setFifthSixthLevelAccList(Config.getFifthSixthLevelAccList());
 
         setSeventhEighthChip(Config.getSeventhEighthChip());
         setSeventhEighthEnabled(Config.getSeventhEighthEnabled());
+        setSeventhEighthSmartMode(Config.getSeventhEighthSmartMode());
         setSeventhEighthExcludeNumbers(Config.getSeventhEighthExcludeNumbers());
         setSeventhEighthLevelAccList(Config.getSeventhEighthLevelAccList());
 
         setNinethTenthChip(Config.getNinethTenthChip());
         setNinethTenthEnabled(Config.getNinethTenthEnabled());
+        setNinethTenthSmartMode(Config.getNinethTenthSmartMode());
         setNinethTenthExcludeNumbers(Config.getNinethTenthExcludeNumbers());
         setNinethTenthLevelAccList(Config.getNinethTenthLevelAccList());
 
         setLostThreshold(Config.getLostThreshold());
+    }
+
+    public Boolean getFirstSecondSmartMode() {
+        return firstSecondSmartMode;
+    }
+
+    public void setFirstSecondSmartMode(Boolean firstSecondSmartMode) {
+        this.firstSecondSmartMode = firstSecondSmartMode;
+    }
+
+    public Boolean getThirdFourthSmartMode() {
+        return thirdFourthSmartMode;
+    }
+
+    public void setThirdFourthSmartMode(Boolean thirdFourthSmartMode) {
+        this.thirdFourthSmartMode = thirdFourthSmartMode;
+    }
+
+    public Boolean getFifthSixthSmartMode() {
+        return fifthSixthSmartMode;
+    }
+
+    public void setFifthSixthSmartMode(Boolean fifthSixthSmartMode) {
+        this.fifthSixthSmartMode = fifthSixthSmartMode;
+    }
+
+    public Boolean getSeventhEighthSmartMode() {
+        return seventhEighthSmartMode;
+    }
+
+    public void setSeventhEighthSmartMode(Boolean seventhEighthSmartMode) {
+        this.seventhEighthSmartMode = seventhEighthSmartMode;
+    }
+
+    public Boolean getNinethTenthSmartMode() {
+        return ninethTenthSmartMode;
+    }
+
+    public void setNinethTenthSmartMode(Boolean ninethTenthSmartMode) {
+        this.ninethTenthSmartMode = ninethTenthSmartMode;
+    }
+
+    public Boolean getSmpDaXiao() {
+        return smpDaXiao;
+    }
+
+    public void setSmpDaXiao(Boolean smpDaXiao) {
+        this.smpDaXiao = smpDaXiao;
+    }
+
+    public Boolean getSmpDanShuang() {
+        return smpDanShuang;
+    }
+
+    public void setSmpDanShuang(Boolean smpDanShuang) {
+        this.smpDanShuang = smpDanShuang;
     }
 
     public List<Integer> getSmpLevelChips() {

@@ -8,7 +8,91 @@ public class Config {
     private static Integer smpChip = 5;
     private static Integer smpLevels = 7;
     private static Boolean smpEnabled = false;
+    private static Boolean smpDaXiao = true;
+    private static Boolean smpDanShuang = false;
     private static List<Integer> smpLevelChips = Arrays.asList(5, 17, 57, 193, 572);
+    private static Integer firstSecondChip = 5;
+    private static Boolean firstSecondEnabled = false;
+    private static Boolean firstSecondSmartMode=false;
+    private static List<Integer> firstSecondExcludeNumbers = new ArrayList<>();
+    private static List<Integer> firstSecondLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
+    private static Integer thirdFourthChip = 5;
+    private static Boolean thirdFourthEnabled = false;
+    private static Boolean thirdFourthSmartMode=false;
+    private static List<Integer> thirdFourthExcludeNumbers = new ArrayList<>();
+    private static List<Integer> thirdFourthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
+    private static Integer fifthSixthChip = 5;
+    private static Boolean fifthSixthEnabled = false;
+    private static Boolean fifthSixthSmartMode=false;
+    private static List<Integer> fifthSixthExcludeNumbers = new ArrayList<>();
+    private static List<Integer> fifthSixthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
+    private static Integer seventhEighthChip = 5;
+    private static Boolean seventhEighthEnabled = false;
+    private static Boolean seventhEighthSmartMode=false;
+    private static List<Integer> seventhEighthExcludeNumbers = new ArrayList<>();
+    private static List<Integer> seventhEighthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
+    private static Integer ninethTenthChip = 5;
+    private static Boolean ninethTenthEnabled = false;
+    private static Boolean ninethTenthSmartMode=false;
+    private static List<Integer> ninethTenthExcludeNumbers = new ArrayList<>();
+    private static List<Integer> ninethTenthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
+    private static Integer lostThreshold = 10000;
+
+    public static Boolean getFirstSecondSmartMode() {
+        return firstSecondSmartMode;
+    }
+
+    public static void setFirstSecondSmartMode(Boolean firstSecondSmartMode) {
+        Config.firstSecondSmartMode = firstSecondSmartMode;
+    }
+
+    public static Boolean getThirdFourthSmartMode() {
+        return thirdFourthSmartMode;
+    }
+
+    public static void setThirdFourthSmartMode(Boolean thirdFourthSmartMode) {
+        Config.thirdFourthSmartMode = thirdFourthSmartMode;
+    }
+
+    public static Boolean getFifthSixthSmartMode() {
+        return fifthSixthSmartMode;
+    }
+
+    public static void setFifthSixthSmartMode(Boolean fifthSixthSmartMode) {
+        Config.fifthSixthSmartMode = fifthSixthSmartMode;
+    }
+
+    public static Boolean getSeventhEighthSmartMode() {
+        return seventhEighthSmartMode;
+    }
+
+    public static void setSeventhEighthSmartMode(Boolean seventhEighthSmartMode) {
+        Config.seventhEighthSmartMode = seventhEighthSmartMode;
+    }
+
+    public static Boolean getNinethTenthSmartMode() {
+        return ninethTenthSmartMode;
+    }
+
+    public static void setNinethTenthSmartMode(Boolean ninethTenthSmartMode) {
+        Config.ninethTenthSmartMode = ninethTenthSmartMode;
+    }
+
+    public static Boolean getSmpDaXiao() {
+        return smpDaXiao;
+    }
+
+    public static void setSmpDaXiao(Boolean smpDaXiao) {
+        Config.smpDaXiao = smpDaXiao;
+    }
+
+    public static Boolean getSmpDanShuang() {
+        return smpDanShuang;
+    }
+
+    public static void setSmpDanShuang(Boolean smpDanShuang) {
+        Config.smpDanShuang = smpDanShuang;
+    }
 
     public static List<Integer> getSmpLevelChips() {
         return smpLevelChips;
@@ -17,33 +101,6 @@ public class Config {
     public static void setSmpLevelChips(List<Integer> smpLevelChips) {
         Config.smpLevelChips = smpLevelChips;
     }
-
-    private static Integer firstSecondChip = 5;
-    private static Boolean firstSecondEnabled = false;
-    private static List<Integer> firstSecondExcludeNumbers = new ArrayList<>();
-    private static List<Integer> firstSecondLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
-
-    private static Integer thirdFourthChip = 5;
-    private static Boolean thirdFourthEnabled = false;
-    private static List<Integer> thirdFourthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> thirdFourthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
-
-    private static Integer fifthSixthChip = 5;
-    private static Boolean fifthSixthEnabled = false;
-    private static List<Integer> fifthSixthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> fifthSixthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
-
-    private static Integer seventhEighthChip = 5;
-    private static Boolean seventhEighthEnabled = false;
-    private static List<Integer> seventhEighthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> seventhEighthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
-
-    private static Integer ninethTenthChip = 5;
-    private static Boolean ninethTenthEnabled = false;
-    private static List<Integer> ninethTenthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> ninethTenthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
-
-    private static Integer lostThreshold = 10000;
 
     public static List<Integer> getFirstSecondLevelAccList() {
         return firstSecondLevelAccList;

@@ -45,9 +45,21 @@ public class ThirdFourthController {
     }
 
     @RequestMapping(value="level_chip", method = RequestMethod.POST)
-    public void setSMPLevel(@RequestParam("level_chip") String levelChips) {
+    public void setThirdFourthLevel(@RequestParam("level_chip") String levelChips) {
         logger.info("Set third_fourth level_chips={}", levelChips);
         Config.setThirdFourthLevelAccList(Arrays.stream(levelChips.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
+    }
+
+    @RequestMapping(value="enable/smart_mode", method = RequestMethod.POST)
+    public void enableThirdFourthSmartMode() {
+        logger.info("Enable third_fourth smart mode");
+        Config.setThirdFourthSmartMode(true);
+    }
+
+    @RequestMapping(value="disable/smart_mode", method = RequestMethod.POST)
+    public void disableThirdFourthSmartMode() {
+        logger.info("Disable third_fourth smart mode");
+        Config.setThirdFourthSmartMode(false);
     }
 
 }

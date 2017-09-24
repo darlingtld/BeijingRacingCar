@@ -3,6 +3,7 @@ package com.lingda.gamble.controller;
 import com.lingda.gamble.param.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,8 +46,20 @@ public class FirstSecondController {
     }
 
     @RequestMapping(value="level_chip", method = RequestMethod.POST)
-    public void setSMPLevel(@RequestParam("level_chip") String levelChips) {
+    public void setFirstSecondLevelChip(@RequestParam("level_chip") String levelChips) {
         logger.info("Set first_second level_chips={}", levelChips);
         Config.setFirstSecondLevelAccList(Arrays.stream(levelChips.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
+    }
+
+    @RequestMapping(value="enable/smart_mode", method = RequestMethod.POST)
+    public void enableFirstSecondSmartMode() {
+        logger.info("Enable first_second smart mode");
+        Config.setFirstSecondSmartMode(true);
+    }
+
+    @RequestMapping(value="disable/smart_mode", method = RequestMethod.POST)
+    public void disableFirstSecondSmartMode() {
+        logger.info("Disable first_second smart mode");
+        Config.setFirstSecondSmartMode(false);
     }
 }

@@ -45,9 +45,21 @@ public class SeventhEighthController {
     }
 
     @RequestMapping(value="level_chip", method = RequestMethod.POST)
-    public void setSMPLevel(@RequestParam("level_chip") String levelChips) {
+    public void setSeventhEighthLevel(@RequestParam("level_chip") String levelChips) {
         logger.info("Set seventh_eighth level_chips={}", levelChips);
         Config.setSeventhEighthLevelAccList(Arrays.stream(levelChips.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
+    }
+
+    @RequestMapping(value="enable/smart_mode", method = RequestMethod.POST)
+    public void enableSeventhEighthSmartMode() {
+        logger.info("Enable seventh_eighth smart mode");
+        Config.setSeventhEighthSmartMode(true);
+    }
+
+    @RequestMapping(value="disable/smart_mode", method = RequestMethod.POST)
+    public void disableSeventhEighthSmartMode() {
+        logger.info("Disable seventh_eighth smart mode");
+        Config.setSeventhEighthSmartMode(false);
     }
 
 }
