@@ -108,7 +108,7 @@ public class GambleApplication {
             loginOperation.doLogin(driver);
             navigationOperation.doNavigate(driver);
 //            晚上八点四十后，逐渐收尾，不继续下注
-            LocalTime endTime = LocalTime.parse("20:40:00");
+            LocalTime endTime = LocalTime.parse("23:30:00");
             boolean isPlayTime = false;
             while (true) {
                 logger.info("Current Date is {}. End Date is {}", LocalDate.now(), endDate);
