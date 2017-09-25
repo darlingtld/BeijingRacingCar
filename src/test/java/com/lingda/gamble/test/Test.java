@@ -10,15 +10,14 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.TimeZone;
 
 public class Test {
 
     public static void main(String[] args) throws JsonProcessingException {
-        System.out.println(Double.parseDouble("-0.32"));
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
-        System.out.println(TimeZone.getDefault());
-
-        System.out.println(new ObjectMapper().writeValueAsString(new ConfigDTO()));
+        List<Integer> list = Arrays.asList(1,12,4,0,0);
+        System.out.println(list.stream().filter(n->n>0).count());
     }
 }

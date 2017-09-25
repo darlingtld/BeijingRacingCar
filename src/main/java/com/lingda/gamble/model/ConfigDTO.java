@@ -6,33 +6,26 @@ import com.lingda.gamble.param.Config;
 import java.util.List;
 
 public class ConfigDTO {
-    private Integer smpChip;
-    private Integer smpLevels;
     private Boolean smpEnabled;
     private Boolean smpDaXiao;
     private Boolean smpDanShuang;
     private List<Integer> smpLevelChips;
-    private Integer firstSecondChip;
     private Boolean firstSecondEnabled;
     private Boolean firstSecondSmartMode;
     private List<Integer> firstSecondExcludeNumbers;
     private List<Integer> firstSecondLevelAccList;
-    private Integer thirdFourthChip;
     private Boolean thirdFourthEnabled;
     private Boolean thirdFourthSmartMode;
     private List<Integer> thirdFourthExcludeNumbers;
     private List<Integer> thirdFourthLevelAccList;
-    private Integer fifthSixthChip;
     private Boolean fifthSixthEnabled;
     private Boolean fifthSixthSmartMode;
     private List<Integer> fifthSixthExcludeNumbers;
     private List<Integer> fifthSixthLevelAccList;
-    private Integer seventhEighthChip;
     private Boolean seventhEighthEnabled;
     private Boolean seventhEighthSmartMode;
     private List<Integer> seventhEighthExcludeNumbers;
     private List<Integer> seventhEighthLevelAccList;
-    private Integer ninethTenthChip;
     private Boolean ninethTenthEnabled;
     private Boolean ninethTenthSmartMode;
     private List<Integer> ninethTenthExcludeNumbers;
@@ -40,38 +33,31 @@ public class ConfigDTO {
     private Integer lostThreshold;
 
     public ConfigDTO() {
-        setSmpChip(Config.getSmpChip());
-        setSmpLevels(Config.getSmpLevels());
         setSmpEnabled(Config.getSmpEnabled());
         setSmpDaXiao(Config.getSmpDaXiao());
         setSmpDanShuang(Config.getSmpDanShuang());
         setSmpLevelChips(Config.getSmpLevelChips());
 
-        setFirstSecondChip(Config.getFirstSecondChip());
         setFirstSecondEnabled(Config.getFirstSecondEnabled());
         setFirstSecondSmartMode(Config.getFirstSecondSmartMode());
         setFirstSecondExcludeNumbers(Config.getFirstSecondExcludeNumbers());
         setFirstSecondLevelAccList(Config.getFirstSecondLevelAccList());
 
-        setThirdFourthChip(Config.getThirdFourthChip());
         setThirdFourthEnabled(Config.getThirdFourthEnabled());
         setThirdFourthSmartMode(Config.getThirdFourthSmartMode());
         setThirdFourthExcludeNumbers(Config.getThirdFourthExcludeNumbers());
         setThirdFourthLevelAccList(Config.getThirdFourthLevelAccList());
 
-        setFifthSixthChip(Config.getFifthSixthChip());
         setFifthSixthEnabled(Config.getFifthSixthEnabled());
         setFifthSixthEnabled(Config.getFifthSixthSmartMode());
         setFifthSixthExcludeNumbers(Config.getFifthSixthExcludeNumbers());
         setFifthSixthLevelAccList(Config.getFifthSixthLevelAccList());
 
-        setSeventhEighthChip(Config.getSeventhEighthChip());
         setSeventhEighthEnabled(Config.getSeventhEighthEnabled());
         setSeventhEighthSmartMode(Config.getSeventhEighthSmartMode());
         setSeventhEighthExcludeNumbers(Config.getSeventhEighthExcludeNumbers());
         setSeventhEighthLevelAccList(Config.getSeventhEighthLevelAccList());
 
-        setNinethTenthChip(Config.getNinethTenthChip());
         setNinethTenthEnabled(Config.getNinethTenthEnabled());
         setNinethTenthSmartMode(Config.getNinethTenthSmartMode());
         setNinethTenthExcludeNumbers(Config.getNinethTenthExcludeNumbers());
@@ -192,22 +178,6 @@ public class ConfigDTO {
         this.lostThreshold = lostThreshold;
     }
 
-    public Integer getSmpChip() {
-        return smpChip;
-    }
-
-    public void setSmpChip(Integer smpChip) {
-        this.smpChip = smpChip;
-    }
-
-    public Integer getSmpLevels() {
-        return smpLevels;
-    }
-
-    public void setSmpLevels(Integer smpLevels) {
-        this.smpLevels = smpLevels;
-    }
-
     public Boolean getSmpEnabled() {
         return smpEnabled;
     }
@@ -216,13 +186,6 @@ public class ConfigDTO {
         this.smpEnabled = smpEnabled;
     }
 
-    public Integer getFirstSecondChip() {
-        return firstSecondChip;
-    }
-
-    public void setFirstSecondChip(Integer firstSecondChip) {
-        this.firstSecondChip = firstSecondChip;
-    }
 
     public Boolean getFirstSecondEnabled() {
         return firstSecondEnabled;
@@ -240,13 +203,6 @@ public class ConfigDTO {
         this.firstSecondExcludeNumbers = firstSecondExcludeNumbers;
     }
 
-    public Integer getThirdFourthChip() {
-        return thirdFourthChip;
-    }
-
-    public void setThirdFourthChip(Integer thirdFourthChip) {
-        this.thirdFourthChip = thirdFourthChip;
-    }
 
     public Boolean getThirdFourthEnabled() {
         return thirdFourthEnabled;
@@ -264,13 +220,6 @@ public class ConfigDTO {
         this.thirdFourthExcludeNumbers = thirdFourthExcludeNumbers;
     }
 
-    public Integer getFifthSixthChip() {
-        return fifthSixthChip;
-    }
-
-    public void setFifthSixthChip(Integer fifthSixthChip) {
-        this.fifthSixthChip = fifthSixthChip;
-    }
 
     public Boolean getFifthSixthEnabled() {
         return fifthSixthEnabled;
@@ -288,13 +237,6 @@ public class ConfigDTO {
         this.fifthSixthExcludeNumbers = fifthSixthExcludeNumbers;
     }
 
-    public Integer getSeventhEighthChip() {
-        return seventhEighthChip;
-    }
-
-    public void setSeventhEighthChip(Integer seventhEighthChip) {
-        this.seventhEighthChip = seventhEighthChip;
-    }
 
     public Boolean getSeventhEighthEnabled() {
         return seventhEighthEnabled;
@@ -312,13 +254,6 @@ public class ConfigDTO {
         this.seventhEighthExcludeNumbers = seventhEighthExcludeNumbers;
     }
 
-    public Integer getNinethTenthChip() {
-        return ninethTenthChip;
-    }
-
-    public void setNinethTenthChip(Integer ninethTenthChip) {
-        this.ninethTenthChip = ninethTenthChip;
-    }
 
     public Boolean getNinethTenthEnabled() {
         return ninethTenthEnabled;

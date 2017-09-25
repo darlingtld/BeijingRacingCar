@@ -19,12 +19,6 @@ public class SeventhEighthController {
 
     private static Logger logger = LoggerFactory.getLogger(SeventhEighthController.class);
 
-    @RequestMapping(value="chip", method = RequestMethod.POST)
-    public void adjustChip(@RequestParam("chip") Integer chip) {
-        logger.info("Adjust seventh_eighth chip={}", chip);
-        Config.setSeventhEighthChip(chip);
-    }
-
     @RequestMapping(value="enable", method = RequestMethod.POST)
     public void enable() {
         logger.info("Enable seventh_eighth");
@@ -61,5 +55,12 @@ public class SeventhEighthController {
         logger.info("Disable seventh_eighth smart mode");
         Config.setSeventhEighthSmartMode(false);
     }
+
+    @RequestMapping(value="smart_switch", method = RequestMethod.POST)
+    public void setSeventhEighthSmartSwitch(@RequestParam("step1") String step1, @RequestParam("step2") String step2) {
+        logger.info("set Seventh_Eighth smart switch={}-{}",step1, step2);
+        Config.setSeventhEighthSmartSwitch(Arrays.asList(step1, step2));
+    }
+
 
 }

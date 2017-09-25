@@ -46,7 +46,7 @@ public class BetForSMPSafeOperation {
     }
 
     public boolean doBet(WebDriver driver, Integer round, boolean isPlayTime) throws InterruptedException {
-        Double chip = Double.valueOf(Config.getSmpChip());
+        Double chip = Double.valueOf(Config.getSmpLevelChips().get(0));
         logger.info("[Operation - Bet] Base chip is {}", chip);
         logger.info("[Operation - Bet] Play Time is {}", isPlayTime);
         if (round == null) {
@@ -588,29 +588,29 @@ public class BetForSMPSafeOperation {
     }
 
     private double decideBetChip(SMPSingleBet smpSingleBet, SingleBetCategory category) {
-        Double chip = Double.valueOf(Config.getSmpChip());
+        Double chip = Double.valueOf(Config.getSmpLevelChips().get(0));
         double betChip = 0;
         switch (category) {
             case DA:
-                betChip = smpSingleBet.getDa() * 2 + chip;
+                betChip = smpSingleBet.getDa() * 2;
                 break;
             case XIAO:
-                betChip = smpSingleBet.getXiao() * 2 + chip;
+                betChip = smpSingleBet.getXiao() * 2;
                 break;
             case DAN:
-                betChip = smpSingleBet.getDan() * 2 + chip;
+                betChip = smpSingleBet.getDan() * 2;
                 break;
             case SHUANG:
-                betChip = smpSingleBet.getShuang() * 2 + chip;
+                betChip = smpSingleBet.getShuang() * 2;
                 break;
             case LON:
-                betChip = smpSingleBet.getLon() * 2 + chip;
+                betChip = smpSingleBet.getLon() * 2;
                 break;
             case HU:
-                betChip = smpSingleBet.getHu() * 2 + chip;
+                betChip = smpSingleBet.getHu() * 2;
                 break;
         }
-        if (betChip / chip > 2 << (Config.getSmpLevels() - 1)) {
+        if (betChip / chip > 2 << (Config.getSmpLevelChips().stream().filter(n -> n > 0).count() - 1)) {
             return chip;
         } else {
             return betChip;

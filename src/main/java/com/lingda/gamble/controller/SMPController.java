@@ -19,12 +19,6 @@ public class SMPController {
 
     private static Logger logger = LoggerFactory.getLogger(SMPController.class);
 
-    @RequestMapping(value="chip", method = RequestMethod.POST)
-    public void adjustChip(@RequestParam("chip") Integer chip) {
-        logger.info("Adjust smp chip={}", chip);
-        Config.setSmpChip(chip);
-    }
-
     @RequestMapping(value="enable", method = RequestMethod.POST)
     public void enableSMP() {
         logger.info("Enable smp");
@@ -35,12 +29,6 @@ public class SMPController {
     public void disableSMP() {
         logger.info("Disable smp");
         Config.setSmpEnabled(false);
-    }
-
-    @RequestMapping(value="level", method = RequestMethod.POST)
-    public void setSMPLevel(@RequestParam("level") Integer level) {
-        logger.info("Set smp level={}", level);
-        Config.setSmpLevels(level);
     }
 
     @RequestMapping(value="enable/category/{category}", method = RequestMethod.POST)

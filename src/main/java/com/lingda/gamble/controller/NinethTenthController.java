@@ -19,12 +19,6 @@ public class NinethTenthController {
 
     private static Logger logger = LoggerFactory.getLogger(NinethTenthController.class);
 
-    @RequestMapping(value="chip", method = RequestMethod.POST)
-    public void adjustChip(@RequestParam("chip") Integer chip) {
-        logger.info("Adjust nineth_tenth chip={}", chip);
-        Config.setNinethTenthChip(chip);
-    }
-
     @RequestMapping(value="enable", method = RequestMethod.POST)
     public void enable() {
         logger.info("Enable nineth_tenth");
@@ -60,6 +54,12 @@ public class NinethTenthController {
     public void disableNinethTenthSmartMode() {
         logger.info("Disable nineth_tenth smart mode");
         Config.setNinethTenthSmartMode(false);
+    }
+
+    @RequestMapping(value="smart_switch", method = RequestMethod.POST)
+    public void setNinethTenthSmartSwitch(@RequestParam("step1") String step1, @RequestParam("step2") String step2) {
+        logger.info("set Nineth_Tenth smart switch={}", step1, step2);
+        Config.setNinethTenthSmartSwitch(Arrays.asList(step1, step2));
     }
 
 }

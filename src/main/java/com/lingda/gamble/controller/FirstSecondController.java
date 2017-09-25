@@ -20,12 +20,6 @@ public class FirstSecondController {
 
     private static Logger logger = LoggerFactory.getLogger(FirstSecondController.class);
 
-    @RequestMapping(value="chip", method = RequestMethod.POST)
-    public void adjustChip(@RequestParam("chip") Integer chip) {
-        logger.info("Adjust first second chip={}", chip);
-        Config.setFirstSecondChip(chip);
-    }
-
     @RequestMapping(value="enable", method = RequestMethod.POST)
     public void enable() {
         logger.info("Enable first second");
@@ -61,5 +55,11 @@ public class FirstSecondController {
     public void disableFirstSecondSmartMode() {
         logger.info("Disable first_second smart mode");
         Config.setFirstSecondSmartMode(false);
+    }
+
+    @RequestMapping(value="smart_switch", method = RequestMethod.POST)
+    public void setFirstSecondSmartSwitch(@RequestParam("step1") String step1, @RequestParam("step2") String step2) {
+        logger.info("Set first_second smart switch={} - {}", step1, step2);
+        Config.setFirstSecondSmartSwitch(Arrays.asList(step1, step2));
     }
 }

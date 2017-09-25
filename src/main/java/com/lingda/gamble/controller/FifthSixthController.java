@@ -19,12 +19,6 @@ public class FifthSixthController {
 
     private static Logger logger = LoggerFactory.getLogger(FifthSixthController.class);
 
-    @RequestMapping(value="chip", method = RequestMethod.POST)
-    public void adjustChip(@RequestParam("chip") Integer chip) {
-        logger.info("Adjust fifth_sixth chip={}", chip);
-        Config.setFifthSixthChip(chip);
-    }
-
     @RequestMapping(value="enable", method = RequestMethod.POST)
     public void enable() {
         logger.info("Enable fifth_sixth");
@@ -60,5 +54,11 @@ public class FifthSixthController {
     public void disableFifthSixthSmartMode() {
         logger.info("Disable fifth_sixth smart mode");
         Config.setFifthSixthSmartMode(false);
+    }
+
+    @RequestMapping(value="smart_switch", method = RequestMethod.POST)
+    public void setFifthSixthSmartSwitch(@RequestParam("step1") String step1, @RequestParam("step2") String step2) {
+        logger.info("set Fifth_Sixth smart switch={} - {}", step1, step2);
+        Config.setFifthSixthSmartSwitch(Arrays.asList(step1, step2));
     }
 }

@@ -19,47 +19,46 @@ public class ThirdFourthController {
 
     private static Logger logger = LoggerFactory.getLogger(ThirdFourthController.class);
 
-    @RequestMapping(value="chip", method = RequestMethod.POST)
-    public void adjustChip(@RequestParam("chip") Integer chip) {
-        logger.info("Adjust third fourth chip={}", chip);
-        Config.setThirdFourthChip(chip);
-    }
-
-    @RequestMapping(value="enable", method = RequestMethod.POST)
+    @RequestMapping(value = "enable", method = RequestMethod.POST)
     public void enable() {
         logger.info("Enable third fourth");
         Config.setThirdFourthEnabled(true);
     }
 
-    @RequestMapping(value="disable", method = RequestMethod.POST)
+    @RequestMapping(value = "disable", method = RequestMethod.POST)
     public void disable() {
         logger.info("Disable third fourth");
         Config.setThirdFourthEnabled(false);
     }
 
-    @RequestMapping(value="exclude", method = RequestMethod.POST)
+    @RequestMapping(value = "exclude", method = RequestMethod.POST)
     public void excludeNumbers(@RequestParam("nums") String excludeNumStr) {
         logger.info("Exclude numbers={}", excludeNumStr);
         List<Integer> excludeNumberList = Arrays.stream(excludeNumStr.split(",")).map(Integer::parseInt).collect(Collectors.toList());
         Config.setThirdFourthExcludeNumbers(excludeNumberList);
     }
 
-    @RequestMapping(value="level_chip", method = RequestMethod.POST)
+    @RequestMapping(value = "level_chip", method = RequestMethod.POST)
     public void setThirdFourthLevel(@RequestParam("level_chip") String levelChips) {
         logger.info("Set third_fourth level_chips={}", levelChips);
         Config.setThirdFourthLevelAccList(Arrays.stream(levelChips.split(",")).map(Integer::parseInt).collect(Collectors.toList()));
     }
 
-    @RequestMapping(value="enable/smart_mode", method = RequestMethod.POST)
+    @RequestMapping(value = "enable/smart_mode", method = RequestMethod.POST)
     public void enableThirdFourthSmartMode() {
         logger.info("Enable third_fourth smart mode");
         Config.setThirdFourthSmartMode(true);
     }
 
-    @RequestMapping(value="disable/smart_mode", method = RequestMethod.POST)
+    @RequestMapping(value = "disable/smart_mode", method = RequestMethod.POST)
     public void disableThirdFourthSmartMode() {
         logger.info("Disable third_fourth smart mode");
         Config.setThirdFourthSmartMode(false);
     }
 
+    @RequestMapping(value = "smart_switch", method = RequestMethod.POST)
+    public void setThirdFourthSmartSwitch(@RequestParam("step1") String step1, @RequestParam("step2") String step2) {
+        logger.info("set Third_Fourth smart switch={}-{}", step1, step2);
+        Config.setThirdFourthSmartSwitch(Arrays.asList(step1, step2));
+    }
 }

@@ -28,6 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 //北京赛车 冠亚军下注
@@ -140,6 +141,9 @@ public class BetForFirstSecondOperation {
         bet.setRound(round);
         if (Config.getFirstSecondSmartMode()) {
             logger.info("[Operation - Bet] Bet in smart mode");
+            List<Integer> stepIntegerList1 = Arrays.stream(Config.getFirstSecondSmartSwitch().get(0).split(",")).map(Integer::parseInt).collect(Collectors.toList());
+            List<Integer> stepIntegerList2 = Arrays.stream(Config.getFirstSecondSmartSwitch().get(1).split(",")).map(Integer::parseInt).collect(Collectors.toList());
+            List<Integer> allNumbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
             if (lotteryResult2 == null) {
                 logger.info("[Operation - Bet] Cannot find lottery result for 2 consecutive round");
                 return false;
@@ -151,19 +155,21 @@ public class BetForFirstSecondOperation {
 //            no last bet or last time is a win
             if (lastBet == null || decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime).equals(chip)) {
 //            First
-                if (!Arrays.asList(1, 3, 5).contains(lastLotteryResult.getFirst()) && !Arrays.asList(6, 8, 10).contains(lotteryResult2.getFirst())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for first exclude 6,8,10");
-                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 9));
-                    logger.info("[Operation - Bet] Bet first for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                if (!stepIntegerList1.contains(lastLotteryResult.getFirst()) && !stepIntegerList2.contains(lotteryResult2.getFirst())) {
+                    logger.info("[Operation - Bet] Bingo! Bet for First exclude {}", stepIntegerList2);
+                    List<Integer> numberBetList = new ArrayList<>(allNumbers);
+                    numberBetList.removeAll(stepIntegerList2);
+                    logger.info("[Operation - Bet] Bet First for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForFirst(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
                     if (bet.getBetSecond() == null) {
                         betForSecond(bet, chip, Collections.emptyList(), driver);
                     }
-                } else if (!Arrays.asList(6, 8, 10).contains(lastLotteryResult.getFirst()) && !Arrays.asList(1, 3, 5).contains(lotteryResult2.getFirst())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for first exclude 1,3,5");
-                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(2, 4, 6, 7, 8, 9, 10));
-                    logger.info("[Operation - Bet] Bet first for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                } else if (!stepIntegerList2.contains(lastLotteryResult.getFirst()) && !stepIntegerList1.contains(lotteryResult2.getFirst())) {
+                    logger.info("[Operation - Bet] Bingo! Bet for First exclude {}", stepIntegerList1);
+                    List<Integer> numberBetList = new ArrayList<>(allNumbers);
+                    numberBetList.removeAll(stepIntegerList1);
+                    logger.info("[Operation - Bet] Bet First for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForFirst(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
                     if (bet.getBetSecond() == null) {
@@ -173,11 +179,21 @@ public class BetForFirstSecondOperation {
             } else {
 //                last bet is a loser
 //                exclude 6,8,10
-                if (lastBet.getBetFirst().getFirst() > 0) {
-                    logger.info("[Operation - Bet] Continue! Bet for first exclude 6,8,10");
+                if ((stepIntegerList1.contains(1) && lastBet.getBetFirst().getFirst() > 0)
+                        || (stepIntegerList1.contains(2) && lastBet.getBetFirst().getSecond() > 0)
+                        || (stepIntegerList1.contains(3) && lastBet.getBetFirst().getThird() > 0)
+                        || (stepIntegerList1.contains(4) && lastBet.getBetFirst().getFourth() > 0)
+                        || (stepIntegerList1.contains(5) && lastBet.getBetFirst().getFifth() > 0)
+                        || (stepIntegerList1.contains(6) && lastBet.getBetFirst().getSixth() > 0)
+                        || (stepIntegerList1.contains(7) && lastBet.getBetFirst().getSeventh() > 0)
+                        || (stepIntegerList1.contains(8) && lastBet.getBetFirst().getEighth() > 0)
+                        || (stepIntegerList1.contains(9) && lastBet.getBetFirst().getNineth() > 0)
+                        || (stepIntegerList1.contains(10) && lastBet.getBetFirst().getTenth() > 0)) {
+                    logger.info("[Operation - Bet] Continue! Bet for First exclude {}", stepIntegerList2);
                     Integer betChip = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime);
-                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 9));
-                    logger.info("[Operation - Bet] Bet first for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    List<Integer> numberBetList = new ArrayList<>(allNumbers);
+                    numberBetList.removeAll(stepIntegerList2);
+                    logger.info("[Operation - Bet] Bet First for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForFirst(bet, betChip, numberBetList, driver);
                     money = calculateMoney(money, -7 * betChip);
                     if (bet.getBetSecond() == null) {
@@ -185,11 +201,21 @@ public class BetForFirstSecondOperation {
                     }
                 }
                 //                exclude 1,3,5
-                else if (lastBet.getBetFirst().getSixth() > 0) {
-                    logger.info("[Operation - Bet] Continue! Bet for first exclude 1,3,5");
+                else if ((stepIntegerList2.contains(1) && lastBet.getBetFirst().getFirst() > 0)
+                        || (stepIntegerList2.contains(2) && lastBet.getBetFirst().getSecond() > 0)
+                        || (stepIntegerList2.contains(3) && lastBet.getBetFirst().getThird() > 0)
+                        || (stepIntegerList2.contains(4) && lastBet.getBetFirst().getFourth() > 0)
+                        || (stepIntegerList2.contains(5) && lastBet.getBetFirst().getFifth() > 0)
+                        || (stepIntegerList2.contains(6) && lastBet.getBetFirst().getSixth() > 0)
+                        || (stepIntegerList2.contains(7) && lastBet.getBetFirst().getSeventh() > 0)
+                        || (stepIntegerList2.contains(8) && lastBet.getBetFirst().getEighth() > 0)
+                        || (stepIntegerList2.contains(9) && lastBet.getBetFirst().getNineth() > 0)
+                        || (stepIntegerList2.contains(10) && lastBet.getBetFirst().getTenth() > 0)) {
+                    logger.info("[Operation - Bet] Continue! Bet for First exclude {}", stepIntegerList1);
                     Integer betChip = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime);
-                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(2, 4, 6, 7, 8, 9, 10));
-                    logger.info("[Operation - Bet] Bet first for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    List<Integer> numberBetList = new ArrayList<>(allNumbers);
+                    numberBetList.removeAll(stepIntegerList1);
+                    logger.info("[Operation - Bet] Bet First for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForFirst(bet, betChip, numberBetList, driver);
                     money = calculateMoney(money, -7 * betChip);
                     if (bet.getBetSecond() == null) {
@@ -200,18 +226,20 @@ public class BetForFirstSecondOperation {
             //            no last bet or last time is a win
             if (lastBet == null || decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime).equals(chip)) {
 //            Second
-                if (!Arrays.asList(1, 3, 5).contains(lastLotteryResult.getSecond()) && !Arrays.asList(6, 8, 10).contains(lotteryResult2.getSecond())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for Second exclude 6,8,10");
-                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 9));
+                if (!stepIntegerList1.contains(lastLotteryResult.getSecond()) && !stepIntegerList2.contains(lotteryResult2.getSecond())) {
+                    logger.info("[Operation - Bet] Bingo! Bet for Second exclude {}", stepIntegerList2);
+                    List<Integer> numberBetList = new ArrayList<>(allNumbers);
+                    numberBetList.removeAll(stepIntegerList2);
                     logger.info("[Operation - Bet] Bet Second for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForSecond(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
                     if (bet.getBetFirst() == null) {
                         betForFirst(bet, chip, Collections.emptyList(), driver);
                     }
-                } else if (!Arrays.asList(6, 8, 10).contains(lastLotteryResult.getSecond()) && !Arrays.asList(1, 3, 5).contains(lotteryResult2.getSecond())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for Second exclude 1,3,5");
-                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(2, 4, 6, 7, 8, 9, 10));
+                } else if (!stepIntegerList2.contains(lastLotteryResult.getSecond()) && !stepIntegerList1.contains(lotteryResult2.getSecond())) {
+                    logger.info("[Operation - Bet] Bingo! Bet for Second exclude {}", stepIntegerList1);
+                    List<Integer> numberBetList = new ArrayList<>(allNumbers);
+                    numberBetList.removeAll(stepIntegerList1);
                     logger.info("[Operation - Bet] Bet Second for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForSecond(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -222,20 +250,40 @@ public class BetForFirstSecondOperation {
             } else {
 //                last bet is a loser
 //                exclude 6,8,10
-                if (lastBet.getBetSecond().getFirst() > 0) {
-                    logger.info("[Operation - Bet] Continue! Bet for Second exclude 6,8,10");
+                if ((stepIntegerList1.contains(1) && lastBet.getBetSecond().getFirst() > 0)
+                        || (stepIntegerList1.contains(2) && lastBet.getBetSecond().getSecond() > 0)
+                        || (stepIntegerList1.contains(3) && lastBet.getBetSecond().getThird() > 0)
+                        || (stepIntegerList1.contains(4) && lastBet.getBetSecond().getFourth() > 0)
+                        || (stepIntegerList1.contains(5) && lastBet.getBetSecond().getFifth() > 0)
+                        || (stepIntegerList1.contains(6) && lastBet.getBetSecond().getSixth() > 0)
+                        || (stepIntegerList1.contains(7) && lastBet.getBetSecond().getSeventh() > 0)
+                        || (stepIntegerList1.contains(8) && lastBet.getBetSecond().getEighth() > 0)
+                        || (stepIntegerList1.contains(9) && lastBet.getBetSecond().getNineth() > 0)
+                        || (stepIntegerList1.contains(10) && lastBet.getBetSecond().getTenth() > 0)) {
+                    logger.info("[Operation - Bet] Continue! Bet for Second exclude {}", stepIntegerList2);
                     Integer betChip = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime);
-                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 7, 9));
+                    List<Integer> numberBetList = new ArrayList<>(allNumbers);
+                    numberBetList.removeAll(stepIntegerList2);
                     logger.info("[Operation - Bet] Bet Second for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForSecond(bet, betChip, numberBetList, driver);
                     money = calculateMoney(money, -7 * betChip);
                     if (bet.getBetFirst() == null) {
                         betForFirst(bet, chip, Collections.emptyList(), driver);
                     }
-                } else if (lastBet.getBetSecond().getSixth() > 0) {
-                    logger.info("[Operation - Bet] Continue! Bet for Second exclude 1,3,5");
+                } else if ((stepIntegerList2.contains(1) && lastBet.getBetSecond().getFirst() > 0)
+                        || (stepIntegerList2.contains(2) && lastBet.getBetSecond().getSecond() > 0)
+                        || (stepIntegerList2.contains(3) && lastBet.getBetSecond().getThird() > 0)
+                        || (stepIntegerList2.contains(4) && lastBet.getBetSecond().getFourth() > 0)
+                        || (stepIntegerList2.contains(5) && lastBet.getBetSecond().getFifth() > 0)
+                        || (stepIntegerList2.contains(6) && lastBet.getBetSecond().getSixth() > 0)
+                        || (stepIntegerList2.contains(7) && lastBet.getBetSecond().getSeventh() > 0)
+                        || (stepIntegerList2.contains(8) && lastBet.getBetSecond().getEighth() > 0)
+                        || (stepIntegerList2.contains(9) && lastBet.getBetSecond().getNineth() > 0)
+                        || (stepIntegerList2.contains(10) && lastBet.getBetSecond().getTenth() > 0)) {
+                    logger.info("[Operation - Bet] Continue! Bet for Second exclude {}", stepIntegerList1);
                     Integer betChip = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime);
-                    List<Integer> numberBetList = new ArrayList<>(Arrays.asList(2, 4, 6, 7, 8, 9, 10));
+                    List<Integer> numberBetList = new ArrayList<>(allNumbers);
+                    numberBetList.removeAll(stepIntegerList1);
                     logger.info("[Operation - Bet] Bet Second for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForSecond(bet, betChip, numberBetList, driver);
                     money = calculateMoney(money, -7 * betChip);
