@@ -8,34 +8,34 @@ public class Config {
     private static Boolean smpEnabled = false;
     private static Boolean smpDaXiao = true;
     private static Boolean smpDanShuang = false;
-    private static List<Integer> smpLevelChips = Arrays.asList(5, 17, 57, 193, 572);
+    private static List<Integer> smpLevelChips = Arrays.asList(0);
     private static Boolean firstSecondEnabled = false;
     private static Boolean firstSecondSmartMode=false;
     private static List<Integer> firstSecondExcludeNumbers = new ArrayList<>();
-    private static List<Integer> firstSecondLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
+    private static List<Integer> firstSecondLevelAccList = Arrays.asList(0);
     private static List<String> firstSecondSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
     private static Boolean thirdFourthEnabled = false;
     private static Boolean thirdFourthSmartMode=false;
     private static List<Integer> thirdFourthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> thirdFourthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
+    private static List<Integer> thirdFourthLevelAccList = Arrays.asList(0);
     private static List<String> thirdFourthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean fifthSixthEnabled = false;
     private static Boolean fifthSixthSmartMode=false;
     private static List<Integer> fifthSixthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> fifthSixthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
+    private static List<Integer> fifthSixthLevelAccList = Arrays.asList(0);
     private static List<String> fifthSixthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean seventhEighthEnabled = false;
     private static Boolean seventhEighthSmartMode=false;
     private static List<Integer> seventhEighthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> seventhEighthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
+    private static List<Integer> seventhEighthLevelAccList = Arrays.asList(0);
     private static List<String> seventhEighthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean ninethTenthEnabled = false;
     private static Boolean ninethTenthSmartMode=false;
     private static List<Integer> ninethTenthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> ninethTenthLevelAccList = Arrays.asList(5, 17, 57, 193, 572);
+    private static List<Integer> ninethTenthLevelAccList = Arrays.asList(0);
     private static List<String> ninethTenthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
     private static Integer lostThreshold = 10000;
 
