@@ -22,7 +22,7 @@ public class WinLostMailNotificationJob {
     @Autowired
     private WinLostMoneyRepository winLostMoneyRepository;
 
-    @Scheduled(fixedRate = 10 * 60 * 1000, initialDelay = 5 * 60 * 1000)
+    @Scheduled(fixedRate = 15 * 60 * 1000, initialDelay = 5 * 60 * 1000)
     public void scheduleWinLostMoneyNotificationJobs() {
         logger.info("[Operation - Win/Lost notification]");
         for (String mailAddress : email.split(",")) {

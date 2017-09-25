@@ -18,6 +18,9 @@ public class NavigationOperation {
     @Value("${gamble.website}")
     private String website;
 
+    @Value("${account}")
+    private String account;
+
     public void doNavigate(WebDriver driver) throws InterruptedException {
         driver.get(String.format("%s/op.php?op=member", website));
         logger.info("[Operation - Navigate] Get username of 北京赛车");
@@ -25,7 +28,9 @@ public class NavigationOperation {
         WebElement accountEle = DriverUtils.returnOnFindingElement(driver, By.className("row1")).findElements(By.tagName("td")).get(1);
         logger.info("[Operation - Navigate] Username is {}", accountEle.getText());
         Store.setAccountName(accountEle.getText());
-
+        if (!Store.getAccountName().contains("(" + account + ")")) {
+            throw new RuntimeException(String.format("not authentic user should be %s but %s", account, Store.getAccountName()));
+        }
         driver.switchTo().parentFrame();
 
         DriverUtils.returnOnFindingFrame(driver, "topFrame");
