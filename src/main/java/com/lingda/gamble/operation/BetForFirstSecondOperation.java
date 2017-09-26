@@ -156,9 +156,9 @@ public class BetForFirstSecondOperation {
             if (lastBet == null || decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime).equals(chip)) {
 //            First
                 if (stepIntegerList1.contains(lastLotteryResult.getFirst()) && stepIntegerList2.contains(lotteryResult2.getFirst())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for First exclude {}", stepIntegerList1);
+                    logger.info("[Operation - Bet] Bingo! Bet for First exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList1);
+                    numberBetList.removeAll(stepIntegerList2);
                     logger.info("[Operation - Bet] Bet First for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForFirst(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -166,9 +166,9 @@ public class BetForFirstSecondOperation {
                         betForSecond(bet, chip, Collections.emptyList(), driver);
                     }
                 } else if (stepIntegerList2.contains(lastLotteryResult.getFirst()) && stepIntegerList1.contains(lotteryResult2.getFirst())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for First exclude {}", stepIntegerList2);
+                    logger.info("[Operation - Bet] Bingo! Bet for First exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList2);
+                    numberBetList.removeAll(stepIntegerList1);
                     logger.info("[Operation - Bet] Bet First for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForFirst(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -227,9 +227,9 @@ public class BetForFirstSecondOperation {
             if (lastBet == null || decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime).equals(chip)) {
 //            Second
                 if (stepIntegerList1.contains(lastLotteryResult.getSecond()) && stepIntegerList2.contains(lotteryResult2.getSecond())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for Second exclude {}", stepIntegerList1);
+                    logger.info("[Operation - Bet] Bingo! Bet for Second exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList1);
+                    numberBetList.removeAll(stepIntegerList2);
                     logger.info("[Operation - Bet] Bet Second for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForSecond(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -237,9 +237,9 @@ public class BetForFirstSecondOperation {
                         betForFirst(bet, chip, Collections.emptyList(), driver);
                     }
                 } else if (stepIntegerList2.contains(lastLotteryResult.getSecond()) && stepIntegerList1.contains(lotteryResult2.getSecond())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for Second exclude {}", stepIntegerList2);
+                    logger.info("[Operation - Bet] Bingo! Bet for Second exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList2);
+                    numberBetList.removeAll(stepIntegerList1);
                     logger.info("[Operation - Bet] Bet Second for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForSecond(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -291,6 +291,10 @@ public class BetForFirstSecondOperation {
                         betForFirst(bet, chip, Collections.emptyList(), driver);
                     }
                 }
+            }
+
+            if(bet.getBetFirst() == null || bet.getBetSecond()==null){
+                return false;
             }
 
         } else {

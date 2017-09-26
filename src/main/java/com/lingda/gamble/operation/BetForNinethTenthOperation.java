@@ -155,9 +155,9 @@ public class BetForNinethTenthOperation {
             if (lastBet == null || decideBetChip(lastLotteryResult.getNineth(), lastBet.getBetNineth(), isPlayTime).equals(chip)) {
 //            First
                 if (stepIntegerList1.contains(lastLotteryResult.getNineth()) && stepIntegerList2.contains(lotteryResult2.getNineth())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for Nineth exclude {}", stepIntegerList1);
+                    logger.info("[Operation - Bet] Bingo! Bet for Nineth exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList1);
+                    numberBetList.removeAll(stepIntegerList2);
                     logger.info("[Operation - Bet] Bet Nineth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForNineth(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -165,9 +165,9 @@ public class BetForNinethTenthOperation {
                         betForTenth(bet, chip, Collections.emptyList(), driver);
                     }
                 } else if (stepIntegerList2.contains(lastLotteryResult.getNineth()) && stepIntegerList1.contains(lotteryResult2.getNineth())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for Nineth exclude {}", stepIntegerList2);
+                    logger.info("[Operation - Bet] Bingo! Bet for Nineth exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList2);
+                    numberBetList.removeAll(stepIntegerList1);
                     logger.info("[Operation - Bet] Bet Nineth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForNineth(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -226,9 +226,9 @@ public class BetForNinethTenthOperation {
             if (lastBet == null || decideBetChip(lastLotteryResult.getTenth(), lastBet.getBetTenth(), isPlayTime).equals(chip)) {
 //            Tenth
                 if (stepIntegerList1.contains(lastLotteryResult.getTenth()) && stepIntegerList2.contains(lotteryResult2.getTenth())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for Tenth exclude {}", stepIntegerList1);
+                    logger.info("[Operation - Bet] Bingo! Bet for Tenth exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList1);
+                    numberBetList.removeAll(stepIntegerList2);
                     logger.info("[Operation - Bet] Bet Tenth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForTenth(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -236,9 +236,9 @@ public class BetForNinethTenthOperation {
                         betForNineth(bet, chip, Collections.emptyList(), driver);
                     }
                 } else if (stepIntegerList2.contains(lastLotteryResult.getTenth()) && stepIntegerList1.contains(lotteryResult2.getTenth())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for Tenth exclude {}", stepIntegerList2);
+                    logger.info("[Operation - Bet] Bingo! Bet for Tenth exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList2);
+                    numberBetList.removeAll(stepIntegerList1);
                     logger.info("[Operation - Bet] Bet Tenth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForTenth(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -291,7 +291,9 @@ public class BetForNinethTenthOperation {
                     }
                 }
             }
-
+            if(bet.getBetNineth() == null || bet.getBetTenth()==null){
+                return false;
+            }
         } else {
             List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
             numberBetList.removeAll(Config.getNinethTenthExcludeNumbers());

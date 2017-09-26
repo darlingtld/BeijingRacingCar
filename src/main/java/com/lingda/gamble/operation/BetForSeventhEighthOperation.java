@@ -154,9 +154,9 @@ public class BetForSeventhEighthOperation {
             if (lastBet == null || decideBetChip(lastLotteryResult.getSeventh(), lastBet.getBetSeventh(), isPlayTime).equals(chip)) {
 //            First
                 if (stepIntegerList1.contains(lastLotteryResult.getSeventh()) && stepIntegerList2.contains(lotteryResult2.getSeventh())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for Seventh exclude {}", stepIntegerList1);
+                    logger.info("[Operation - Bet] Bingo! Bet for Seventh exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList1);
+                    numberBetList.removeAll(stepIntegerList2);
                     logger.info("[Operation - Bet] Bet Seventh for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForSeventh(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -164,9 +164,9 @@ public class BetForSeventhEighthOperation {
                         betForEighth(bet, chip, Collections.emptyList(), driver);
                     }
                 } else if (stepIntegerList2.contains(lastLotteryResult.getSeventh()) && stepIntegerList1.contains(lotteryResult2.getSeventh())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for Seventh exclude {}", stepIntegerList2);
+                    logger.info("[Operation - Bet] Bingo! Bet for Seventh exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList2);
+                    numberBetList.removeAll(stepIntegerList1);
                     logger.info("[Operation - Bet] Bet Seventh for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForSeventh(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -225,9 +225,9 @@ public class BetForSeventhEighthOperation {
             if (lastBet == null || decideBetChip(lastLotteryResult.getEighth(), lastBet.getBetEighth(), isPlayTime).equals(chip)) {
 //            Eighth
                 if (stepIntegerList1.contains(lastLotteryResult.getEighth()) && stepIntegerList2.contains(lotteryResult2.getEighth())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for Eighth exclude {}", stepIntegerList1);
+                    logger.info("[Operation - Bet] Bingo! Bet for Eighth exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList1);
+                    numberBetList.removeAll(stepIntegerList2);
                     logger.info("[Operation - Bet] Bet Eighth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForEighth(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -235,9 +235,9 @@ public class BetForSeventhEighthOperation {
                         betForSeventh(bet, chip, Collections.emptyList(), driver);
                     }
                 } else if (stepIntegerList2.contains(lastLotteryResult.getEighth()) && stepIntegerList1.contains(lotteryResult2.getEighth())) {
-                    logger.info("[Operation - Bet] Bingo! Bet for Eighth exclude {}", stepIntegerList2);
+                    logger.info("[Operation - Bet] Bingo! Bet for Eighth exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList2);
+                    numberBetList.removeAll(stepIntegerList1);
                     logger.info("[Operation - Bet] Bet Eighth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForEighth(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
@@ -289,6 +289,10 @@ public class BetForSeventhEighthOperation {
                         betForSeventh(bet, chip, Collections.emptyList(), driver);
                     }
                 }
+            }
+
+            if(bet.getBetSeventh() == null || bet.getBetEighth()==null){
+                return false;
             }
 
         } else {
