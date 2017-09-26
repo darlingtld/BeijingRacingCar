@@ -11,34 +11,43 @@ public class Config {
     private static Boolean smpDanShuang = false;
     private static List<Integer> smpLevelChips = Collections.singletonList(5);
     private static Boolean firstSecondEnabled = false;
-    private static Boolean firstSecondSmartMode=false;
+    private static Boolean firstSecondSmartMode = false;
     private static List<Integer> firstSecondExcludeNumbers = new ArrayList<>();
-    private static List<Integer> firstSecondLevelAccList = Arrays.asList(0);
+    private static List<Integer> firstSecondLevelAccList = Collections.singletonList(5);
     private static List<String> firstSecondSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
     private static Boolean thirdFourthEnabled = false;
-    private static Boolean thirdFourthSmartMode=false;
+    private static Boolean thirdFourthSmartMode = false;
     private static List<Integer> thirdFourthExcludeNumbers = new ArrayList<>();
     private static List<Integer> thirdFourthLevelAccList = Collections.singletonList(5);
     private static List<String> thirdFourthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean fifthSixthEnabled = false;
-    private static Boolean fifthSixthSmartMode=false;
+    private static Boolean fifthSixthSmartMode = false;
     private static List<Integer> fifthSixthExcludeNumbers = new ArrayList<>();
     private static List<Integer> fifthSixthLevelAccList = Collections.singletonList(5);
     private static List<String> fifthSixthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean seventhEighthEnabled = false;
-    private static Boolean seventhEighthSmartMode=false;
+    private static Boolean seventhEighthSmartMode = false;
     private static List<Integer> seventhEighthExcludeNumbers = new ArrayList<>();
     private static List<Integer> seventhEighthLevelAccList = Collections.singletonList(5);
     private static List<String> seventhEighthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean ninethTenthEnabled = false;
-    private static Boolean ninethTenthSmartMode=false;
+    private static Boolean ninethTenthSmartMode = false;
     private static List<Integer> ninethTenthExcludeNumbers = new ArrayList<>();
     private static List<Integer> ninethTenthLevelAccList = Collections.singletonList(5);
     private static List<String> ninethTenthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
+    private static String email = "darlingtld@qq.com";
     private static Integer lostThreshold = 10000;
+
+    public static String getEmail() {
+        return email;
+    }
+
+    public static void setEmail(String email) {
+        Config.email = email;
+    }
 
     public static List<String> getFirstSecondSmartSwitch() {
         return firstSecondSmartSwitch;
@@ -193,7 +202,6 @@ public class Config {
     }
 
 
-
     public static Boolean getSmpEnabled() {
         return smpEnabled;
     }
@@ -201,7 +209,6 @@ public class Config {
     public static void setSmpEnabled(Boolean smpEnabled) {
         Config.smpEnabled = smpEnabled;
     }
-
 
 
     public static Boolean getFirstSecondEnabled() {
@@ -221,7 +228,6 @@ public class Config {
     }
 
 
-
     public static Boolean getThirdFourthEnabled() {
         return thirdFourthEnabled;
     }
@@ -237,7 +243,6 @@ public class Config {
     public static void setThirdFourthExcludeNumbers(List<Integer> thirdFourthExcludeNumbers) {
         Config.thirdFourthExcludeNumbers = thirdFourthExcludeNumbers;
     }
-
 
 
     public static Boolean getFifthSixthEnabled() {

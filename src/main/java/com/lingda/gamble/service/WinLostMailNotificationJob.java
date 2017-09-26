@@ -2,6 +2,7 @@ package com.lingda.gamble.service;
 
 import com.lingda.gamble.mail.SimpleMailSender;
 import com.lingda.gamble.model.WinLostMoney;
+import com.lingda.gamble.param.Config;
 import com.lingda.gamble.repository.WinLostMoneyRepository;
 import com.lingda.gamble.util.Store;
 import org.slf4j.Logger;
@@ -16,16 +17,13 @@ public class WinLostMailNotificationJob {
 
     private static final Logger logger = LoggerFactory.getLogger(WinLostMailNotificationJob.class);
 
-    @Value("${gamble.winlost.notification.email}")
-    private String email;
-
     @Autowired
     private WinLostMoneyRepository winLostMoneyRepository;
 
     @Scheduled(fixedRate = 15 * 60 * 1000, initialDelay = 5 * 60 * 1000)
     public void scheduleWinLostMoneyNotificationJobs() {
         logger.info("[Operation - Win/Lost notification]");
-        for (String mailAddress : email.split(",")) {
+        for (String mailAddress : Config.getEmail().split(",")) {
             WinLostMoney winLostMoney = winLostMoneyRepository.findFirstByAccountNameOrderByRoundDesc(Store.getAccountName());
             String subject = String.format("%s - Win/Lost: %s", Store.getAccountName(), winLostMoney.getWinLostMoney());
             SimpleMailSender.send(mailAddress, subject, "fyi");
@@ -34,7 +32,7 @@ public class WinLostMailNotificationJob {
 
     public void sendDangerousNotificationJobs(String message) {
         logger.info("[Operation - Dangerous notification]");
-        for (String mailAddress : email.split(",")) {
+        for (String mailAddress : Config.getEmail().split(",")) {
             String subject = String.format("%s - %s", Store.getAccountName(), message);
             SimpleMailSender.send(mailAddress, subject, "fyi");
         }

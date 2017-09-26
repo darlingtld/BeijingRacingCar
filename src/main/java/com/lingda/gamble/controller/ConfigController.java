@@ -22,7 +22,13 @@ public class ConfigController {
         return new ConfigDTO();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "email", method = RequestMethod.POST)
+    public void setNotificationEmail(@RequestParam("email") String email) {
+        logger.info("Set notification email={}", email);
+        Config.setEmail(email);
+    }
+
+    @RequestMapping(value = "lost_threshold", method = RequestMethod.POST)
     public void setLostThreshold(@RequestParam("lost_threshold") Integer threshold) {
         logger.info("Set lost threshold={}", threshold);
         Config.setLostThreshold(threshold);
