@@ -155,7 +155,7 @@ public class BetForFifthSixthOperation {
 //            no last bet or last time is a win
             if (lastBet == null || decideBetChip(lastLotteryResult.getFifth(), lastBet.getBetFifth(), isPlayTime).equals(chip)) {
 //            First
-                if (!stepIntegerList1.contains(lastLotteryResult.getFifth()) && !stepIntegerList2.contains(lotteryResult2.getFifth())) {
+                if (stepIntegerList1.contains(lastLotteryResult.getFifth()) && stepIntegerList2.contains(lotteryResult2.getFifth())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Fifth exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList1);
@@ -165,7 +165,7 @@ public class BetForFifthSixthOperation {
                     if (bet.getBetSixth() == null) {
                         betForSixth(bet, chip, Collections.emptyList(), driver);
                     }
-                } else if (!stepIntegerList2.contains(lastLotteryResult.getFifth()) && !stepIntegerList1.contains(lotteryResult2.getFifth())) {
+                } else if (stepIntegerList2.contains(lastLotteryResult.getFifth()) && stepIntegerList1.contains(lotteryResult2.getFifth())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Fifth exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList2);
@@ -189,10 +189,10 @@ public class BetForFifthSixthOperation {
                         || (stepIntegerList1.contains(8) && lastBet.getBetFifth().getEighth() > 0)
                         || (stepIntegerList1.contains(9) && lastBet.getBetFifth().getNineth() > 0)
                         || (stepIntegerList1.contains(10) && lastBet.getBetFifth().getTenth() > 0)) {
-                    logger.info("[Operation - Bet] Continue! Bet for Fifth exclude {}", stepIntegerList1);
+                    logger.info("[Operation - Bet] Continue! Bet for Fifth exclude {}", stepIntegerList2);
                     Integer betChip = decideBetChip(lastLotteryResult.getFifth(), lastBet.getBetFifth(), isPlayTime);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList1);
+                    numberBetList.removeAll(stepIntegerList2);
                     logger.info("[Operation - Bet] Bet Fifth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForFifth(bet, betChip, numberBetList, driver);
                     money = calculateMoney(money, -7 * betChip);
@@ -211,10 +211,10 @@ public class BetForFifthSixthOperation {
                         || (stepIntegerList2.contains(8) && lastBet.getBetFifth().getEighth() > 0)
                         || (stepIntegerList2.contains(9) && lastBet.getBetFifth().getNineth() > 0)
                         || (stepIntegerList2.contains(10) && lastBet.getBetFifth().getTenth() > 0)) {
-                    logger.info("[Operation - Bet] Continue! Bet for Fifth exclude {}", stepIntegerList2);
+                    logger.info("[Operation - Bet] Continue! Bet for Fifth exclude {}", stepIntegerList1);
                     Integer betChip = decideBetChip(lastLotteryResult.getFifth(), lastBet.getBetFifth(), isPlayTime);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList2);
+                    numberBetList.removeAll(stepIntegerList1);
                     logger.info("[Operation - Bet] Bet Fifth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForFifth(bet, betChip, numberBetList, driver);
                     money = calculateMoney(money, -7 * betChip);
@@ -226,7 +226,7 @@ public class BetForFifthSixthOperation {
             //            no last bet or last time is a win
             if (lastBet == null || decideBetChip(lastLotteryResult.getSixth(), lastBet.getBetSixth(), isPlayTime).equals(chip)) {
 //            Sixth
-                if (!stepIntegerList1.contains(lastLotteryResult.getSixth()) && !stepIntegerList2.contains(lotteryResult2.getSixth())) {
+                if (stepIntegerList1.contains(lastLotteryResult.getSixth()) && stepIntegerList2.contains(lotteryResult2.getSixth())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Sixth exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList1);
@@ -236,7 +236,7 @@ public class BetForFifthSixthOperation {
                     if (bet.getBetFifth() == null) {
                         betForFifth(bet, chip, Collections.emptyList(), driver);
                     }
-                } else if (!stepIntegerList2.contains(lastLotteryResult.getSixth()) && !stepIntegerList1.contains(lotteryResult2.getSixth())) {
+                } else if (stepIntegerList2.contains(lastLotteryResult.getSixth()) && stepIntegerList1.contains(lotteryResult2.getSixth())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Sixth exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList2);
@@ -260,10 +260,10 @@ public class BetForFifthSixthOperation {
                         || (stepIntegerList1.contains(8) && lastBet.getBetSixth().getEighth() > 0)
                         || (stepIntegerList1.contains(9) && lastBet.getBetSixth().getNineth() > 0)
                         || (stepIntegerList1.contains(10) && lastBet.getBetSixth().getTenth() > 0)) {
-                    logger.info("[Operation - Bet] Continue! Bet for Sixth exclude {}", stepIntegerList1);
+                    logger.info("[Operation - Bet] Continue! Bet for Sixth exclude {}", stepIntegerList2);
                     Integer betChip = decideBetChip(lastLotteryResult.getSixth(), lastBet.getBetSixth(), isPlayTime);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList1);
+                    numberBetList.removeAll(stepIntegerList2);
                     logger.info("[Operation - Bet] Bet Sixth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForSixth(bet, betChip, numberBetList, driver);
                     money = calculateMoney(money, -7 * betChip);
@@ -280,10 +280,10 @@ public class BetForFifthSixthOperation {
                         || (stepIntegerList2.contains(8) && lastBet.getBetSixth().getEighth() > 0)
                         || (stepIntegerList2.contains(9) && lastBet.getBetSixth().getNineth() > 0)
                         || (stepIntegerList2.contains(10) && lastBet.getBetSixth().getTenth() > 0)) {
-                    logger.info("[Operation - Bet] Continue! Bet for Sixth exclude {}", stepIntegerList2);
+                    logger.info("[Operation - Bet] Continue! Bet for Sixth exclude {}", stepIntegerList1);
                     Integer betChip = decideBetChip(lastLotteryResult.getSixth(), lastBet.getBetSixth(), isPlayTime);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
-                    numberBetList.removeAll(stepIntegerList2);
+                    numberBetList.removeAll(stepIntegerList1);
                     logger.info("[Operation - Bet] Bet Sixth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForSixth(bet, betChip, numberBetList, driver);
                     money = calculateMoney(money, -7 * betChip);
