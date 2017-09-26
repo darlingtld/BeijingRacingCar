@@ -2,13 +2,14 @@ package com.lingda.gamble.param;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Config {
     private static Boolean smpEnabled = false;
     private static Boolean smpDaXiao = true;
     private static Boolean smpDanShuang = false;
-    private static List<Integer> smpLevelChips = Arrays.asList(0);
+    private static List<Integer> smpLevelChips = Collections.singletonList(5);
     private static Boolean firstSecondEnabled = false;
     private static Boolean firstSecondSmartMode=false;
     private static List<Integer> firstSecondExcludeNumbers = new ArrayList<>();
@@ -17,25 +18,25 @@ public class Config {
     private static Boolean thirdFourthEnabled = false;
     private static Boolean thirdFourthSmartMode=false;
     private static List<Integer> thirdFourthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> thirdFourthLevelAccList = Arrays.asList(0);
+    private static List<Integer> thirdFourthLevelAccList = Collections.singletonList(5);
     private static List<String> thirdFourthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean fifthSixthEnabled = false;
     private static Boolean fifthSixthSmartMode=false;
     private static List<Integer> fifthSixthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> fifthSixthLevelAccList = Arrays.asList(0);
+    private static List<Integer> fifthSixthLevelAccList = Collections.singletonList(5);
     private static List<String> fifthSixthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean seventhEighthEnabled = false;
     private static Boolean seventhEighthSmartMode=false;
     private static List<Integer> seventhEighthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> seventhEighthLevelAccList = Arrays.asList(0);
+    private static List<Integer> seventhEighthLevelAccList = Collections.singletonList(5);
     private static List<String> seventhEighthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean ninethTenthEnabled = false;
     private static Boolean ninethTenthSmartMode=false;
     private static List<Integer> ninethTenthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> ninethTenthLevelAccList = Arrays.asList(0);
+    private static List<Integer> ninethTenthLevelAccList = Collections.singletonList(5);
     private static List<String> ninethTenthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
     private static Integer lostThreshold = 10000;
 
