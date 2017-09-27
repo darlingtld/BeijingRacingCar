@@ -297,7 +297,7 @@ public class BetForThirdFourthOperation {
         } else {
             logger.info("[Operation - Bet] Bet in basic mode");
             List<Integer> numberBetList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
-            numberBetList.removeAll(Config.getFirstSecondExcludeNumbers());
+            numberBetList.removeAll(Config.getThirdFourthExcludeNumbers());
 
             if (lastBet == null) {
                 if (!isPlayTime) {
