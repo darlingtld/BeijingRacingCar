@@ -58,7 +58,7 @@ public class NinethTenthController {
 
     @RequestMapping(value="smart_switch", method = RequestMethod.POST)
     public void setNinethTenthSmartSwitch(@RequestParam("step1") String step1, @RequestParam("step2") String step2) {
-        logger.info("set Nineth_Tenth smart switch={}", step1, step2);
+        logger.info("set Nineth_Tenth smart switch={} - {}", step1, step2);
         Config.setNinethTenthSmartSwitch(Arrays.asList(step1, step2));
     }
 
