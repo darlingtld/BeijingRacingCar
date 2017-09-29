@@ -13,6 +13,7 @@ import com.lingda.gamble.repository.LotteryResultRepository;
 import com.lingda.gamble.service.WinLostMailNotificationJob;
 import com.lingda.gamble.util.DriverUtils;
 import com.lingda.gamble.util.Store;
+import com.lingda.gamble.util.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -153,7 +154,7 @@ public class BetForFirstSecondOperation {
                 return false;
             }
 //            no last bet or last time is a win
-            if (lastBet == null || decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime).equals(chip)) {
+            if (lastBet == null || Utils.isLastBetWin(lastLotteryResult.getFirst(), lastBet.getBetFirst())) {
 //            First
                 if (stepIntegerList1.contains(lastLotteryResult.getFirst()) && stepIntegerList2.contains(lotteryResult2.getFirst())) {
                     logger.info("[Operation - Bet] Bingo! Bet for First exclude {}", stepIntegerList2);
@@ -224,7 +225,7 @@ public class BetForFirstSecondOperation {
                 }
             }
             //            no last bet or last time is a win
-            if (lastBet == null || decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime).equals(chip)) {
+            if (lastBet == null || Utils.isLastBetWin(lastLotteryResult.getSecond(), lastBet.getBetSecond())) {
 //            Second
                 if (stepIntegerList1.contains(lastLotteryResult.getSecond()) && stepIntegerList2.contains(lotteryResult2.getSecond())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Second exclude {}", stepIntegerList2);

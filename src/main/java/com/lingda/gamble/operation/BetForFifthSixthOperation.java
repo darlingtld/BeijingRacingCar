@@ -12,6 +12,7 @@ import com.lingda.gamble.repository.WinLostMoneyRepository;
 import com.lingda.gamble.service.WinLostMailNotificationJob;
 import com.lingda.gamble.util.DriverUtils;
 import com.lingda.gamble.util.Store;
+import com.lingda.gamble.util.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -153,7 +154,7 @@ public class BetForFifthSixthOperation {
                 return false;
             }
 //            no last bet or last time is a win
-            if (lastBet == null || decideBetChip(lastLotteryResult.getFifth(), lastBet.getBetFifth(), isPlayTime).equals(chip)) {
+            if (lastBet == null || Utils.isLastBetWin(lastLotteryResult.getFifth(), lastBet.getBetFifth())) {
 //            First
                 if (stepIntegerList1.contains(lastLotteryResult.getFifth()) && stepIntegerList2.contains(lotteryResult2.getFifth())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Fifth exclude {}", stepIntegerList2);
@@ -224,7 +225,7 @@ public class BetForFifthSixthOperation {
                 }
             }
             //            no last bet or last time is a win
-            if (lastBet == null || decideBetChip(lastLotteryResult.getSixth(), lastBet.getBetSixth(), isPlayTime).equals(chip)) {
+            if (lastBet == null || Utils.isLastBetWin(lastLotteryResult.getSixth(), lastBet.getBetSixth())) {
 //            Sixth
                 if (stepIntegerList1.contains(lastLotteryResult.getSixth()) && stepIntegerList2.contains(lotteryResult2.getSixth())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Sixth exclude {}", stepIntegerList2);

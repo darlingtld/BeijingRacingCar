@@ -11,6 +11,7 @@ import com.lingda.gamble.repository.NinethTenthRatioRepository;
 import com.lingda.gamble.service.WinLostMailNotificationJob;
 import com.lingda.gamble.util.DriverUtils;
 import com.lingda.gamble.util.Store;
+import com.lingda.gamble.util.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -152,7 +153,7 @@ public class BetForNinethTenthOperation {
                 return false;
             }
 //            no last bet or last time is a win
-            if (lastBet == null || decideBetChip(lastLotteryResult.getNineth(), lastBet.getBetNineth(), isPlayTime).equals(chip)) {
+            if (lastBet == null || Utils.isLastBetWin(lastLotteryResult.getNineth(), lastBet.getBetNineth())) {
 //            First
                 if (stepIntegerList1.contains(lastLotteryResult.getNineth()) && stepIntegerList2.contains(lotteryResult2.getNineth())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Nineth exclude {}", stepIntegerList2);
@@ -223,7 +224,7 @@ public class BetForNinethTenthOperation {
                 }
             }
             //            no last bet or last time is a win
-            if (lastBet == null || decideBetChip(lastLotteryResult.getTenth(), lastBet.getBetTenth(), isPlayTime).equals(chip)) {
+            if (lastBet == null || Utils.isLastBetWin(lastLotteryResult.getTenth(), lastBet.getBetTenth())) {
 //            Tenth
                 if (stepIntegerList1.contains(lastLotteryResult.getTenth()) && stepIntegerList2.contains(lotteryResult2.getTenth())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Tenth exclude {}", stepIntegerList2);
