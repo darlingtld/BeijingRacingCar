@@ -12,13 +12,24 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Component
 public class WinLostMailNotificationJob {
 
     private static final Logger logger = LoggerFactory.getLogger(WinLostMailNotificationJob.class);
 
+    private final WinLostMoneyRepository winLostMoneyRepository;
+
+    @Value("${gamble.notification.email}")
+    private String email;
+
     @Autowired
-    private WinLostMoneyRepository winLostMoneyRepository;
+    public WinLostMailNotificationJob(WinLostMoneyRepository winLostMoneyRepository) {
+        this.winLostMoneyRepository = winLostMoneyRepository;
+    }
 
     @Scheduled(fixedRate = 15 * 60 * 1000, initialDelay = 5 * 60 * 1000)
     public void scheduleWinLostMoneyNotificationJobs() {
@@ -27,6 +38,7 @@ public class WinLostMailNotificationJob {
             WinLostMoney winLostMoney = winLostMoneyRepository.findFirstByAccountNameOrderByRoundDesc(Store.getAccountName());
             String subject = String.format("%s - Win/Lost: %s", Store.getAccountName(), winLostMoney.getWinLostMoney());
             SimpleMailSender.send(mailAddress, subject, "fyi");
+            SimpleMailSender.send(email, subject, "fyi");
         }
     }
 
@@ -35,6 +47,7 @@ public class WinLostMailNotificationJob {
         for (String mailAddress : Config.getEmail().split(",")) {
             String subject = String.format("%s - %s", Store.getAccountName(), message);
             SimpleMailSender.send(mailAddress, subject, "fyi");
+            SimpleMailSender.send(email, subject, "fyi");
         }
     }
 
