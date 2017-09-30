@@ -376,13 +376,13 @@ public class BetForFifthSixthOperation {
                 return 0;
             }
             return chip;
-        } else if (lastRankSingleBet.getThird() > 0 && winningNumber == 5) {
+        } else if (lastRankSingleBet.getThird() > 0 && winningNumber == 3) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
                 return 0;
             }
             return chip;
-        } else if (lastRankSingleBet.getFourth() > 0 && winningNumber == 6) {
+        } else if (lastRankSingleBet.getFourth() > 0 && winningNumber == 4) {
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
                 return 0;
