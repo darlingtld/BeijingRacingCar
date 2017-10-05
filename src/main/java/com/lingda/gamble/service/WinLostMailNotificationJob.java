@@ -12,10 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 @Component
 public class WinLostMailNotificationJob {
 
@@ -25,6 +21,11 @@ public class WinLostMailNotificationJob {
 
     @Value("${gamble.notification.email}")
     private String email;
+
+    @Value("${gamble.notification.admin}")
+    private String admin;
+
+    private boolean isBigMomentNotifiedToAdmin = false;
 
     @Autowired
     public WinLostMailNotificationJob(WinLostMoneyRepository winLostMoneyRepository) {
@@ -39,6 +40,15 @@ public class WinLostMailNotificationJob {
             String subject = String.format("%s - Win/Lost: %s", Store.getAccountName(), winLostMoney.getWinLostMoney());
             SimpleMailSender.send(mailAddress, subject, "fyi");
             SimpleMailSender.send(email, subject, "fyi");
+            try {
+                if (Math.abs(winLostMoney.getWinLostMoney()) / 1000 > 8 && !isBigMomentNotifiedToAdmin) {
+                    String bigMoment = String.format("[Big moment] %s - Win/Lost: %s", Store.getAccountName(), winLostMoney.getWinLostMoney());
+                    SimpleMailSender.send(admin, bigMoment, "fyi");
+                    isBigMomentNotifiedToAdmin = true;
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
         }
     }
 

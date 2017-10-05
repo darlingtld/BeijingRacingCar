@@ -38,7 +38,7 @@ public class Config {
     private static List<Integer> ninethTenthExcludeNumbers = new ArrayList<>();
     private static List<Integer> ninethTenthLevelAccList = Collections.singletonList(5);
     private static List<String> ninethTenthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
-    private static String email = "fwj0331@yahoo.com";
+    private static String email = "nobody@qq.com";
     private static Integer lostThreshold = 10000;
 
     public static String getEmail() {

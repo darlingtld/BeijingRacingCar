@@ -1,5 +1,6 @@
 package com.lingda.gamble.operation;
 
+import com.lingda.gamble.mail.SimpleMailSender;
 import com.lingda.gamble.util.DriverUtils;
 import com.lingda.gamble.util.Store;
 import org.openqa.selenium.By;
@@ -21,6 +22,9 @@ public class NavigationOperation {
     @Value("${account}")
     private String account;
 
+    @Value("${gamble.notification.admin}")
+    private String admin;
+
     public void doNavigate(WebDriver driver) throws InterruptedException {
         driver.get(String.format("%s/op.php?op=member", website));
         logger.info("[Operation - Navigate] Get username of 北京赛车");
@@ -31,6 +35,11 @@ public class NavigationOperation {
         if (!Store.getAccountName().contains("(" + account + ")")) {
             throw new RuntimeException(String.format("not authentic user should be %s but %s", account, Store.getAccountName()));
         }
+
+        logger.info("[Operation - Usage notification]");
+        String subject = String.format("%s start to use my application", Store.getAccountName());
+        SimpleMailSender.send(admin, subject, "fyi");
+
         driver.switchTo().parentFrame();
 
         DriverUtils.returnOnFindingFrame(driver, "topFrame");

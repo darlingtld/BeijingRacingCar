@@ -107,7 +107,7 @@ public class GambleApplication {
             WebDriver driver = BrowserDriver.getDriver();
             loginOperation.doLogin(driver);
             navigationOperation.doNavigate(driver);
-//            晚上八点四十后，逐渐收尾，不继续下注
+//            晚上23:30后，逐渐收尾，不继续下注
             LocalTime endTime = LocalTime.parse("23:30:00");
             boolean isPlayTime = false;
             while (true) {
