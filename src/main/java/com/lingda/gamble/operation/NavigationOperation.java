@@ -26,13 +26,11 @@ public class NavigationOperation {
     private String admin;
 
     public void doNavigate(WebDriver driver) throws InterruptedException {
-        driver.get(String.format("%s/op.php?op=member", website));
-        logger.info("[Operation - Navigate] Get username of 北京赛车");
-        DriverUtils.returnOnFindingFrame(driver, "leftFrame");
-        WebElement accountEle = DriverUtils.returnOnFindingElement(driver, By.className("row1")).findElements(By.tagName("td")).get(1);
-        logger.info("[Operation - Navigate] Username is {}", accountEle.getText());
-        Store.setAccountName(accountEle.getText());
-        if (!Store.getAccountName().contains("(" + account + ")")) {
+        logger.info("[Operation - Navigate] Navigate to 北京赛车");
+        WebElement accountEle = DriverUtils.returnOnFindingElement(driver, By.className("user_name"));
+        logger.info("[Operation - Navigate] Username is {}", accountEle.getText().trim());
+        Store.setAccountName(accountEle.getText().substring(0, account.length()));
+        if (!Store.getAccountName().equals(account)) {
             throw new RuntimeException(String.format("not authentic user should be %s but %s", account, Store.getAccountName()));
         }
 
@@ -40,19 +38,17 @@ public class NavigationOperation {
         String subject = String.format("%s start to use my application", Store.getAccountName());
         SimpleMailSender.send(admin, subject, "fyi");
 
-        driver.switchTo().parentFrame();
 
-        DriverUtils.returnOnFindingFrame(driver, "topFrame");
-        WebElement klsfBtn = DriverUtils.returnOnFindingElementEqualsValue(driver, By.tagName("a"), "快乐十分");
-        klsfBtn.click();
-        Thread.sleep(500);
-        WebElement bjscBtn = DriverUtils.returnOnFindingElementEqualsValue(driver, By.tagName("a"), "北京赛车");
+        WebElement menuTextBtn = DriverUtils.returnOnFindingElement(driver, By.id("menuText"));
+        menuTextBtn.click();
+        Thread.sleep(1000);
+
+        WebElement bjscBtn = DriverUtils.returnOnFindingElementEqualsValue(driver, By.tagName("a"), "北京賽車(PK10)");
         bjscBtn.click();
-        Thread.sleep(500);
-        logger.info("[Operation - Navigate] Navigate to 北京赛车");
+        Thread.sleep(1000);
+        logger.info("[Operation - Navigate] Navigate to 北京赛车f");
 //        make sure 北京赛车 is loaded
-        driver.switchTo().parentFrame();
-        DriverUtils.returnOnFindingFrame(driver, "mainFrame");
-        DriverUtils.returnOnFindingElementContainsValue(driver, By.tagName("td"), "北京赛车");
+        DriverUtils.returnOnFindingFrame(driver, "mainIframe");
+        DriverUtils.returnOnFindingElementEqualsValue(driver, By.id("game_big_name"), "北京賽車(PK10)");
     }
 }
