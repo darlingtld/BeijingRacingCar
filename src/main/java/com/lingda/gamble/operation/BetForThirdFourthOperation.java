@@ -350,10 +350,10 @@ public class BetForThirdFourthOperation {
                     Collections.shuffle(thirdNumberToBetList);
                     Collections.shuffle(fourthNumberToBetList);
 
-                    betForThird(bet, chip, thirdNumberToBetList.subList(0, Math.min(thirdNumberToBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -Math.min(thirdNumberToBetList.size(), 7) * chip);
-                    betForFourth(bet, chip, fourthNumberToBetList.subList(0, Math.min(fourthNumberToBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -Math.min(fourthNumberToBetList.size(), 7) * chip);
+                    betForThird(bet, chip, thirdNumberToBetList.subList(0, Math.min(thirdNumberToBetList.size(), Config.getThirdFourthMaxBetCount())), driver);
+                    money = calculateMoney(money, -Math.min(thirdNumberToBetList.size(), Config.getThirdFourthMaxBetCount()) * chip);
+                    betForFourth(bet, chip, fourthNumberToBetList.subList(0, Math.min(fourthNumberToBetList.size(), Config.getThirdFourthMaxBetCount())), driver);
+                    money = calculateMoney(money, -Math.min(fourthNumberToBetList.size(), Config.getThirdFourthMaxBetCount()) * chip);
                 }
             } else {
                 int thirdCountOfNumbersToRemove = 3 - Config.getThirdFourthExcludeNumbers().size();
@@ -385,11 +385,11 @@ public class BetForThirdFourthOperation {
                 Collections.shuffle(fourthNumberToBetList);
 
                 Integer thirdMoneyBet = decideBetChip(lastLotteryResult.getThird(), lastBet.getBetThird(), isPlayTime);
-                betForThird(bet, thirdMoneyBet, thirdNumberToBetList.subList(0, Math.min(thirdNumberToBetList.size(), 7)), driver);
-                money = calculateMoney(money, -Math.min(thirdNumberToBetList.size(), 7) * thirdMoneyBet);
+                betForThird(bet, thirdMoneyBet, thirdNumberToBetList.subList(0, Math.min(thirdNumberToBetList.size(), Config.getThirdFourthMaxBetCount())), driver);
+                money = calculateMoney(money, -Math.min(thirdNumberToBetList.size(), Config.getThirdFourthMaxBetCount()) * thirdMoneyBet);
                 Integer fourthMoneyBet = decideBetChip(lastLotteryResult.getFourth(), lastBet.getBetFourth(), isPlayTime);
-                betForFourth(bet, fourthMoneyBet, fourthNumberToBetList.subList(0, Math.min(fourthNumberToBetList.size(), 7)), driver);
-                money = calculateMoney(money, -Math.min(fourthNumberToBetList.size(), 7) * fourthMoneyBet);
+                betForFourth(bet, fourthMoneyBet, fourthNumberToBetList.subList(0, Math.min(fourthNumberToBetList.size(), Config.getThirdFourthMaxBetCount())), driver);
+                money = calculateMoney(money, -Math.min(fourthNumberToBetList.size(), Config.getThirdFourthMaxBetCount()) * fourthMoneyBet);
 
             }
         }

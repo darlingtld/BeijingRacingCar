@@ -13,6 +13,7 @@ public class Config {
     private static Boolean firstSecondEnabled = false;
     private static Boolean firstSecondSmartMode = false;
     private static Integer firstSecondSmartDetectRoundNumber = 2;
+    private static Integer firstSecondMaxBetCount = 7;
     private static List<Integer> firstSecondExcludeNumbers = new ArrayList<>();
     private static List<Integer> firstSecondLevelAccList = Collections.singletonList(5);
     private static List<String> firstSecondSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
@@ -20,6 +21,7 @@ public class Config {
     private static Boolean thirdFourthEnabled = false;
     private static Boolean thirdFourthSmartMode = false;
     private static Integer thirdFourthSmartDetectRoundNumber = 2;
+    private static Integer thirdFourthMaxBetCount = 7;
     private static List<Integer> thirdFourthExcludeNumbers = new ArrayList<>();
     private static List<Integer> thirdFourthLevelAccList = Collections.singletonList(5);
     private static List<String> thirdFourthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
@@ -27,6 +29,7 @@ public class Config {
     private static Boolean fifthSixthEnabled = false;
     private static Boolean fifthSixthSmartMode = false;
     private static Integer fifthSixthSmartDetectRoundNumber = 2;
+    private static Integer fifthSixthMaxBetCount = 7;
     private static List<Integer> fifthSixthExcludeNumbers = new ArrayList<>();
     private static List<Integer> fifthSixthLevelAccList = Collections.singletonList(5);
     private static List<String> fifthSixthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
@@ -34,6 +37,7 @@ public class Config {
     private static Boolean seventhEighthEnabled = false;
     private static Boolean seventhEighthSmartMode = false;
     private static Integer seventhEighthSmartDetectRoundNumber = 2;
+    private static Integer seventhEighthMaxBetCount = 7;
     private static List<Integer> seventhEighthExcludeNumbers = new ArrayList<>();
     private static List<Integer> seventhEighthLevelAccList = Collections.singletonList(5);
     private static List<String> seventhEighthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
@@ -41,6 +45,7 @@ public class Config {
     private static Boolean ninethTenthEnabled = false;
     private static Boolean ninethTenthSmartMode = false;
     private static Integer ninethTenthSmartDetectRoundNumber = 2;
+    private static Integer ninethTenthMaxBetCount = 7;
     private static List<Integer> ninethTenthExcludeNumbers = new ArrayList<>();
     private static List<Integer> ninethTenthLevelAccList = Collections.singletonList(5);
     private static List<String> ninethTenthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
@@ -54,6 +59,46 @@ public class Config {
 
     public static void setWinThreshold(Integer winThreshold) {
         Config.winThreshold = winThreshold;
+    }
+
+    public static Integer getFirstSecondMaxBetCount() {
+        return firstSecondMaxBetCount;
+    }
+
+    public static void setFirstSecondMaxBetCount(Integer firstSecondMaxBetCount) {
+        Config.firstSecondMaxBetCount = firstSecondMaxBetCount;
+    }
+
+    public static Integer getThirdFourthMaxBetCount() {
+        return thirdFourthMaxBetCount;
+    }
+
+    public static void setThirdFourthMaxBetCount(Integer thirdFourthMaxBetCount) {
+        Config.thirdFourthMaxBetCount = thirdFourthMaxBetCount;
+    }
+
+    public static Integer getFifthSixthMaxBetCount() {
+        return fifthSixthMaxBetCount;
+    }
+
+    public static void setFifthSixthMaxBetCount(Integer fifthSixthMaxBetCount) {
+        Config.fifthSixthMaxBetCount = fifthSixthMaxBetCount;
+    }
+
+    public static Integer getSeventhEighthMaxBetCount() {
+        return seventhEighthMaxBetCount;
+    }
+
+    public static void setSeventhEighthMaxBetCount(Integer seventhEighthMaxBetCount) {
+        Config.seventhEighthMaxBetCount = seventhEighthMaxBetCount;
+    }
+
+    public static Integer getNinethTenthMaxBetCount() {
+        return ninethTenthMaxBetCount;
+    }
+
+    public static void setNinethTenthMaxBetCount(Integer ninethTenthMaxBetCount) {
+        Config.ninethTenthMaxBetCount = ninethTenthMaxBetCount;
     }
 
     public static Integer getFirstSecondSmartDetectRoundNumber() {

@@ -66,4 +66,10 @@ public class ThirdFourthController {
         logger.info("Set Third_Fourth smart mode detect round={}", round);
         Config.setThirdFourthSmartDetectRoundNumber(round);
     }
+
+    @RequestMapping(value="max_bet_count", method = RequestMethod.POST)
+    public void setMaxBetCount(@RequestParam("count") Integer count) {
+        logger.info("Set third_fourth max bet count={}", count);
+        Config.setThirdFourthMaxBetCount(count);
+    }
 }

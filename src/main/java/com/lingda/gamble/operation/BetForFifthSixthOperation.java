@@ -352,10 +352,10 @@ public class BetForFifthSixthOperation {
                     Collections.shuffle(fifthNumberToBetList);
                     Collections.shuffle(sixthNumberToBetList);
 
-                    betForFifth(bet, chip, fifthNumberToBetList.subList(0, Math.min(fifthNumberToBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -Math.min(fifthNumberToBetList.size(), 7) * chip);
-                    betForSixth(bet, chip, sixthNumberToBetList.subList(0, Math.min(sixthNumberToBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -Math.min(sixthNumberToBetList.size(), 7) * chip);
+                    betForFifth(bet, chip, fifthNumberToBetList.subList(0, Math.min(fifthNumberToBetList.size(), Config.getFifthSixthMaxBetCount())), driver);
+                    money = calculateMoney(money, -Math.min(fifthNumberToBetList.size(), Config.getFifthSixthMaxBetCount()) * chip);
+                    betForSixth(bet, chip, sixthNumberToBetList.subList(0, Math.min(sixthNumberToBetList.size(), Config.getFifthSixthMaxBetCount())), driver);
+                    money = calculateMoney(money, -Math.min(sixthNumberToBetList.size(), Config.getFifthSixthMaxBetCount()) * chip);
                 }
             } else {
                 int fifthCountOfNumbersToRemove = 3 - Config.getFifthSixthExcludeNumbers().size();
@@ -386,11 +386,11 @@ public class BetForFifthSixthOperation {
                 Collections.shuffle(sixthNumberToBetList);
 
                 Integer fifthMoneyBet = decideBetChip(lastLotteryResult.getFifth(), lastBet.getBetFifth(), isPlayTime);
-                betForFifth(bet, fifthMoneyBet, fifthNumberToBetList.subList(0, Math.min(fifthNumberToBetList.size(), 7)), driver);
-                money = calculateMoney(money, -Math.min(fifthNumberToBetList.size(), 7) * fifthMoneyBet);
+                betForFifth(bet, fifthMoneyBet, fifthNumberToBetList.subList(0, Math.min(fifthNumberToBetList.size(), Config.getFifthSixthMaxBetCount())), driver);
+                money = calculateMoney(money, -Math.min(fifthNumberToBetList.size(), Config.getFifthSixthMaxBetCount()) * fifthMoneyBet);
                 Integer sixthMoneyBet = decideBetChip(lastLotteryResult.getSixth(), lastBet.getBetSixth(), isPlayTime);
-                betForSixth(bet, sixthMoneyBet, sixthNumberToBetList.subList(0, Math.min(sixthNumberToBetList.size(), 7)), driver);
-                money = calculateMoney(money, -Math.min(sixthNumberToBetList.size(), 7) * sixthMoneyBet);
+                betForSixth(bet, sixthMoneyBet, sixthNumberToBetList.subList(0, Math.min(sixthNumberToBetList.size(), Config.getFifthSixthMaxBetCount())), driver);
+                money = calculateMoney(money, -Math.min(sixthNumberToBetList.size(), Config.getFifthSixthMaxBetCount()) * sixthMoneyBet);
             }
         }
 

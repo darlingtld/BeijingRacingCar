@@ -67,4 +67,9 @@ public class SeventhEighthController {
         Config.setSeventhEighthSmartDetectRoundNumber(round);
     }
 
+    @RequestMapping(value="max_bet_count", method = RequestMethod.POST)
+    public void setMaxBetCount(@RequestParam("count") Integer count) {
+        logger.info("Set seventh_eighth max bet count={}", count);
+        Config.setSeventhEighthMaxBetCount(count);
+    }
 }

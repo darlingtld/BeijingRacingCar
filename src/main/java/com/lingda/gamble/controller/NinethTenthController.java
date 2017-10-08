@@ -68,4 +68,10 @@ public class NinethTenthController {
         Config.setNinethTenthSmartDetectRoundNumber(round);
     }
 
+    @RequestMapping(value="max_bet_count", method = RequestMethod.POST)
+    public void setMaxBetCount(@RequestParam("count") Integer count) {
+        logger.info("Set nineth_tenth max bet count={}", count);
+        Config.setNinethTenthMaxBetCount(count);
+    }
+
 }

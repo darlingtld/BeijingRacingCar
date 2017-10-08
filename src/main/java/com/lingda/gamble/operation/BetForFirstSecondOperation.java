@@ -1,11 +1,9 @@
 package com.lingda.gamble.operation;
 
-import com.lingda.gamble.mail.SimpleMailSender;
 import com.lingda.gamble.model.FirstSecondBet;
 import com.lingda.gamble.model.FirstSecondRatio;
 import com.lingda.gamble.model.LotteryResult;
 import com.lingda.gamble.model.RankSingleBet;
-import com.lingda.gamble.model.WinLostMoney;
 import com.lingda.gamble.param.Config;
 import com.lingda.gamble.repository.FirstSecondBetRepository;
 import com.lingda.gamble.repository.FirstSecondRatioRepository;
@@ -352,10 +350,10 @@ public class BetForFirstSecondOperation {
                     Collections.shuffle(firstNumberToBetList);
                     Collections.shuffle(secondNumberToBetList);
 
-                    betForFirst(bet, chip, firstNumberToBetList.subList(0, Math.min(firstNumberToBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -Math.min(firstNumberToBetList.size(), 7) * chip);
-                    betForSecond(bet, chip, secondNumberToBetList.subList(0, Math.min(secondNumberToBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -Math.min(secondNumberToBetList.size(), 7) * chip);
+                    betForFirst(bet, chip, firstNumberToBetList.subList(0, Math.min(firstNumberToBetList.size(), Config.getFirstSecondMaxBetCount())), driver);
+                    money = calculateMoney(money, -Math.min(firstNumberToBetList.size(), Config.getFirstSecondMaxBetCount()) * chip);
+                    betForSecond(bet, chip, secondNumberToBetList.subList(0, Math.min(secondNumberToBetList.size(), Config.getFirstSecondMaxBetCount())), driver);
+                    money = calculateMoney(money, -Math.min(secondNumberToBetList.size(), Config.getFirstSecondMaxBetCount()) * chip);
                 }
             } else {
                 int firstCountOfNumbersToRemove = 3 - Config.getFirstSecondExcludeNumbers().size();
@@ -386,11 +384,11 @@ public class BetForFirstSecondOperation {
                 Collections.shuffle(secondNumberToBetList);
 
                 Integer firstMoneyBet = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime);
-                betForFirst(bet, firstMoneyBet, firstNumberToBetList.subList(0, Math.min(firstNumberToBetList.size(), 7)), driver);
-                money = calculateMoney(money, -Math.min(firstNumberToBetList.size(), 7) * firstMoneyBet);
+                betForFirst(bet, firstMoneyBet, firstNumberToBetList.subList(0, Math.min(firstNumberToBetList.size(), Config.getFirstSecondMaxBetCount())), driver);
+                money = calculateMoney(money, -Math.min(firstNumberToBetList.size(), Config.getFirstSecondMaxBetCount()) * firstMoneyBet);
                 Integer secondMoneyBet = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime);
-                betForSecond(bet, secondMoneyBet, secondNumberToBetList.subList(0, Math.min(secondNumberToBetList.size(), 7)), driver);
-                money = calculateMoney(money, -Math.min(secondNumberToBetList.size(), 7) * secondMoneyBet);
+                betForSecond(bet, secondMoneyBet, secondNumberToBetList.subList(0, Math.min(secondNumberToBetList.size(), Config.getFirstSecondMaxBetCount())), driver);
+                money = calculateMoney(money, -Math.min(secondNumberToBetList.size(), Config.getFirstSecondMaxBetCount()) * secondMoneyBet);
 
             }
         }

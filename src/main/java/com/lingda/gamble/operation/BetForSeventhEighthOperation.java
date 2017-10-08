@@ -349,10 +349,10 @@ public class BetForSeventhEighthOperation {
                     Collections.shuffle(seventhNumberToBetList);
                     Collections.shuffle(eighthNumberToBetList);
 
-                    betForSeventh(bet, chip, seventhNumberToBetList.subList(0, Math.min(seventhNumberToBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -Math.min(seventhNumberToBetList.size(), 7) * chip);
-                    betForEighth(bet, chip, eighthNumberToBetList.subList(0, Math.min(eighthNumberToBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -Math.min(eighthNumberToBetList.size(), 7) * chip);
+                    betForSeventh(bet, chip, seventhNumberToBetList.subList(0, Math.min(seventhNumberToBetList.size(), Config.getSeventhEighthMaxBetCount())), driver);
+                    money = calculateMoney(money, -Math.min(seventhNumberToBetList.size(), Config.getSeventhEighthMaxBetCount()) * chip);
+                    betForEighth(bet, chip, eighthNumberToBetList.subList(0, Math.min(eighthNumberToBetList.size(), Config.getSeventhEighthMaxBetCount())), driver);
+                    money = calculateMoney(money, -Math.min(eighthNumberToBetList.size(), Config.getSeventhEighthMaxBetCount()) * chip);
 
                 }
             } else {
@@ -385,11 +385,11 @@ public class BetForSeventhEighthOperation {
                 Collections.shuffle(eighthNumberToBetList);
 
                 Integer seventhMoneyBet = decideBetChip(lastLotteryResult.getSeventh(), lastBet.getBetSeventh(), isPlayTime);
-                betForSeventh(bet, seventhMoneyBet, seventhNumberToBetList.subList(0, Math.min(seventhNumberToBetList.size(), 7)), driver);
-                money = calculateMoney(money, -Math.min(seventhNumberToBetList.size(), 7) * seventhMoneyBet);
+                betForSeventh(bet, seventhMoneyBet, seventhNumberToBetList.subList(0, Math.min(seventhNumberToBetList.size(), Config.getSeventhEighthMaxBetCount())), driver);
+                money = calculateMoney(money, -Math.min(seventhNumberToBetList.size(), Config.getSeventhEighthMaxBetCount()) * seventhMoneyBet);
                 Integer eighthMoneyBet = decideBetChip(lastLotteryResult.getEighth(), lastBet.getBetEighth(), isPlayTime);
-                betForEighth(bet, eighthMoneyBet, eighthNumberToBetList.subList(0, Math.min(eighthNumberToBetList.size(), 7)), driver);
-                money = calculateMoney(money, -Math.min(eighthNumberToBetList.size(), 7) * eighthMoneyBet);
+                betForEighth(bet, eighthMoneyBet, eighthNumberToBetList.subList(0, Math.min(eighthNumberToBetList.size(), Config.getSeventhEighthMaxBetCount())), driver);
+                money = calculateMoney(money, -Math.min(eighthNumberToBetList.size(), Config.getSeventhEighthMaxBetCount()) * eighthMoneyBet);
 
             }
         }

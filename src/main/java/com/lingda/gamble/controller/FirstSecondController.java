@@ -68,4 +68,10 @@ public class FirstSecondController {
         logger.info("Set first_second smart mode detect round={}", round);
         Config.setFirstSecondSmartDetectRoundNumber(round);
     }
+
+    @RequestMapping(value="max_bet_count", method = RequestMethod.POST)
+    public void setMaxBetCount(@RequestParam("count") Integer count) {
+        logger.info("Set first_second max bet count={}", count);
+        Config.setFirstSecondMaxBetCount(count);
+    }
 }

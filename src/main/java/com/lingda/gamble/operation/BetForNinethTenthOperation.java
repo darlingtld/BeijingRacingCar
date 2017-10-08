@@ -352,10 +352,10 @@ public class BetForNinethTenthOperation {
                     Collections.shuffle(ninethNumberToBetList);
                     Collections.shuffle(tenthNumberToBetList);
 
-                    betForNineth(bet, chip, ninethNumberToBetList.subList(0, Math.min(ninethNumberToBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -Math.min(ninethNumberToBetList.size(), 7) * chip);
-                    betForTenth(bet, chip, tenthNumberToBetList.subList(0, Math.min(tenthNumberToBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -Math.min(tenthNumberToBetList.size(), 7) * chip);
+                    betForNineth(bet, chip, ninethNumberToBetList.subList(0, Math.min(ninethNumberToBetList.size(), Config.getNinethTenthMaxBetCount())), driver);
+                    money = calculateMoney(money, -Math.min(ninethNumberToBetList.size(), Config.getNinethTenthMaxBetCount()) * chip);
+                    betForTenth(bet, chip, tenthNumberToBetList.subList(0, Math.min(tenthNumberToBetList.size(), Config.getNinethTenthMaxBetCount())), driver);
+                    money = calculateMoney(money, -Math.min(tenthNumberToBetList.size(), Config.getNinethTenthMaxBetCount()) * chip);
 
                 }
             } else {
@@ -387,11 +387,11 @@ public class BetForNinethTenthOperation {
                 Collections.shuffle(tenthNumberToBetList);
 
                 Integer thirdMoneyBet = decideBetChip(lastLotteryResult.getNineth(), lastBet.getBetNineth(), isPlayTime);
-                betForNineth(bet, thirdMoneyBet, ninethNumberToBetList.subList(0, Math.min(ninethNumberToBetList.size(), 7)), driver);
-                money = calculateMoney(money, -Math.min(ninethNumberToBetList.size(), 7) * thirdMoneyBet);
+                betForNineth(bet, thirdMoneyBet, ninethNumberToBetList.subList(0, Math.min(ninethNumberToBetList.size(), Config.getNinethTenthMaxBetCount())), driver);
+                money = calculateMoney(money, -Math.min(ninethNumberToBetList.size(), Config.getNinethTenthMaxBetCount()) * thirdMoneyBet);
                 Integer fourthMoneyBet = decideBetChip(lastLotteryResult.getTenth(), lastBet.getBetTenth(), isPlayTime);
-                betForTenth(bet, fourthMoneyBet, tenthNumberToBetList.subList(0, Math.min(tenthNumberToBetList.size(), 7)), driver);
-                money = calculateMoney(money, -Math.min(tenthNumberToBetList.size(), 7) * fourthMoneyBet);
+                betForTenth(bet, fourthMoneyBet, tenthNumberToBetList.subList(0, Math.min(tenthNumberToBetList.size(), Config.getNinethTenthMaxBetCount())), driver);
+                money = calculateMoney(money, -Math.min(tenthNumberToBetList.size(), Config.getNinethTenthMaxBetCount()) * fourthMoneyBet);
 
             }
         }

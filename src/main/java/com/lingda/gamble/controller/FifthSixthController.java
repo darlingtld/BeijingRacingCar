@@ -67,4 +67,10 @@ public class FifthSixthController {
         logger.info("Set FifthSixth smart mode detect round={}", round);
         Config.setFifthSixthSmartDetectRoundNumber(round);
     }
+
+    @RequestMapping(value="max_bet_count", method = RequestMethod.POST)
+    public void setMaxBetCount(@RequestParam("count") Integer count) {
+        logger.info("Set fifth_sixth max bet count={}", count);
+        Config.setFifthSixthMaxBetCount(count);
+    }
 }
