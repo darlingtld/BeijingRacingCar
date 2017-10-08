@@ -98,9 +98,6 @@ public class RatioFetchingForFirstSecondOperation {
             logger.info("[Operation - FetchRatio] Save today win/lost for 北京赛车 - {}", PLAYGROUND);
             winLostMoneyRepository.save(winLostMoney);
         }
-        if (winLostMoney.getWinLostMoney() + Config.getLostThreshold() < 0) {
-            throw new RuntimeException(String.format("!!!!!!!!! Blast %s !!!!!!!!!", winLostMoney.getWinLostMoney()));
-        }
 
         WebElement ratioTable = DriverUtils.returnOnFindingElement(driver, By.id("tblMy3DArea"));
         RankSingleRatio firstRatio = new RankSingleRatio();
@@ -150,6 +147,12 @@ public class RatioFetchingForFirstSecondOperation {
         if (firstSecondRatioRepository.findByRound(ratio.getRound()) == null) {
             logger.info("[Operation - FetchRatio] Save ratio to DB for 北京赛车 - {} - 赔率", PLAYGROUND);
             firstSecondRatioRepository.save(ratio);
+        }
+        if (winLostMoney.getWinLostMoney() + Config.getLostThreshold() < 0) {
+            throw new RuntimeException(String.format("!!!!!!!!! Blast %s !!!!!!!!!", winLostMoney.getWinLostMoney()));
+        }
+        if (winLostMoney.getWinLostMoney() - Config.getWinThreshold() > 0) {
+            throw new RuntimeException(String.format("!!!!!!!!! Wow %s !!!!!!!!!", winLostMoney.getWinLostMoney()));
         }
         return ratio.getRound();
     }

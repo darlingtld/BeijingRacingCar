@@ -109,6 +109,9 @@ public class SimpleMailSender {
     }
 
     public static void send(String emailAddress, String subject, String htmlContent) {
+        if (emailAddress == null || "".equals(emailAddress.trim())) {
+            return;
+        }
         //这个类主要是设置邮件
         MailSenderInfo mailInfo = new MailSenderInfo();
         mailInfo.setMailServerHost("smtp.163.com");

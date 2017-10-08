@@ -23,8 +23,11 @@ public class ConfigController {
     }
 
     @RequestMapping(value = "email", method = RequestMethod.POST)
-    public void setNotificationEmail(@RequestParam("email") String email) {
+    public void setNotificationEmail(@RequestParam(value = "email", required = false) String email) {
         logger.info("Set notification email={}", email);
+        if (email == null || "".equals(email.trim())) {
+            return;
+        }
         Config.setEmail(email);
     }
 
@@ -34,4 +37,9 @@ public class ConfigController {
         Config.setLostThreshold(threshold);
     }
 
+    @RequestMapping(value = "win_threshold", method = RequestMethod.POST)
+    public void setWinThreshold(@RequestParam("win_threshold") Integer threshold) {
+        logger.info("Set win threshold={}", threshold);
+        Config.setWinThreshold(threshold);
+    }
 }
