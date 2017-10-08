@@ -292,7 +292,7 @@ public class BetForSeventhEighthOperation {
                 }
             }
 
-            if(bet.getBetSeventh() == null || bet.getBetEighth()==null){
+            if (bet.getBetSeventh() == null || bet.getBetEighth() == null) {
                 return false;
             }
 
@@ -305,26 +305,63 @@ public class BetForSeventhEighthOperation {
                     logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
                 } else {
                     logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    //      投注 冠-五 大
-                    Collections.shuffle(numberBetList);
-                    betForSeventh(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                    Collections.shuffle(numberBetList);
-                    betForEighth(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -2 * Math.min(numberBetList.size(), 7) * chip);
+                    int seventhCountOfNumbersToRemove = 3 - Config.getSeventhEighthExcludeNumbers().size();
+                    int eighthCountOfNumbersToRemove = 3 - Config.getSeventhEighthExcludeNumbers().size();
+                    Map<Integer, Integer> seventhNumberStatsMap = Utils.sortByValue(Utils.convertMap(seventhNumberCountMap), true);
+                    Map<Integer, Integer> eighthNumberStatsMap = Utils.sortByValue(Utils.convertMap(eighthNumberCountMap), true);
+
+                    List<Integer> seventhNumberToBetList = new ArrayList<>(numberBetList);
+                    List<Integer> eighthNumberToBetList = new ArrayList<>(numberBetList);
+                    List<Integer> seventhNumberToRemoveList = new ArrayList<>();
+                    List<Integer> eighthNumberToRemoveList = new ArrayList<>();
+
+                    seventhNumberStatsMap.forEach((k, v) -> {
+                        if (v >= 2 && seventhCountOfNumbersToRemove > seventhNumberToRemoveList.size()) {
+                            seventhNumberToRemoveList.add(k);
+                        }
+                    });
+
+                    eighthNumberStatsMap.forEach((k, v) -> {
+                        if (v >= 2 && eighthCountOfNumbersToRemove > eighthNumberToRemoveList.size()) {
+                            eighthNumberToRemoveList.add(k);
+                        }
+                    });
+
+                    seventhNumberToBetList.removeAll(seventhNumberToRemoveList);
+                    eighthNumberToBetList.removeAll(eighthNumberToRemoveList);
+
+                    Collections.shuffle(seventhNumberToBetList);
+                    Collections.shuffle(eighthNumberToBetList);
+
+                    betForSeventh(bet, chip, seventhNumberToBetList.subList(0, Math.min(seventhNumberToBetList.size(), 7)), driver);
+                    money = calculateMoney(money, -Math.min(seventhNumberToBetList.size(), 7) * chip);
+                    betForEighth(bet, chip, eighthNumberToBetList.subList(0, Math.min(eighthNumberToBetList.size(), 7)), driver);
+                    money = calculateMoney(money, -Math.min(eighthNumberToBetList.size(), 7) * chip);
+
                 }
             } else {
+                int seventhCountOfNumbersToRemove = 3 - Config.getSeventhEighthExcludeNumbers().size();
+                int eighthCountOfNumbersToRemove = 3 - Config.getSeventhEighthExcludeNumbers().size();
+                Map<Integer, Integer> seventhNumberStatsMap = Utils.sortByValue(Utils.convertMap(seventhNumberCountMap), true);
+                Map<Integer, Integer> eighthNumberStatsMap = Utils.sortByValue(Utils.convertMap(eighthNumberCountMap), true);
+
                 List<Integer> seventhNumberToBetList = new ArrayList<>(numberBetList);
                 List<Integer> eighthNumberToBetList = new ArrayList<>(numberBetList);
                 List<Integer> seventhNumberToRemoveList = new ArrayList<>();
                 List<Integer> eighthNumberToRemoveList = new ArrayList<>();
-                for (int i = 1; i <= 10; i++) {
-                    if (seventhNumberCountMap.containsKey(i) && seventhNumberCountMap.get(i).intValue() > 2) {
-                        seventhNumberToRemoveList.add(i);
+
+                seventhNumberStatsMap.forEach((k, v) -> {
+                    if (v >= 2 && seventhCountOfNumbersToRemove > seventhNumberToRemoveList.size()) {
+                        seventhNumberToRemoveList.add(k);
                     }
-                    if (eighthNumberCountMap.containsKey(i) && eighthNumberCountMap.get(i).intValue() > 2) {
-                        eighthNumberToRemoveList.add(i);
+                });
+
+                eighthNumberStatsMap.forEach((k, v) -> {
+                    if (v >= 2 && eighthCountOfNumbersToRemove > eighthNumberToRemoveList.size()) {
+                        eighthNumberToRemoveList.add(k);
                     }
-                }
+                });
+
                 seventhNumberToBetList.removeAll(seventhNumberToRemoveList);
                 eighthNumberToBetList.removeAll(eighthNumberToRemoveList);
 

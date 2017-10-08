@@ -292,7 +292,7 @@ public class BetForNinethTenthOperation {
                     }
                 }
             }
-            if(bet.getBetNineth() == null || bet.getBetTenth()==null){
+            if (bet.getBetNineth() == null || bet.getBetTenth() == null) {
                 return false;
             }
         } else {
@@ -304,26 +304,63 @@ public class BetForNinethTenthOperation {
                     logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
                 } else {
                     logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    //      投注 冠-五 大
-                    Collections.shuffle(numberBetList);
-                    betForNineth(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                    Collections.shuffle(numberBetList);
-                    betForTenth(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -2 * Math.min(numberBetList.size(), 7) * chip);
+
+                    int ninethCountOfNumbersToRemove = 3 - Config.getNinethTenthExcludeNumbers().size();
+                    int tenthCountOfNumbersToRemove = 3 - Config.getNinethTenthExcludeNumbers().size();
+                    Map<Integer, Integer> ninethNumberStatsMap = Utils.sortByValue(Utils.convertMap(ninethNumberCountMap), true);
+                    Map<Integer, Integer> tenthNumberStatsMap = Utils.sortByValue(Utils.convertMap(tenthNumberCountMap), true);
+
+                    List<Integer> ninethNumberToBetList = new ArrayList<>(numberBetList);
+                    List<Integer> tenthNumberToBetList = new ArrayList<>(numberBetList);
+                    List<Integer> ninethNumberToRemoveList = new ArrayList<>();
+                    List<Integer> tenthNumberToRemoveList = new ArrayList<>();
+
+                    ninethNumberStatsMap.forEach((k, v) -> {
+                        if (v >= 2 && ninethCountOfNumbersToRemove > ninethNumberToRemoveList.size()) {
+                            ninethNumberToRemoveList.add(k);
+                        }
+                    });
+
+                    tenthNumberStatsMap.forEach((k, v) -> {
+                        if (v >= 2 && tenthCountOfNumbersToRemove > tenthNumberToRemoveList.size()) {
+                            tenthNumberToRemoveList.add(k);
+                        }
+                    });
+
+                    ninethNumberToBetList.removeAll(ninethNumberToRemoveList);
+                    tenthNumberToBetList.removeAll(tenthNumberToRemoveList);
+
+                    Collections.shuffle(ninethNumberToBetList);
+                    Collections.shuffle(tenthNumberToBetList);
+
+                    betForNineth(bet, chip, ninethNumberToBetList.subList(0, Math.min(ninethNumberToBetList.size(), 7)), driver);
+                    money = calculateMoney(money, -Math.min(ninethNumberToBetList.size(), 7) * chip);
+                    betForTenth(bet, chip, tenthNumberToBetList.subList(0, Math.min(tenthNumberToBetList.size(), 7)), driver);
+                    money = calculateMoney(money, -Math.min(tenthNumberToBetList.size(), 7) * chip);
+
                 }
             } else {
+                int ninethCountOfNumbersToRemove = 3 - Config.getNinethTenthExcludeNumbers().size();
+                int tenthCountOfNumbersToRemove = 3 - Config.getNinethTenthExcludeNumbers().size();
+                Map<Integer, Integer> ninethNumberStatsMap = Utils.sortByValue(Utils.convertMap(ninethNumberCountMap), true);
+                Map<Integer, Integer> tenthNumberStatsMap = Utils.sortByValue(Utils.convertMap(tenthNumberCountMap), true);
+
                 List<Integer> ninethNumberToBetList = new ArrayList<>(numberBetList);
                 List<Integer> tenthNumberToBetList = new ArrayList<>(numberBetList);
                 List<Integer> ninethNumberToRemoveList = new ArrayList<>();
                 List<Integer> tenthNumberToRemoveList = new ArrayList<>();
-                for (int i = 1; i <= 10; i++) {
-                    if (ninethNumberCountMap.containsKey(i) && ninethNumberCountMap.get(i).intValue() > 2) {
-                        ninethNumberToRemoveList.add(i);
+
+                ninethNumberStatsMap.forEach((k, v) -> {
+                    if (v >= 2 && ninethCountOfNumbersToRemove > ninethNumberToRemoveList.size()) {
+                        ninethNumberToRemoveList.add(k);
                     }
-                    if (tenthNumberCountMap.containsKey(i) && tenthNumberCountMap.get(i).intValue() > 2) {
-                        tenthNumberToRemoveList.add(i);
+                });
+
+                tenthNumberStatsMap.forEach((k, v) -> {
+                    if (v >= 2 && tenthCountOfNumbersToRemove > tenthNumberToRemoveList.size()) {
+                        tenthNumberToRemoveList.add(k);
                     }
-                }
+                });
                 ninethNumberToBetList.removeAll(ninethNumberToRemoveList);
                 tenthNumberToBetList.removeAll(tenthNumberToRemoveList);
 

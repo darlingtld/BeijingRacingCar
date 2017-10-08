@@ -90,7 +90,7 @@ public class BetForThirdFourthOperation {
             logger.info("[Operation - Bet] No last lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
             return false;
         }
-//        take the last 6 lottery result into consideration
+//        take the last 7 lottery result into consideration
         markNumber(lastLotteryResult);
 
         LotteryResult lotteryResult2 = lotteryResultRepository.findByRound(round - 2);
@@ -113,13 +113,17 @@ public class BetForThirdFourthOperation {
         if (lotteryResult6 != null) {
             markNumber(lotteryResult6);
         }
+        LotteryResult lotteryResult7 = lotteryResultRepository.findByRound(round - 7);
+        if (lotteryResult7 != null) {
+            markNumber(lotteryResult7);
+        }
 
-        logger.info("[Operation - Bet] Last 6 lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+        logger.info("[Operation - Bet] Last 7 lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
         for (Map.Entry<Integer, AtomicInteger> entry : thirdNumberCountMap.entrySet()) {
-            logger.info("[Operation - Bet] Last 6 lottery result 第三名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
+            logger.info("[Operation - Bet] Last 7 lottery result 第三名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
         }
         for (Map.Entry<Integer, AtomicInteger> entry : fourthNumberCountMap.entrySet()) {
-            logger.info("[Operation - Bet] Last 6 lottery result 第四名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
+            logger.info("[Operation - Bet] Last 7 lottery result 第四名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
         }
 
 //      check if the bet is already done
@@ -305,26 +309,63 @@ public class BetForThirdFourthOperation {
                     logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
                 } else {
                     logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    //      投注 冠-五 大
-                    Collections.shuffle(numberBetList);
-                    betForThird(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                    Collections.shuffle(numberBetList);
-                    betForFourth(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -2 * Math.min(numberBetList.size(), 7) * chip);
+
+                    int thirdCountOfNumbersToRemove = 3 - Config.getThirdFourthExcludeNumbers().size();
+                    int fourthCountOfNumbersToRemove = 3 - Config.getThirdFourthExcludeNumbers().size();
+                    Map<Integer, Integer> thirdNumberStatsMap = Utils.sortByValue(Utils.convertMap(thirdNumberCountMap), true);
+                    Map<Integer, Integer> fourthNumberStatsMap = Utils.sortByValue(Utils.convertMap(fourthNumberCountMap), true);
+
+                    List<Integer> thirdNumberToBetList = new ArrayList<>(numberBetList);
+                    List<Integer> fourthNumberToBetList = new ArrayList<>(numberBetList);
+                    List<Integer> thirdNumberToRemoveList = new ArrayList<>();
+                    List<Integer> fourthNumberToRemoveList = new ArrayList<>();
+
+                    thirdNumberStatsMap.forEach((k, v) -> {
+                        if (v >= 2 && thirdCountOfNumbersToRemove > thirdNumberToRemoveList.size()) {
+                            thirdNumberToRemoveList.add(k);
+                        }
+                    });
+
+                    fourthNumberStatsMap.forEach((k, v) -> {
+                        if (v >= 2 && fourthCountOfNumbersToRemove > fourthNumberToRemoveList.size()) {
+                            fourthNumberToRemoveList.add(k);
+                        }
+                    });
+
+                    thirdNumberToBetList.removeAll(thirdNumberToRemoveList);
+                    fourthNumberToBetList.removeAll(fourthNumberToRemoveList);
+
+                    Collections.shuffle(thirdNumberToBetList);
+                    Collections.shuffle(fourthNumberToBetList);
+
+                    betForThird(bet, chip, thirdNumberToBetList.subList(0, Math.min(thirdNumberToBetList.size(), 7)), driver);
+                    money = calculateMoney(money, -Math.min(thirdNumberToBetList.size(), 7) * chip);
+                    betForFourth(bet, chip, fourthNumberToBetList.subList(0, Math.min(fourthNumberToBetList.size(), 7)), driver);
+                    money = calculateMoney(money, -Math.min(fourthNumberToBetList.size(), 7) * chip);
                 }
             } else {
+                int thirdCountOfNumbersToRemove = 3 - Config.getThirdFourthExcludeNumbers().size();
+                int fourthCountOfNumbersToRemove = 3 - Config.getThirdFourthExcludeNumbers().size();
+                Map<Integer, Integer> thirdNumberStatsMap = Utils.sortByValue(Utils.convertMap(thirdNumberCountMap), true);
+                Map<Integer, Integer> fourthNumberStatsMap = Utils.sortByValue(Utils.convertMap(fourthNumberCountMap), true);
+
                 List<Integer> thirdNumberToBetList = new ArrayList<>(numberBetList);
                 List<Integer> fourthNumberToBetList = new ArrayList<>(numberBetList);
                 List<Integer> thirdNumberToRemoveList = new ArrayList<>();
                 List<Integer> fourthNumberToRemoveList = new ArrayList<>();
-                for (int i = 1; i <= 10; i++) {
-                    if (thirdNumberCountMap.containsKey(i) && thirdNumberCountMap.get(i).intValue() > 2) {
-                        thirdNumberToRemoveList.add(i);
+
+                thirdNumberStatsMap.forEach((k, v) -> {
+                    if (v >= 2 && thirdCountOfNumbersToRemove > thirdNumberToRemoveList.size()) {
+                        thirdNumberToRemoveList.add(k);
                     }
-                    if (fourthNumberCountMap.containsKey(i) && fourthNumberCountMap.get(i).intValue() > 2) {
-                        fourthNumberToRemoveList.add(i);
+                });
+
+                fourthNumberStatsMap.forEach((k, v) -> {
+                    if (v >= 2 && fourthCountOfNumbersToRemove > fourthNumberToRemoveList.size()) {
+                        fourthNumberToRemoveList.add(k);
                     }
-                }
+                });
+
                 thirdNumberToBetList.removeAll(thirdNumberToRemoveList);
                 fourthNumberToBetList.removeAll(fourthNumberToRemoveList);
 

@@ -293,7 +293,7 @@ public class BetForFifthSixthOperation {
                     }
                 }
             }
-            if(bet.getBetFifth() == null || bet.getBetSixth()==null){
+            if (bet.getBetFifth() == null || bet.getBetSixth() == null) {
                 return false;
             }
 
@@ -307,26 +307,61 @@ public class BetForFifthSixthOperation {
                     logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
                 } else {
                     logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    //      投注 冠-五 大
-                    Collections.shuffle(numberBetList);
-                    betForFifth(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                    Collections.shuffle(numberBetList);
-                    betForSixth(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -2 * Math.min(numberBetList.size(), 7) * chip);
+                    int fifthCountOfNumbersToRemove = 3 - Config.getFifthSixthExcludeNumbers().size();
+                    int sixthCountOfNumbersToRemove = 3 - Config.getFifthSixthExcludeNumbers().size();
+                    Map<Integer, Integer> fifthNumberStatsMap = Utils.sortByValue(Utils.convertMap(fifthNumberCountMap), true);
+                    Map<Integer, Integer> sixthNumberStatsMap = Utils.sortByValue(Utils.convertMap(sixthNumberCountMap), true);
+
+                    List<Integer> fifthNumberToBetList = new ArrayList<>(numberBetList);
+                    List<Integer> sixthNumberToBetList = new ArrayList<>(numberBetList);
+                    List<Integer> fifthNumberToRemoveList = new ArrayList<>();
+                    List<Integer> sixthNumberToRemoveList = new ArrayList<>();
+
+                    fifthNumberStatsMap.forEach((k, v) -> {
+                        if (v >= 2 && fifthCountOfNumbersToRemove > fifthNumberToRemoveList.size()) {
+                            fifthNumberToRemoveList.add(k);
+                        }
+                    });
+
+                    sixthNumberStatsMap.forEach((k, v) -> {
+                        if (v >= 2 && sixthCountOfNumbersToRemove > sixthNumberToRemoveList.size()) {
+                            sixthNumberToRemoveList.add(k);
+                        }
+                    });
+
+                    fifthNumberToBetList.removeAll(fifthNumberToRemoveList);
+                    sixthNumberToBetList.removeAll(sixthNumberToRemoveList);
+
+                    Collections.shuffle(fifthNumberToBetList);
+                    Collections.shuffle(sixthNumberToBetList);
+
+                    betForFifth(bet, chip, fifthNumberToBetList.subList(0, Math.min(fifthNumberToBetList.size(), 7)), driver);
+                    money = calculateMoney(money, -Math.min(fifthNumberToBetList.size(), 7) * chip);
+                    betForSixth(bet, chip, sixthNumberToBetList.subList(0, Math.min(sixthNumberToBetList.size(), 7)), driver);
+                    money = calculateMoney(money, -Math.min(sixthNumberToBetList.size(), 7) * chip);
                 }
             } else {
+                int fifthCountOfNumbersToRemove = 3 - Config.getFifthSixthExcludeNumbers().size();
+                int sixthCountOfNumbersToRemove = 3 - Config.getFifthSixthExcludeNumbers().size();
+                Map<Integer, Integer> fifthNumberStatsMap = Utils.sortByValue(Utils.convertMap(fifthNumberCountMap), true);
+                Map<Integer, Integer> sixthNumberStatsMap = Utils.sortByValue(Utils.convertMap(sixthNumberCountMap), true);
+
                 List<Integer> fifthNumberToBetList = new ArrayList<>(numberBetList);
                 List<Integer> sixthNumberToBetList = new ArrayList<>(numberBetList);
                 List<Integer> fifthNumberToRemoveList = new ArrayList<>();
                 List<Integer> sixthNumberToRemoveList = new ArrayList<>();
-                for (int i = 1; i <= 10; i++) {
-                    if (fifthNumberCountMap.containsKey(i) && fifthNumberCountMap.get(i).intValue() > 2) {
-                        fifthNumberToRemoveList.add(i);
+
+                fifthNumberStatsMap.forEach((k, v) -> {
+                    if (v >= 2 && fifthCountOfNumbersToRemove > fifthNumberToRemoveList.size()) {
+                        fifthNumberToRemoveList.add(k);
                     }
-                    if (sixthNumberCountMap.containsKey(i) && sixthNumberCountMap.get(i).intValue() > 2) {
-                        sixthNumberToRemoveList.add(i);
+                });
+
+                sixthNumberStatsMap.forEach((k, v) -> {
+                    if (v >= 2 && sixthCountOfNumbersToRemove > sixthNumberToRemoveList.size()) {
+                        sixthNumberToRemoveList.add(k);
                     }
-                }
+                });
                 fifthNumberToBetList.removeAll(fifthNumberToRemoveList);
                 sixthNumberToBetList.removeAll(sixthNumberToRemoveList);
 

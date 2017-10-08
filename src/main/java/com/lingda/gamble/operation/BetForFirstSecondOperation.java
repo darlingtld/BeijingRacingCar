@@ -294,7 +294,7 @@ public class BetForFirstSecondOperation {
                 }
             }
 
-            if(bet.getBetFirst() == null || bet.getBetSecond()==null){
+            if (bet.getBetFirst() == null || bet.getBetSecond() == null) {
                 return false;
             }
 
@@ -308,26 +308,61 @@ public class BetForFirstSecondOperation {
                     logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round);
                 } else {
                     logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
-                    //      投注 冠-五 大
-                    Collections.shuffle(numberBetList);
-                    betForFirst(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                    Collections.shuffle(numberBetList);
-                    betForSecond(bet, chip, numberBetList.subList(0, Math.min(numberBetList.size(), 7)), driver);
-                    money = calculateMoney(money, -2 * Math.min(numberBetList.size(), 7) * chip);
+                    int firstCountOfNumbersToRemove = 3 - Config.getFirstSecondExcludeNumbers().size();
+                    int secondCountOfNumbersToRemove = 3 - Config.getFirstSecondExcludeNumbers().size();
+                    Map<Integer, Integer> firstNumberStatsMap = Utils.sortByValue(Utils.convertMap(firstNumberCountMap), true);
+                    Map<Integer, Integer> secondNumberStatsMap = Utils.sortByValue(Utils.convertMap(secondNumberCountMap), true);
+
+                    List<Integer> firstNumberToBetList = new ArrayList<>(numberBetList);
+                    List<Integer> secondNumberToBetList = new ArrayList<>(numberBetList);
+                    List<Integer> firstNumberToRemoveList = new ArrayList<>();
+                    List<Integer> secondNumberToRemoveList = new ArrayList<>();
+
+                    firstNumberStatsMap.forEach((k, v) -> {
+                        if (v >= 2 && firstCountOfNumbersToRemove > firstNumberToRemoveList.size()) {
+                            firstNumberToRemoveList.add(k);
+                        }
+                    });
+
+                    secondNumberStatsMap.forEach((k, v) -> {
+                        if (v >= 2 && secondCountOfNumbersToRemove > secondNumberToRemoveList.size()) {
+                            secondNumberToRemoveList.add(k);
+                        }
+                    });
+
+                    firstNumberToBetList.removeAll(firstNumberToRemoveList);
+                    secondNumberToBetList.removeAll(secondNumberToRemoveList);
+
+                    Collections.shuffle(firstNumberToBetList);
+                    Collections.shuffle(secondNumberToBetList);
+
+                    betForFirst(bet, chip, firstNumberToBetList.subList(0, Math.min(firstNumberToBetList.size(), 7)), driver);
+                    money = calculateMoney(money, -Math.min(firstNumberToBetList.size(), 7) * chip);
+                    betForSecond(bet, chip, secondNumberToBetList.subList(0, Math.min(secondNumberToBetList.size(), 7)), driver);
+                    money = calculateMoney(money, -Math.min(secondNumberToBetList.size(), 7) * chip);
                 }
             } else {
+                int firstCountOfNumbersToRemove = 3 - Config.getFirstSecondExcludeNumbers().size();
+                int secondCountOfNumbersToRemove = 3 - Config.getFirstSecondExcludeNumbers().size();
+                Map<Integer, Integer> firstNumberStatsMap = Utils.sortByValue(Utils.convertMap(firstNumberCountMap), true);
+                Map<Integer, Integer> secondNumberStatsMap = Utils.sortByValue(Utils.convertMap(secondNumberCountMap), true);
+
                 List<Integer> firstNumberToBetList = new ArrayList<>(numberBetList);
                 List<Integer> secondNumberToBetList = new ArrayList<>(numberBetList);
                 List<Integer> firstNumberToRemoveList = new ArrayList<>();
                 List<Integer> secondNumberToRemoveList = new ArrayList<>();
-                for (int i = 1; i <= 10; i++) {
-                    if (firstNumberCountMap.containsKey(i) && firstNumberCountMap.get(i).intValue() > 2) {
-                        firstNumberToRemoveList.add(i);
+
+                firstNumberStatsMap.forEach((k, v) -> {
+                    if (v >= 2 && firstCountOfNumbersToRemove > firstNumberToRemoveList.size()) {
+                        firstNumberToRemoveList.add(k);
                     }
-                    if (secondNumberCountMap.containsKey(i) && secondNumberCountMap.get(i).intValue() > 2) {
-                        secondNumberToRemoveList.add(i);
+                });
+
+                secondNumberStatsMap.forEach((k, v) -> {
+                    if (v >= 2 && secondCountOfNumbersToRemove > secondNumberToRemoveList.size()) {
+                        secondNumberToRemoveList.add(k);
                     }
-                }
+                });
                 firstNumberToBetList.removeAll(firstNumberToRemoveList);
                 secondNumberToBetList.removeAll(secondNumberToRemoveList);
 
