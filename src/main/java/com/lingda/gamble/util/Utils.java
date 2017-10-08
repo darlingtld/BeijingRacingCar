@@ -61,4 +61,16 @@ public class Utils {
         map.forEach((key, value) -> convertedMap.put(key, value.intValue()));
         return convertedMap;
     }
+
+    public static boolean detectStepIntegerList(Integer smartDetectRoundNumber, List<Integer> stepIntegerList1, List<Integer> stepIntegerList2, Integer lastLotteryResult, Integer lotteryResult2, Integer lotteryResult3, Integer lotteryResult4) {
+        switch (smartDetectRoundNumber) {
+            case 2:
+                return stepIntegerList1.contains(lastLotteryResult) && stepIntegerList2.contains(lotteryResult2);
+            case 3:
+                return stepIntegerList1.contains(lastLotteryResult) && stepIntegerList2.contains(lotteryResult2) && stepIntegerList1.contains(lotteryResult3);
+            case 4:
+                return stepIntegerList1.contains(lastLotteryResult) && stepIntegerList2.contains(lotteryResult2) && stepIntegerList1.contains(lotteryResult3) && stepIntegerList2.contains(lotteryResult4);
+        }
+        return false;
+    }
 }

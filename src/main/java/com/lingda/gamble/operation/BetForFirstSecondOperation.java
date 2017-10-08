@@ -92,7 +92,7 @@ public class BetForFirstSecondOperation {
             logger.info("[Operation - Bet] No last lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
             return false;
         }
-//        take the last 6 lottery result into consideration
+//        take the last 7 lottery result into consideration
         markNumber(lastLotteryResult);
 
         LotteryResult lotteryResult2 = lotteryResultRepository.findByRound(round - 2);
@@ -115,13 +115,17 @@ public class BetForFirstSecondOperation {
         if (lotteryResult6 != null) {
             markNumber(lotteryResult6);
         }
+        LotteryResult lotteryResult7 = lotteryResultRepository.findByRound(round - 7);
+        if (lotteryResult7 != null) {
+            markNumber(lotteryResult7);
+        }
 
-        logger.info("[Operation - Bet] Last 6 lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+        logger.info("[Operation - Bet] Last 7 lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
         for (Map.Entry<Integer, AtomicInteger> entry : firstNumberCountMap.entrySet()) {
-            logger.info("[Operation - Bet] Last 6 lottery result 冠军 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
+            logger.info("[Operation - Bet] Last 7 lottery result 冠军 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
         }
         for (Map.Entry<Integer, AtomicInteger> entry : secondNumberCountMap.entrySet()) {
-            logger.info("[Operation - Bet] Last 6 lottery result 亚军 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
+            logger.info("[Operation - Bet] Last 7 lottery result 亚军 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
         }
 
 //      check if the bet is already done
@@ -149,6 +153,18 @@ public class BetForFirstSecondOperation {
                 logger.info("[Operation - Bet] Cannot find lottery result for 2 consecutive round");
                 return false;
             }
+            if (Config.getFirstSecondSmartDetectRoundNumber() == 3) {
+                if (lotteryResult2 == null || lotteryResult3 == null) {
+                    logger.info("[Operation - Bet] Cannot find lottery result for 3 consecutive round");
+                    return false;
+                }
+            }
+            if (Config.getFirstSecondSmartDetectRoundNumber() == 4) {
+                if (lotteryResult2 == null || lotteryResult3 == null || lotteryResult4 == null) {
+                    logger.info("[Operation - Bet] Cannot find lottery result for 4 consecutive round");
+                    return false;
+                }
+            }
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round);
                 return false;
@@ -156,7 +172,7 @@ public class BetForFirstSecondOperation {
 //            no last bet or last time is a win
             if (lastBet == null || Utils.isLastBetWin(lastLotteryResult.getFirst(), lastBet.getBetFirst())) {
 //            First
-                if (stepIntegerList1.contains(lastLotteryResult.getFirst()) && stepIntegerList2.contains(lotteryResult2.getFirst())) {
+                if (Utils.detectStepIntegerList(Config.getFirstSecondSmartDetectRoundNumber(), stepIntegerList1, stepIntegerList2, lastLotteryResult.getFirst(), lotteryResult2.getFirst(), lotteryResult3.getFirst(), lotteryResult4.getFirst())) {
                     logger.info("[Operation - Bet] Bingo! Bet for First exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList2);
@@ -166,7 +182,7 @@ public class BetForFirstSecondOperation {
                     if (bet.getBetSecond() == null) {
                         betForSecond(bet, chip, Collections.emptyList(), driver);
                     }
-                } else if (stepIntegerList2.contains(lastLotteryResult.getFirst()) && stepIntegerList1.contains(lotteryResult2.getFirst())) {
+                } else if (Utils.detectStepIntegerList(Config.getFirstSecondSmartDetectRoundNumber(), stepIntegerList2, stepIntegerList1, lastLotteryResult.getFirst(), lotteryResult2.getFirst(), lotteryResult3.getFirst(), lotteryResult4.getFirst())) {
                     logger.info("[Operation - Bet] Bingo! Bet for First exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList1);
@@ -227,7 +243,7 @@ public class BetForFirstSecondOperation {
             //            no last bet or last time is a win
             if (lastBet == null || Utils.isLastBetWin(lastLotteryResult.getSecond(), lastBet.getBetSecond())) {
 //            Second
-                if (stepIntegerList1.contains(lastLotteryResult.getSecond()) && stepIntegerList2.contains(lotteryResult2.getSecond())) {
+                if (Utils.detectStepIntegerList(Config.getFirstSecondSmartDetectRoundNumber(), stepIntegerList1, stepIntegerList2, lastLotteryResult.getSecond(), lotteryResult2.getSecond(), lotteryResult3.getSecond(), lotteryResult4.getSecond())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Second exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList2);
@@ -237,7 +253,7 @@ public class BetForFirstSecondOperation {
                     if (bet.getBetFirst() == null) {
                         betForFirst(bet, chip, Collections.emptyList(), driver);
                     }
-                } else if (stepIntegerList2.contains(lastLotteryResult.getSecond()) && stepIntegerList1.contains(lotteryResult2.getSecond())) {
+                } else if (Utils.detectStepIntegerList(Config.getFirstSecondSmartDetectRoundNumber(), stepIntegerList2, stepIntegerList1, lastLotteryResult.getSecond(), lotteryResult2.getSecond(), lotteryResult3.getSecond(), lotteryResult4.getSecond())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Second exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList1);

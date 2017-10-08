@@ -62,4 +62,10 @@ public class NinethTenthController {
         Config.setNinethTenthSmartSwitch(Arrays.asList(step1, step2));
     }
 
+    @RequestMapping(value="smart_mode_detect_round", method = RequestMethod.POST)
+    public void setSmartModeDetectRoundNumber(@RequestParam("round") Integer round) {
+        logger.info("Set NinethTenth smart mode detect round={}", round);
+        Config.setNinethTenthSmartDetectRoundNumber(round);
+    }
+
 }

@@ -62,4 +62,10 @@ public class FirstSecondController {
         logger.info("Set first_second smart switch={} - {}", step1, step2);
         Config.setFirstSecondSmartSwitch(Arrays.asList(step1, step2));
     }
+
+    @RequestMapping(value="smart_mode_detect_round", method = RequestMethod.POST)
+    public void setSmartModeDetectRoundNumber(@RequestParam("round") Integer round) {
+        logger.info("Set first_second smart mode detect round={}", round);
+        Config.setFirstSecondSmartDetectRoundNumber(round);
+    }
 }

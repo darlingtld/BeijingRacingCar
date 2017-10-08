@@ -113,13 +113,17 @@ public class BetForNinethTenthOperation {
         if (lotteryResult6 != null) {
             markNumber(lotteryResult6);
         }
+        LotteryResult lotteryResult7 = lotteryResultRepository.findByRound(round - 7);
+        if (lotteryResult7 != null) {
+            markNumber(lotteryResult7);
+        }
 
-        logger.info("[Operation - Bet] Last 5 lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+        logger.info("[Operation - Bet] Last 7 lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
         for (Map.Entry<Integer, AtomicInteger> entry : ninethNumberCountMap.entrySet()) {
-            logger.info("[Operation - Bet] Last 5 lottery result 第九名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
+            logger.info("[Operation - Bet] Last 7 lottery result 第九名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
         }
         for (Map.Entry<Integer, AtomicInteger> entry : tenthNumberCountMap.entrySet()) {
-            logger.info("[Operation - Bet] Last 5 lottery result 第十名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
+            logger.info("[Operation - Bet] Last 7 lottery result 第十名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
         }
 
 //      check if the bet is already done
@@ -144,9 +148,24 @@ public class BetForNinethTenthOperation {
             List<Integer> stepIntegerList1 = Arrays.stream(Config.getNinethTenthSmartSwitch().get(0).split(",")).map(Integer::parseInt).collect(Collectors.toList());
             List<Integer> stepIntegerList2 = Arrays.stream(Config.getNinethTenthSmartSwitch().get(1).split(",")).map(Integer::parseInt).collect(Collectors.toList());
             List<Integer> allNumbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-            if (lotteryResult2 == null) {
-                logger.info("[Operation - Bet] Cannot find lottery result for 2 consecutive round");
-                return false;
+
+            if (Config.getNinethTenthSmartDetectRoundNumber() == 2) {
+                if (lotteryResult2 == null) {
+                    logger.info("[Operation - Bet] Cannot find lottery result for 2 consecutive round");
+                    return false;
+                }
+            }
+            if (Config.getNinethTenthSmartDetectRoundNumber() == 3) {
+                if (lotteryResult2 == null || lotteryResult3 == null) {
+                    logger.info("[Operation - Bet] Cannot find lottery result for 3 consecutive round");
+                    return false;
+                }
+            }
+            if (Config.getNinethTenthSmartDetectRoundNumber() == 4) {
+                if (lotteryResult2 == null || lotteryResult3 == null || lotteryResult4 == null) {
+                    logger.info("[Operation - Bet] Cannot find lottery result for 4 consecutive round");
+                    return false;
+                }
             }
             if (!isPlayTime) {
                 logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round);
@@ -155,7 +174,7 @@ public class BetForNinethTenthOperation {
 //            no last bet or last time is a win
             if (lastBet == null || Utils.isLastBetWin(lastLotteryResult.getNineth(), lastBet.getBetNineth())) {
 //            First
-                if (stepIntegerList1.contains(lastLotteryResult.getNineth()) && stepIntegerList2.contains(lotteryResult2.getNineth())) {
+                if (Utils.detectStepIntegerList(Config.getNinethTenthSmartDetectRoundNumber(), stepIntegerList1, stepIntegerList2, lastLotteryResult.getNineth(), lotteryResult2.getNineth(), lotteryResult3.getNineth(), lotteryResult4.getNineth())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Nineth exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList2);
@@ -165,7 +184,7 @@ public class BetForNinethTenthOperation {
                     if (bet.getBetTenth() == null) {
                         betForTenth(bet, chip, Collections.emptyList(), driver);
                     }
-                } else if (stepIntegerList2.contains(lastLotteryResult.getNineth()) && stepIntegerList1.contains(lotteryResult2.getNineth())) {
+                } else if (Utils.detectStepIntegerList(Config.getNinethTenthSmartDetectRoundNumber(), stepIntegerList2, stepIntegerList1, lastLotteryResult.getNineth(), lotteryResult2.getNineth(), lotteryResult3.getNineth(), lotteryResult4.getNineth())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Nineth exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList1);
@@ -226,7 +245,7 @@ public class BetForNinethTenthOperation {
             //            no last bet or last time is a win
             if (lastBet == null || Utils.isLastBetWin(lastLotteryResult.getTenth(), lastBet.getBetTenth())) {
 //            Tenth
-                if (stepIntegerList1.contains(lastLotteryResult.getTenth()) && stepIntegerList2.contains(lotteryResult2.getTenth())) {
+                if (Utils.detectStepIntegerList(Config.getNinethTenthSmartDetectRoundNumber(), stepIntegerList1, stepIntegerList2, lastLotteryResult.getTenth(), lotteryResult2.getTenth(), lotteryResult3.getTenth(), lotteryResult4.getTenth())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Tenth exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList2);
@@ -236,7 +255,7 @@ public class BetForNinethTenthOperation {
                     if (bet.getBetNineth() == null) {
                         betForNineth(bet, chip, Collections.emptyList(), driver);
                     }
-                } else if (stepIntegerList2.contains(lastLotteryResult.getTenth()) && stepIntegerList1.contains(lotteryResult2.getTenth())) {
+                } else if (Utils.detectStepIntegerList(Config.getNinethTenthSmartDetectRoundNumber(), stepIntegerList2, stepIntegerList1, lastLotteryResult.getTenth(), lotteryResult2.getTenth(), lotteryResult3.getTenth(), lotteryResult4.getTenth())) {
                     logger.info("[Operation - Bet] Bingo! Bet for Tenth exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList1);

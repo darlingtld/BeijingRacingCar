@@ -61,6 +61,10 @@ public class SeventhEighthController {
         logger.info("set Seventh_Eighth smart switch={}-{}",step1, step2);
         Config.setSeventhEighthSmartSwitch(Arrays.asList(step1, step2));
     }
-
+    @RequestMapping(value="smart_mode_detect_round", method = RequestMethod.POST)
+    public void setSmartModeDetectRoundNumber(@RequestParam("round") Integer round) {
+        logger.info("Set SeventhEighth smart mode detect round={}", round);
+        Config.setSeventhEighthSmartDetectRoundNumber(round);
+    }
 
 }

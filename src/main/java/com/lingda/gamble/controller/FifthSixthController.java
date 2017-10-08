@@ -61,4 +61,10 @@ public class FifthSixthController {
         logger.info("set Fifth_Sixth smart switch={} - {}", step1, step2);
         Config.setFifthSixthSmartSwitch(Arrays.asList(step1, step2));
     }
+
+    @RequestMapping(value="smart_mode_detect_round", method = RequestMethod.POST)
+    public void setSmartModeDetectRoundNumber(@RequestParam("round") Integer round) {
+        logger.info("Set FifthSixth smart mode detect round={}", round);
+        Config.setFifthSixthSmartDetectRoundNumber(round);
+    }
 }

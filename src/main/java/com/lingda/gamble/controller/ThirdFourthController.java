@@ -61,4 +61,9 @@ public class ThirdFourthController {
         logger.info("set Third_Fourth smart switch={}-{}", step1, step2);
         Config.setThirdFourthSmartSwitch(Arrays.asList(step1, step2));
     }
+    @RequestMapping(value="smart_mode_detect_round", method = RequestMethod.POST)
+    public void setSmartModeDetectRoundNumber(@RequestParam("round") Integer round) {
+        logger.info("Set Third_Fourth smart mode detect round={}", round);
+        Config.setThirdFourthSmartDetectRoundNumber(round);
+    }
 }
