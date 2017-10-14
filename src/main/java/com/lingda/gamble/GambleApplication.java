@@ -144,20 +144,20 @@ public class GambleApplication {
                             finishBetOperation.doFinish(driver, "三、四、五、六名");
                         }
                     }
-                    navigationFifthSixthOperation.doNavigate(driver);
-                    Integer fifthSixthRound = ratioFetchingForFifthSixthOperation.doFetchRatio(driver);
-                    if (Config.getFifthSixthEnabled()) {
-                        boolean isFifthSixthBet = betForFifthSixthOperation.doBet(driver, fifthSixthRound, isPlayTime);
-                        if (isFifthSixthBet) {
-                            finishBetOperation.doFinish(driver, "三、四、五、六名");
-                        }
-                    }
                     navigationSeventhEighthOperation.doNavigate(driver);
                     Integer seventhEighthRound = ratioFetchingForSeventhEighthOperation.doFetchRatio(driver);
                     if (Config.getSeventhEighthEnabled()) {
                         boolean isSeventhEighthBet = betForSeventhEighthOperation.doBet(driver, seventhEighthRound, isPlayTime);
                         if (isSeventhEighthBet) {
                             finishBetOperation.doFinish(driver, "七、八、九、十名");
+                        }
+                    }
+                    navigationFifthSixthOperation.doNavigate(driver);
+                    Integer fifthSixthRound = ratioFetchingForFifthSixthOperation.doFetchRatio(driver);
+                    if (Config.getFifthSixthEnabled()) {
+                        boolean isFifthSixthBet = betForFifthSixthOperation.doBet(driver, fifthSixthRound, isPlayTime);
+                        if (isFifthSixthBet) {
+                            finishBetOperation.doFinish(driver, "三、四、五、六名");
                         }
                     }
                     navigationNinethTenthOperation.doNavigate(driver);

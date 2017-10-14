@@ -6,11 +6,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class Config {
-    private static Boolean smpEnabled = true;
+    private static Boolean smpEnabled = false;
     private static Boolean smpDaXiao = true;
     private static Boolean smpDanShuang = false;
     private static List<Integer> smpLevelChips = Collections.singletonList(5);
-    private static Boolean firstSecondEnabled = true;
+    private static Boolean firstSecondEnabled = false;
     private static Boolean firstSecondSmartMode = false;
     private static Integer firstSecondSmartDetectRoundNumber = 2;
     private static Integer firstSecondMaxBetCount = 7;
@@ -18,7 +18,7 @@ public class Config {
     private static List<Integer> firstSecondLevelAccList = Collections.singletonList(5);
     private static List<String> firstSecondSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
-    private static Boolean thirdFourthEnabled = true;
+    private static Boolean thirdFourthEnabled = false;
     private static Boolean thirdFourthSmartMode = false;
     private static Integer thirdFourthSmartDetectRoundNumber = 2;
     private static Integer thirdFourthMaxBetCount = 7;
@@ -26,7 +26,7 @@ public class Config {
     private static List<Integer> thirdFourthLevelAccList = Collections.singletonList(5);
     private static List<String> thirdFourthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
-    private static Boolean fifthSixthEnabled = true;
+    private static Boolean fifthSixthEnabled = false;
     private static Boolean fifthSixthSmartMode = false;
     private static Integer fifthSixthSmartDetectRoundNumber = 2;
     private static Integer fifthSixthMaxBetCount = 7;

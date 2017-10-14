@@ -708,6 +708,6 @@ public class BetForNinethTenthOperation {
     }
 
     private void sendKeys(WebDriver driver, String name, String chip) {
-        DriverUtils.returnOnFindingElementEqualsName(driver, By.tagName("input"), name).sendKeys(chip);
+        DriverUtils.returnOnFindingElementEqualsDataId(driver, By.tagName("input"), name).sendKeys(chip);
     }
 }

@@ -2,6 +2,7 @@ package com.lingda.gamble.operation;
 
 import com.lingda.gamble.util.DriverUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
@@ -22,6 +23,11 @@ public class FinishBetOperation {
 
     public void doFinish(WebDriver driver, String playground) throws InterruptedException {
         logger.info("[Operation - Finish Bet] 确认下注");
+        driver = driver.switchTo().parentFrame();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollTo(0, Math.max(document.documentElement.scrollHeight, document.body.scrollHeight, document.documentElement.clientHeight));");
+//        js.executeScript("window.scrollBy(0, 1500);","");
+        DriverUtils.returnOnFindingFrame(driver, "mainIframe");
         boolean retrySubmit = true;
         while (retrySubmit) {
             try {
