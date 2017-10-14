@@ -157,7 +157,7 @@ public class GambleApplication {
                     if (Config.getSeventhEighthEnabled()) {
                         boolean isSeventhEighthBet = betForSeventhEighthOperation.doBet(driver, seventhEighthRound, isPlayTime);
                         if (isSeventhEighthBet) {
-                            finishBetOperation.doFinish(driver, "七.八名");
+                            finishBetOperation.doFinish(driver, "七、八、九、十名");
                         }
                     }
                     navigationNinethTenthOperation.doNavigate(driver);
@@ -165,7 +165,7 @@ public class GambleApplication {
                     if (Config.getNinethTenthEnabled()) {
                         boolean isNinethTenthBet = betForNinethTenthOperation.doBet(driver, ninethTenthRound, isPlayTime);
                         if (isNinethTenthBet) {
-                            finishBetOperation.doFinish(driver, "九.十名");
+                            finishBetOperation.doFinish(driver, "七、八、九、十名");
                         }
                     }
                 } catch (Exception e) {
