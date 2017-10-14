@@ -125,49 +125,49 @@ public class GambleApplication {
                     if (Config.getSmpEnabled()) {
                         boolean isSMPBet = betForSMPBasicOperation.doBet(driver, round, isPlayTime);
                         if (isSMPBet) {
-                            finishBetOperation.doFinish(driver, "双面盘");
+                            finishBetOperation.doFinish(driver, "兩面盤");
                         }
                     }
-                    navigationFirstSecondOperation.doNavigate(driver);
-                    Integer firstSecondRound = ratioFetchingForFirstSecondOperation.doFetchRatio(driver);
-                    if (Config.getFirstSecondEnabled()) {
-                        boolean isFirstSecondBet = betForFirstSecondOperation.doBet(driver, firstSecondRound, isPlayTime);
-                        if (isFirstSecondBet) {
-                            finishBetOperation.doFinish(driver, "冠.亚军");
-                        }
-                    }
-                    navigationThirdFourthOperation.doNavigate(driver);
-                    Integer thirdFourthRound = ratioFetchingForThirdFourthOperation.doFetchRatio(driver);
-                    if (Config.getThirdFourthEnabled()) {
-                        boolean isThirdFourthBet = betForThirdFourthOperation.doBet(driver, thirdFourthRound, isPlayTime);
-                        if (isThirdFourthBet) {
-                            finishBetOperation.doFinish(driver, "三.四名");
-                        }
-                    }
-                    navigationFifthSixthOperation.doNavigate(driver);
-                    Integer fifthSixthRound = ratioFetchingForFifthSixthOperation.doFetchRatio(driver);
-                    if (Config.getFifthSixthEnabled()) {
-                        boolean isFifthSixthBet = betForFifthSixthOperation.doBet(driver, fifthSixthRound, isPlayTime);
-                        if (isFifthSixthBet) {
-                            finishBetOperation.doFinish(driver, "五.六名");
-                        }
-                    }
-                    navigationSeventhEighthOperation.doNavigate(driver);
-                    Integer seventhEighthRound = ratioFetchingForSeventhEighthOperation.doFetchRatio(driver);
-                    if (Config.getSeventhEighthEnabled()) {
-                        boolean isSeventhEighthBet = betForSeventhEighthOperation.doBet(driver, seventhEighthRound, isPlayTime);
-                        if (isSeventhEighthBet) {
-                            finishBetOperation.doFinish(driver, "七.八名");
-                        }
-                    }
-                    navigationNinethTenthOperation.doNavigate(driver);
-                    Integer ninethTenthRound = ratioFetchingForNinethTenthOperation.doFetchRatio(driver);
-                    if (Config.getNinethTenthEnabled()) {
-                        boolean isNinethTenthBet = betForNinethTenthOperation.doBet(driver, ninethTenthRound, isPlayTime);
-                        if (isNinethTenthBet) {
-                            finishBetOperation.doFinish(driver, "九.十名");
-                        }
-                    }
+//                    navigationFirstSecondOperation.doNavigate(driver);
+//                    Integer firstSecondRound = ratioFetchingForFirstSecondOperation.doFetchRatio(driver);
+//                    if (Config.getFirstSecondEnabled()) {
+//                        boolean isFirstSecondBet = betForFirstSecondOperation.doBet(driver, firstSecondRound, isPlayTime);
+//                        if (isFirstSecondBet) {
+//                            finishBetOperation.doFinish(driver, "冠.亚军");
+//                        }
+//                    }
+//                    navigationThirdFourthOperation.doNavigate(driver);
+//                    Integer thirdFourthRound = ratioFetchingForThirdFourthOperation.doFetchRatio(driver);
+//                    if (Config.getThirdFourthEnabled()) {
+//                        boolean isThirdFourthBet = betForThirdFourthOperation.doBet(driver, thirdFourthRound, isPlayTime);
+//                        if (isThirdFourthBet) {
+//                            finishBetOperation.doFinish(driver, "三.四名");
+//                        }
+//                    }
+//                    navigationFifthSixthOperation.doNavigate(driver);
+//                    Integer fifthSixthRound = ratioFetchingForFifthSixthOperation.doFetchRatio(driver);
+//                    if (Config.getFifthSixthEnabled()) {
+//                        boolean isFifthSixthBet = betForFifthSixthOperation.doBet(driver, fifthSixthRound, isPlayTime);
+//                        if (isFifthSixthBet) {
+//                            finishBetOperation.doFinish(driver, "五.六名");
+//                        }
+//                    }
+//                    navigationSeventhEighthOperation.doNavigate(driver);
+//                    Integer seventhEighthRound = ratioFetchingForSeventhEighthOperation.doFetchRatio(driver);
+//                    if (Config.getSeventhEighthEnabled()) {
+//                        boolean isSeventhEighthBet = betForSeventhEighthOperation.doBet(driver, seventhEighthRound, isPlayTime);
+//                        if (isSeventhEighthBet) {
+//                            finishBetOperation.doFinish(driver, "七.八名");
+//                        }
+//                    }
+//                    navigationNinethTenthOperation.doNavigate(driver);
+//                    Integer ninethTenthRound = ratioFetchingForNinethTenthOperation.doFetchRatio(driver);
+//                    if (Config.getNinethTenthEnabled()) {
+//                        boolean isNinethTenthBet = betForNinethTenthOperation.doBet(driver, ninethTenthRound, isPlayTime);
+//                        if (isNinethTenthBet) {
+//                            finishBetOperation.doFinish(driver, "九.十名");
+//                        }
+//                    }
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                 } finally {

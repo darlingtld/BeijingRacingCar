@@ -25,7 +25,7 @@ public class BetForSMPBasicOperation {
 
     private static final Logger logger = LoggerFactory.getLogger(BetForSMPBasicOperation.class);
 
-    private static final String PLAYGROUND = "双面盘";
+    private static final String PLAYGROUND = "兩面盤";
 
     @Value("${gamble.bet.money}")
     private double money;
@@ -1047,70 +1047,70 @@ public class BetForSMPBasicOperation {
     private void betForFirst(SMPBet smpBet, Integer chip, SingleBetCategory category, WebDriver driver) {
         logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "冠军", category.getCategory(), PLAYGROUND, smpBet.getRound(), chip);
         smpBet.setBetFirst(generateSingleBet(category, chip));
-        String name = getInputName(category, 1);
-        sendKeys(driver, name, String.valueOf(chip));
+        String dataId = getInputDataId(category, 1);
+        sendKeys(driver, dataId, String.valueOf(chip));
     }
 
     private void betForSecond(SMPBet smpBet, Integer chip, SingleBetCategory category, WebDriver driver) {
         logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "亚军", category.getCategory(), PLAYGROUND, smpBet.getRound(), chip);
         smpBet.setBetSecond(generateSingleBet(category, chip));
-        String name = getInputName(category, 2);
+        String name = getInputDataId(category, 2);
         sendKeys(driver, name, String.valueOf(chip));
     }
 
     private void betForThird(SMPBet smpBet, Integer chip, SingleBetCategory category, WebDriver driver) {
         logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "季军", category.getCategory(), PLAYGROUND, smpBet.getRound(), chip);
         smpBet.setBetThird(generateSingleBet(category, chip));
-        String name = getInputName(category, 3);
+        String name = getInputDataId(category, 3);
         sendKeys(driver, name, String.valueOf(chip));
     }
 
     private void betForFourth(SMPBet smpBet, Integer chip, SingleBetCategory category, WebDriver driver) {
         logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "四", category.getCategory(), PLAYGROUND, smpBet.getRound(), chip);
         smpBet.setBetFourth(generateSingleBet(category, chip));
-        String name = getInputName(category, 4);
+        String name = getInputDataId(category, 4);
         sendKeys(driver, name, String.valueOf(chip));
     }
 
     private void betForFifth(SMPBet smpBet, Integer chip, SingleBetCategory category, WebDriver driver) {
         logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "五", category.getCategory(), PLAYGROUND, smpBet.getRound(), chip);
         smpBet.setBetFifth(generateSingleBet(category, chip));
-        String name = getInputName(category, 5);
+        String name = getInputDataId(category, 5);
         sendKeys(driver, name, String.valueOf(chip));
     }
 
     private void betForSixth(SMPBet smpBet, Integer chip, SingleBetCategory category, WebDriver driver) {
         logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "六", category.getCategory(), PLAYGROUND, smpBet.getRound(), chip);
         smpBet.setBetSixth(generateSingleBet(category, chip));
-        String name = getInputName(category, 6);
+        String name = getInputDataId(category, 6);
         sendKeys(driver, name, String.valueOf(chip));
     }
 
     private void betForSeventh(SMPBet smpBet, Integer chip, SingleBetCategory category, WebDriver driver) {
         logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "七", category.getCategory(), PLAYGROUND, smpBet.getRound(), chip);
         smpBet.setBetSeventh(generateSingleBet(category, chip));
-        String name = getInputName(category, 7);
+        String name = getInputDataId(category, 7);
         sendKeys(driver, name, String.valueOf(chip));
     }
 
     private void betForEighth(SMPBet smpBet, Integer chip, SingleBetCategory category, WebDriver driver) {
         logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "八", category.getCategory(), PLAYGROUND, smpBet.getRound(), chip);
         smpBet.setBetEighth(generateSingleBet(category, chip));
-        String name = getInputName(category, 8);
+        String name = getInputDataId(category, 8);
         sendKeys(driver, name, String.valueOf(chip));
     }
 
     private void betForNineth(SMPBet smpBet, Integer chip, SingleBetCategory category, WebDriver driver) {
         logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "九", category.getCategory(), PLAYGROUND, smpBet.getRound(), chip);
         smpBet.setBetNineth(generateSingleBet(category, chip));
-        String name = getInputName(category, 9);
+        String name = getInputDataId(category, 9);
         sendKeys(driver, name, String.valueOf(chip));
     }
 
     private void betForTenth(SMPBet smpBet, Integer chip, SingleBetCategory category, WebDriver driver) {
         logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "十", category.getCategory(), PLAYGROUND, smpBet.getRound(), chip);
         smpBet.setBetTenth(generateSingleBet(category, chip));
-        String name = getInputName(category, 10);
+        String name = getInputDataId(category, 10);
         sendKeys(driver, name, String.valueOf(chip));
     }
 
@@ -1139,33 +1139,107 @@ public class BetForSMPBasicOperation {
         return smpSingleBet;
     }
 
-    private void sendKeys(WebDriver driver, String name, String chip) {
-        DriverUtils.returnOnFindingElementEqualsName(driver, By.tagName("input"), name).sendKeys(chip);
+    private void sendKeys(WebDriver driver, String dataId, String chip) {
+        DriverUtils.returnOnFindingElementEqualsDataId(driver, By.tagName("input"), dataId).sendKeys(chip);
     }
 
-    private String getInputName(SingleBetCategory category, int position) {
-        String name = "";
+    private String getInputDataId(SingleBetCategory category, int position) {
         switch (category) {
             case DA:
-                name = String.format("b_%s_2_1", position);
-                break;
+                switch (position){
+                    case 1:
+                        return "2_11";
+                    case 2:
+                        return "6_27";
+                    case 3:
+                        return "10_43";
+                    case 4:
+                        return "14_59";
+                    case 5:
+                        return "18_75";
+                    case 6:
+                        return "22_91";
+                    case 7:
+                        return "25_105";
+                    case 8:
+                        return "28_119";
+                    case 9:
+                        return "31_133";
+                    case 10:
+                        return "34_147";
+                }
             case XIAO:
-                name = String.format("b_%s_2_2", position);
-                break;
+                switch (position){
+                    case 1:
+                        return "2_12";
+                    case 2:
+                        return "6_28";
+                    case 3:
+                        return "10_44";
+                    case 4:
+                        return "14_60";
+                    case 5:
+                        return "18_76";
+                    case 6:
+                        return "22_92";
+                    case 7:
+                        return "25_106";
+                    case 8:
+                        return "28_120";
+                    case 9:
+                        return "31_134";
+                    case 10:
+                        return "34_148";
+                }
             case DAN:
-                name = String.format("b_%s_1_1", position);
-                break;
+                switch (position){
+                    case 1:
+                        return "3_13";
+                    case 2:
+                        return "7_29";
+                    case 3:
+                        return "11_45";
+                    case 4:
+                        return "15_61";
+                    case 5:
+                        return "19_77";
+                    case 6:
+                        return "23_93";
+                    case 7:
+                        return "26_107";
+                    case 8:
+                        return "29_121";
+                    case 9:
+                        return "32_135";
+                    case 10:
+                        return "35_149";
+                }
             case SHUANG:
-                name = String.format("b_%s_1_2", position);
-                break;
-            case LON:
-                name = String.format("b_%s_6_1", position);
-                break;
-            case HU:
-                name = String.format("b_%s_6_2", position);
-                break;
+                switch (position){
+                    case 1:
+                        return "3_14";
+                    case 2:
+                        return "7_30";
+                    case 3:
+                        return "11_46";
+                    case 4:
+                        return "15_62";
+                    case 5:
+                        return "19_78";
+                    case 6:
+                        return "23_94";
+                    case 7:
+                        return "26_108";
+                    case 8:
+                        return "29_122";
+                    case 9:
+                        return "32_136";
+                    case 10:
+                        return "35_150";
+                }
+
         }
 
-        return name;
+        return null;
     }
 }

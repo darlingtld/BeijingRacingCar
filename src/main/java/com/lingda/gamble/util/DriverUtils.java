@@ -99,6 +99,27 @@ public class DriverUtils {
         }
     }
 
+    public static WebElement returnOnFindingElementEqualsDataId(WebDriver driver, By selector, String dataId) {
+        int i = 0;
+        while (true) {
+            try {
+                if (i++ > 50) {
+                    throw new RuntimeException("Cannot find element within expected time");
+                }
+                logger.debug("Finding element having exact data_id={} by {}", dataId, selector.toString());
+                Optional<WebElement> element = driver.findElements(selector).stream().filter(ele -> ele.getAttribute("data-id") != null && ele.getAttribute("data-id").equals(dataId)).findFirst();
+                return element.orElseThrow(
+                        () -> new RuntimeException(String.format("Failed to find element having exact data_id=%s by %s", dataId, selector.toString())));
+            } catch (NoSuchElementException e) {
+                try {
+                    Thread.sleep(POLLING_INTERVAL_MS);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+    }
+
     public static WebElement returnOnFindingElementEqualsType(WebDriver driver, By selector, String type) {
         int i = 0;
         while (true) {

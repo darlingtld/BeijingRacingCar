@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Config {
-    private static Boolean smpEnabled = false;
+    private static Boolean smpEnabled = true;
     private static Boolean smpDaXiao = true;
     private static Boolean smpDanShuang = false;
     private static List<Integer> smpLevelChips = Collections.singletonList(5);
