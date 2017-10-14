@@ -18,7 +18,7 @@ public class Config {
     private static List<Integer> firstSecondLevelAccList = Collections.singletonList(5);
     private static List<String> firstSecondSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
-    private static Boolean thirdFourthEnabled = false;
+    private static Boolean thirdFourthEnabled = true;
     private static Boolean thirdFourthSmartMode = false;
     private static Integer thirdFourthSmartDetectRoundNumber = 2;
     private static Integer thirdFourthMaxBetCount = 7;

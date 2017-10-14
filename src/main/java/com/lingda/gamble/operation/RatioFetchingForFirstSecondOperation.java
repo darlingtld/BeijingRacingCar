@@ -19,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 //抓取北京赛车 冠亚军赔率
 @Component
@@ -28,9 +26,7 @@ public class RatioFetchingForFirstSecondOperation {
 
     private static final Logger logger = LoggerFactory.getLogger(RatioFetchingForFirstSecondOperation.class);
 
-    private static final Pattern roundPattern = Pattern.compile("^([0-9]+)\\s+期");
-
-    private static final String PLAYGROUND = "冠亚军";
+    private static final String PLAYGROUND = "冠、亞軍 組合";
 
     private final FirstSecondRatioRepository firstSecondRatioRepository;
 

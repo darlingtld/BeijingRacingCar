@@ -579,44 +579,44 @@ public class BetForThirdFourthOperation {
         bet.setBetThird(generateSingleBet(numbers, chip));
         RankSingleBet singleBet = bet.getBetThird();
         if (singleBet.getFirst() > 0) {
-            String name = getInputName(1, 3);
-            sendKeys(driver, name, String.valueOf(chip));
+            String dataId = "9_33";
+            sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getSecond() > 0) {
-            String name = getInputName(2, 3);
-            sendKeys(driver, name, String.valueOf(chip));
+            String dataId = "9_34";
+            sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getThird() > 0) {
-            String name = getInputName(3, 3);
-            sendKeys(driver, name, String.valueOf(chip));
+            String dataId = "9_35";
+            sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getFourth() > 0) {
-            String name = getInputName(4, 3);
-            sendKeys(driver, name, String.valueOf(chip));
+            String dataId = "9_36";
+            sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getFifth() > 0) {
-            String name = getInputName(5, 3);
-            sendKeys(driver, name, String.valueOf(chip));
+            String dataId = "9_37";
+            sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getSixth() > 0) {
-            String name = getInputName(6, 3);
-            sendKeys(driver, name, String.valueOf(chip));
+            String dataId = "9_38";
+            sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getSeventh() > 0) {
-            String name = getInputName(7, 3);
-            sendKeys(driver, name, String.valueOf(chip));
+            String dataId = "9_39";
+            sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getEighth() > 0) {
-            String name = getInputName(8, 3);
-            sendKeys(driver, name, String.valueOf(chip));
+            String dataId = "9_40";
+            sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getNineth() > 0) {
-            String name = getInputName(9, 3);
-            sendKeys(driver, name, String.valueOf(chip));
+            String dataId = "9_41";
+            sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getTenth() > 0) {
-            String name = getInputName(10, 3);
-            sendKeys(driver, name, String.valueOf(chip));
+            String dataId = "9_42";
+            sendKeys(driver, dataId, String.valueOf(chip));
         }
     }
 
@@ -625,43 +625,43 @@ public class BetForThirdFourthOperation {
         bet.setBetFourth(generateSingleBet(numbers, chip));
         RankSingleBet singleBet = bet.getBetFourth();
         if (singleBet.getFirst() > 0) {
-            String name = getInputName(1, 4);
+            String name = "13_49";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getSecond() > 0) {
-            String name = getInputName(2, 4);
+            String name = "13_50";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getThird() > 0) {
-            String name = getInputName(3, 4);
+            String name = "13_51";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getFourth() > 0) {
-            String name = getInputName(4, 4);
+            String name = "13_52";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getFifth() > 0) {
-            String name = getInputName(5, 4);
+            String name = "13_53";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getSixth() > 0) {
-            String name = getInputName(6, 4);
+            String name = "13_54";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getSeventh() > 0) {
-            String name = getInputName(7, 4);
+            String name = "13_55";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getEighth() > 0) {
-            String name = getInputName(8, 4);
+            String name = "13_56";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getNineth() > 0) {
-            String name = getInputName(9, 4);
+            String name = "13_57";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getTenth() > 0) {
-            String name = getInputName(10, 4);
+            String name = "13_58";
             sendKeys(driver, name, String.valueOf(chip));
         }
     }
@@ -705,28 +705,7 @@ public class BetForThirdFourthOperation {
         return rankSingleBet;
     }
 
-    private void sendKeys(WebDriver driver, String name, String chip) {
-        DriverUtils.returnOnFindingElementEqualsName(driver, By.tagName("input"), name).sendKeys(chip);
-    }
-
-    private String getInputName(Integer number, Integer position) {
-        String name = "";
-        switch (number) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-                name = String.format("b_%s_0_0%s", position, number);
-                break;
-            case 10:
-                name = String.format("b_%s_0_%s", position, number);
-                break;
-        }
-        return name;
+    private void sendKeys(WebDriver driver, String dataId, String chip) {
+        DriverUtils.returnOnFindingElementEqualsDataId(driver, By.tagName("input"), dataId).sendKeys(chip);
     }
 }
