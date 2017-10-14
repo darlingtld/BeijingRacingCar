@@ -26,7 +26,7 @@ public class Config {
     private static List<Integer> thirdFourthLevelAccList = Collections.singletonList(5);
     private static List<String> thirdFourthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
-    private static Boolean fifthSixthEnabled = false;
+    private static Boolean fifthSixthEnabled = true;
     private static Boolean fifthSixthSmartMode = false;
     private static Integer fifthSixthSmartDetectRoundNumber = 2;
     private static Integer fifthSixthMaxBetCount = 7;

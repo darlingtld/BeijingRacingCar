@@ -22,7 +22,5 @@ public class NavigationThirdFourthOperation {
         navBtn.click();
         Thread.sleep(500);
         logger.info("[Operation - Navigate] Navigate to 三、四、五、六名");
-
-
     }
 }
