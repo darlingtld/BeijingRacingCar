@@ -66,7 +66,13 @@ public class FinishBetOperation {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             logger.info("[Operation - Finish Bet] 下注失败");
-//            DriverUtils.returnOnFindingElementEqualsValue(driver, By.tagName("input"), "回上一页").click();
+            List<WebElement> aList = form.findElements(By.tagName("a"));
+            for (WebElement a : aList) {
+                if (a.getText().equals("取消")) {
+                    a.click();
+                    break;
+                }
+            }
         } finally {
             DriverUtils.returnOnFinishLoadingGivenFinishingIndicator(driver, playground);
         }
