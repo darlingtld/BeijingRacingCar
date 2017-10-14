@@ -10,7 +10,7 @@ public class Config {
     private static Boolean smpDaXiao = true;
     private static Boolean smpDanShuang = false;
     private static List<Integer> smpLevelChips = Collections.singletonList(5);
-    private static Boolean firstSecondEnabled = false;
+    private static Boolean firstSecondEnabled = true;
     private static Boolean firstSecondSmartMode = false;
     private static Integer firstSecondSmartDetectRoundNumber = 2;
     private static Integer firstSecondMaxBetCount = 7;

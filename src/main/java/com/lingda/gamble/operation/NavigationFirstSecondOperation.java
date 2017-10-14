@@ -18,12 +18,9 @@ public class NavigationFirstSecondOperation {
     private String website;
 
     public void doNavigate(WebDriver driver) throws InterruptedException {
-        driver.switchTo().parentFrame().switchTo().frame("topFrame");
-        WebElement smpBtn = DriverUtils.returnOnFindingElementContainsValue(driver, By.tagName("a"), "冠.亚军");
+        WebElement smpBtn = DriverUtils.returnOnFindingElementContainsValue(driver, By.tagName("a"), "冠、亞軍 組合");
         smpBtn.click();
         Thread.sleep(500);
-        logger.info("[Operation - Navigate] Navigate to  冠.亚军");
-
-
+        logger.info("[Operation - Navigate] Navigate to 冠、亞軍 組合");
     }
 }
