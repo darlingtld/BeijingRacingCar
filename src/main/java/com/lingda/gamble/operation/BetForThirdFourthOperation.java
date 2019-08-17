@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-//北京赛车 三四名下注
+//幸运飞艇 三四名下注
 @Component
 public class BetForThirdFourthOperation {
 
@@ -75,19 +75,19 @@ public class BetForThirdFourthOperation {
         fourthNumberCountMap.clear();
         logger.info("[Operation - Bet] Third fourth numbers to exclude is {}", Config.getThirdFourthExcludeNumbers());
 
-        logger.info("[Operation - Bet] Bet for 北京赛车 - {}", PLAYGROUND);
+        logger.info("[Operation - Bet] Bet for 幸运飞艇 - {}", PLAYGROUND);
 
-        logger.info("[Operation - Bet] Get fetched ratio for 北京赛车 - {} - 期数 {}", PLAYGROUND, round);
+        logger.info("[Operation - Bet] Get fetched ratio for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round);
         ThirdFourthRatio ratio = thirdFourthRatioRepository.findByRound(round);
         if (ratio == null) {
-            logger.info("[Operation - Bet] No ratio information for 北京赛车 - {} - 期数 {}", PLAYGROUND, round);
+            logger.info("[Operation - Bet] No ratio information for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round);
             return false;
         }
 
-        logger.info("[Operation - Bet] Get last lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+        logger.info("[Operation - Bet] Get last lottery result for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round - 1);
         LotteryResult lastLotteryResult = lotteryResultRepository.findByRound(round - 1);
         if (lastLotteryResult == null) {
-            logger.info("[Operation - Bet] No last lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+            logger.info("[Operation - Bet] No last lottery result for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round - 1);
             return false;
         }
 //        take the last 7 lottery result into consideration
@@ -118,21 +118,21 @@ public class BetForThirdFourthOperation {
             markNumber(lotteryResult7);
         }
 
-        logger.info("[Operation - Bet] Last 7 lottery result for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+        logger.info("[Operation - Bet] Last 7 lottery result for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round - 1);
         for (Map.Entry<Integer, AtomicInteger> entry : thirdNumberCountMap.entrySet()) {
-            logger.info("[Operation - Bet] Last 7 lottery result 第三名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
+            logger.info("[Operation - Bet] Last 7 lottery result 第三名 {}:{}次 for 幸运飞艇 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
         }
         for (Map.Entry<Integer, AtomicInteger> entry : fourthNumberCountMap.entrySet()) {
-            logger.info("[Operation - Bet] Last 7 lottery result 第四名 {}:{}次 for 北京赛车 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
+            logger.info("[Operation - Bet] Last 7 lottery result 第四名 {}:{}次 for 幸运飞艇 - {} - 期数 {}", entry.getKey(), entry.getValue().intValue(), PLAYGROUND, round - 1, entry.getKey(), entry.getValue().intValue());
         }
 
 //      check if the bet is already done
         if (thirdFourthBetRepository.findByRound(round) != null) {
-            logger.info("[Operation - Bet] Already bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round);
+            logger.info("[Operation - Bet] Already bet for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round);
             return false;
         }
 
-        logger.info("[Operation - Bet] Get last bet information for 北京赛车 - {}", PLAYGROUND);
+        logger.info("[Operation - Bet] Get last bet information for 幸运飞艇 - {}", PLAYGROUND);
         ThirdFourthBet lastBet = thirdFourthBetRepository.findByRound(round - 1);
         //            结算上次中奖情况
         logger.info("=============== 金额 (for test) ===============");
@@ -164,7 +164,7 @@ public class BetForThirdFourthOperation {
                 }
             }
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round);
                 return false;
             }
 //            no last bet or last time is a win
@@ -174,7 +174,7 @@ public class BetForThirdFourthOperation {
                     logger.info("[Operation - Bet] Bingo! Bet for Third exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList2);
-                    logger.info("[Operation - Bet] Bet Third for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    logger.info("[Operation - Bet] Bet Third for 幸运飞艇 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForThird(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
                     if (bet.getBetFourth() == null) {
@@ -184,7 +184,7 @@ public class BetForThirdFourthOperation {
                     logger.info("[Operation - Bet] Bingo! Bet for Third exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList1);
-                    logger.info("[Operation - Bet] Bet Third for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    logger.info("[Operation - Bet] Bet Third for 幸运飞艇 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForThird(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
                     if (bet.getBetFourth() == null) {
@@ -208,7 +208,7 @@ public class BetForThirdFourthOperation {
                     Integer betChip = decideBetChip(lastLotteryResult.getThird(), lastBet.getBetThird(), isPlayTime);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList1);
-                    logger.info("[Operation - Bet] Bet Third for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    logger.info("[Operation - Bet] Bet Third for 幸运飞艇 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForThird(bet, betChip, numberBetList, driver);
                     money = calculateMoney(money, -7 * betChip);
                     if (bet.getBetFourth() == null) {
@@ -230,7 +230,7 @@ public class BetForThirdFourthOperation {
                     Integer betChip = decideBetChip(lastLotteryResult.getThird(), lastBet.getBetThird(), isPlayTime);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList2);
-                    logger.info("[Operation - Bet] Bet Third for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    logger.info("[Operation - Bet] Bet Third for 幸运飞艇 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForThird(bet, betChip, numberBetList, driver);
                     money = calculateMoney(money, -7 * betChip);
                     if (bet.getBetFourth() == null) {
@@ -245,7 +245,7 @@ public class BetForThirdFourthOperation {
                     logger.info("[Operation - Bet] Bingo! Bet for Fourth exclude {}", stepIntegerList2);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList2);
-                    logger.info("[Operation - Bet] Bet Fourth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    logger.info("[Operation - Bet] Bet Fourth for 幸运飞艇 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForFourth(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
                     if (bet.getBetThird() == null) {
@@ -255,7 +255,7 @@ public class BetForThirdFourthOperation {
                     logger.info("[Operation - Bet] Bingo! Bet for Fourth exclude {}", stepIntegerList1);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList1);
-                    logger.info("[Operation - Bet] Bet Fourth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    logger.info("[Operation - Bet] Bet Fourth for 幸运飞艇 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForFourth(bet, chip, numberBetList, driver);
                     money = calculateMoney(money, -7 * chip);
                     if (bet.getBetThird() == null) {
@@ -279,7 +279,7 @@ public class BetForThirdFourthOperation {
                     Integer betChip = decideBetChip(lastLotteryResult.getFourth(), lastBet.getBetFourth(), isPlayTime);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList1);
-                    logger.info("[Operation - Bet] Bet Fourth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    logger.info("[Operation - Bet] Bet Fourth for 幸运飞艇 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForFourth(bet, betChip, numberBetList, driver);
                     money = calculateMoney(money, -7 * betChip);
                     if (bet.getBetThird() == null) {
@@ -299,7 +299,7 @@ public class BetForThirdFourthOperation {
                     Integer betChip = decideBetChip(lastLotteryResult.getFourth(), lastBet.getBetFourth(), isPlayTime);
                     List<Integer> numberBetList = new ArrayList<>(allNumbers);
                     numberBetList.removeAll(stepIntegerList2);
-                    logger.info("[Operation - Bet] Bet Fourth for 北京赛车 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
+                    logger.info("[Operation - Bet] Bet Fourth for 幸运飞艇 - {} - 期数 {} - {}", PLAYGROUND, round, numberBetList);
                     betForFourth(bet, betChip, numberBetList, driver);
                     money = calculateMoney(money, -7 * betChip);
                     if (bet.getBetThird() == null) {
@@ -318,9 +318,9 @@ public class BetForThirdFourthOperation {
 
             if (lastBet == null) {
                 if (!isPlayTime) {
-                    logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                    logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round - 1);
                 } else {
-                    logger.info("[Operation - Bet] No last bet for 北京赛车 - {} - 期数 {}", PLAYGROUND, round - 1);
+                    logger.info("[Operation - Bet] No last bet for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round - 1);
 
                     int thirdCountOfNumbersToRemove = 3 - Config.getThirdFourthExcludeNumbers().size();
                     int fourthCountOfNumbersToRemove = 3 - Config.getThirdFourthExcludeNumbers().size();
@@ -418,61 +418,61 @@ public class BetForThirdFourthOperation {
 
         if (lastRankSingleBet.getFirst() > 0 && winningNumber == 1) {
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {}", PLAYGROUND);
                 return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getSecond() > 0 && winningNumber == 2) {
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {}", PLAYGROUND);
                 return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getThird() > 0 && winningNumber == 3) {
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {}", PLAYGROUND);
                 return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getFourth() > 0 && winningNumber == 4) {
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {}", PLAYGROUND);
                 return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getFifth() > 0 && winningNumber == 5) {
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {}", PLAYGROUND);
                 return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getSixth() > 0 && winningNumber == 6) {
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {}", PLAYGROUND);
                 return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getSeventh() > 0 && winningNumber == 7) {
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {}", PLAYGROUND);
                 return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getEighth() > 0 && winningNumber == 8) {
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {}", PLAYGROUND);
                 return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getNineth() > 0 && winningNumber == 9) {
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {}", PLAYGROUND);
                 return 0;
             }
             return chip;
         } else if (lastRankSingleBet.getTenth() > 0 && winningNumber == 10) {
             if (!isPlayTime) {
-                logger.info("[Operation - Bet] Not in play time.  Do not bet for 北京赛车 - {}", PLAYGROUND);
+                logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {}", PLAYGROUND);
                 return 0;
             }
             return chip;
@@ -575,93 +575,93 @@ public class BetForThirdFourthOperation {
     }
 
     private void betForThird(ThirdFourthBet bet, Integer chip, List<Integer> numbers, WebDriver driver) {
-        logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "第三名", numbers, PLAYGROUND, bet.getRound(), chip);
+        logger.info("[Operation - Bet] Bet [{} {}] for 幸运飞艇 - {} - 期数 {} - 金额 - {}", "第三名", numbers, PLAYGROUND, bet.getRound(), chip);
         bet.setBetThird(generateSingleBet(numbers, chip));
         RankSingleBet singleBet = bet.getBetThird();
         if (singleBet.getFirst() > 0) {
-            String dataId = "9_33";
+            String dataId = "B3_1";
             sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getSecond() > 0) {
-            String dataId = "9_34";
+            String dataId = "B3_2";
             sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getThird() > 0) {
-            String dataId = "9_35";
+            String dataId = "B3_3";
             sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getFourth() > 0) {
-            String dataId = "9_36";
+            String dataId = "B3_4";
             sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getFifth() > 0) {
-            String dataId = "9_37";
+            String dataId = "B3_5";
             sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getSixth() > 0) {
-            String dataId = "9_38";
+            String dataId = "B3_6";
             sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getSeventh() > 0) {
-            String dataId = "9_39";
+            String dataId = "B3_7";
             sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getEighth() > 0) {
-            String dataId = "9_40";
+            String dataId = "B3_8";
             sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getNineth() > 0) {
-            String dataId = "9_41";
+            String dataId = "B3_9";
             sendKeys(driver, dataId, String.valueOf(chip));
         }
         if (singleBet.getTenth() > 0) {
-            String dataId = "9_42";
+            String dataId = "B3_10";
             sendKeys(driver, dataId, String.valueOf(chip));
         }
     }
 
     private void betForFourth(ThirdFourthBet bet, Integer chip, List<Integer> numbers, WebDriver driver) {
-        logger.info("[Operation - Bet] Bet [{} {}] for 北京赛车 - {} - 期数 {} - 金额 - {}", "第四名", numbers, PLAYGROUND, bet.getRound(), chip);
+        logger.info("[Operation - Bet] Bet [{} {}] for 幸运飞艇 - {} - 期数 {} - 金额 - {}", "第四名", numbers, PLAYGROUND, bet.getRound(), chip);
         bet.setBetFourth(generateSingleBet(numbers, chip));
         RankSingleBet singleBet = bet.getBetFourth();
         if (singleBet.getFirst() > 0) {
-            String name = "13_49";
+            String name = "B4_1";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getSecond() > 0) {
-            String name = "13_50";
+            String name = "B4_2";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getThird() > 0) {
-            String name = "13_51";
+            String name = "B4_3";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getFourth() > 0) {
-            String name = "13_52";
+            String name = "B4_4";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getFifth() > 0) {
-            String name = "13_53";
+            String name = "B4_5";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getSixth() > 0) {
-            String name = "13_54";
+            String name = "B4_6";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getSeventh() > 0) {
-            String name = "13_55";
+            String name = "B4_7";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getEighth() > 0) {
-            String name = "13_56";
+            String name = "B4_8";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getNineth() > 0) {
-            String name = "13_57";
+            String name = "B4_9";
             sendKeys(driver, name, String.valueOf(chip));
         }
         if (singleBet.getTenth() > 0) {
-            String name = "13_58";
+            String name = "B4_10";
             sendKeys(driver, name, String.valueOf(chip));
         }
     }

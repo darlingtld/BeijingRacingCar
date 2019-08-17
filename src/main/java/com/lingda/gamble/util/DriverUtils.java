@@ -107,7 +107,7 @@ public class DriverUtils {
                     throw new RuntimeException("Cannot find element within expected time");
                 }
                 logger.debug("Finding element having exact data_id={} by {}", dataId, selector.toString());
-                Optional<WebElement> element = driver.findElements(selector).stream().filter(ele -> ele.getAttribute("data-id") != null && ele.getAttribute("data-id").equals(dataId)).findFirst();
+                Optional<WebElement> element = driver.findElements(selector).stream().filter(ele -> ele.getAttribute("name") != null && ele.getAttribute("name").equals(dataId)).findFirst();
                 return element.orElseThrow(
                         () -> new RuntimeException(String.format("Failed to find element having exact data_id=%s by %s", dataId, selector.toString())));
             } catch (NoSuchElementException e) {

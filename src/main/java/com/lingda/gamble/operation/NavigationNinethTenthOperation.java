@@ -18,9 +18,9 @@ public class NavigationNinethTenthOperation {
     private String website;
 
     public void doNavigate(WebDriver driver) throws InterruptedException {
-        WebElement navBtn = DriverUtils.returnOnFindingElementContainsValue(driver, By.tagName("a"), "七、八、九、十名");
+        WebElement navBtn = DriverUtils.returnOnFindingElementContainsValue(driver, By.tagName("a"), "单号1 ~ 10");
         navBtn.click();
         Thread.sleep(500);
-        logger.info("[Operation - Navigate] Navigate to 七、八、九、十名");
+        logger.info("[Operation - Navigate] Navigate to 单号1 ~ 10");
     }
 }

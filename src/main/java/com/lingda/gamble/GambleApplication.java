@@ -93,7 +93,7 @@ public class GambleApplication {
                                   FinishBetOperation finishBetOperation) {
         return (args) -> {
             if (args.length == 0) {
-                String chromeDriverPath = resourceLoader.getResource("classpath:chromedriver").getFile().getPath();
+                String chromeDriverPath = resourceLoader.getResource("classpath:chromedriver.exe").getFile().getPath();
                 logger.info("Chrome driver path is {}", chromeDriverPath);
                 System.setProperty("webdriver.chrome.driver", chromeDriverPath);
             } else {
@@ -120,52 +120,58 @@ public class GambleApplication {
                     isPlayTime = true;
                 }
                 try {
+                    driver.switchTo().parentFrame();
                     navigationSMPOperation.doNavigate(driver);
                     Integer round = ratioFetchingForSMPOperation.doFetchRatio(driver);
                     if (Config.getSmpEnabled()) {
                         boolean isSMPBet = betForSMPBasicOperation.doBet(driver, round, isPlayTime);
                         if (isSMPBet) {
-                            finishBetOperation.doFinish(driver, "兩面盤");
+                            finishBetOperation.doFinish(driver, "两面盘");
                         }
                     }
+                    driver.switchTo().parentFrame();
                     navigationFirstSecondOperation.doNavigate(driver);
                     Integer firstSecondRound = ratioFetchingForFirstSecondOperation.doFetchRatio(driver);
                     if (Config.getFirstSecondEnabled()) {
                         boolean isFirstSecondBet = betForFirstSecondOperation.doBet(driver, firstSecondRound, isPlayTime);
                         if (isFirstSecondBet) {
-                            finishBetOperation.doFinish(driver, "冠、亞軍 組合");
+                            finishBetOperation.doFinish(driver, "单号1 ~ 10");
                         }
                     }
+                    driver.switchTo().parentFrame();
                     navigationThirdFourthOperation.doNavigate(driver);
                     Integer thirdFourthRound = ratioFetchingForThirdFourthOperation.doFetchRatio(driver);
                     if (Config.getThirdFourthEnabled()) {
                         boolean isThirdFourthBet = betForThirdFourthOperation.doBet(driver, thirdFourthRound, isPlayTime);
                         if (isThirdFourthBet) {
-                            finishBetOperation.doFinish(driver, "三、四、五、六名");
+                            finishBetOperation.doFinish(driver, "单号1 ~ 10");
                         }
                     }
+                    driver.switchTo().parentFrame();
                     navigationSeventhEighthOperation.doNavigate(driver);
                     Integer seventhEighthRound = ratioFetchingForSeventhEighthOperation.doFetchRatio(driver);
                     if (Config.getSeventhEighthEnabled()) {
                         boolean isSeventhEighthBet = betForSeventhEighthOperation.doBet(driver, seventhEighthRound, isPlayTime);
                         if (isSeventhEighthBet) {
-                            finishBetOperation.doFinish(driver, "七、八、九、十名");
+                            finishBetOperation.doFinish(driver, "单号1 ~ 10");
                         }
                     }
+                    driver.switchTo().parentFrame();
                     navigationFifthSixthOperation.doNavigate(driver);
                     Integer fifthSixthRound = ratioFetchingForFifthSixthOperation.doFetchRatio(driver);
                     if (Config.getFifthSixthEnabled()) {
                         boolean isFifthSixthBet = betForFifthSixthOperation.doBet(driver, fifthSixthRound, isPlayTime);
                         if (isFifthSixthBet) {
-                            finishBetOperation.doFinish(driver, "三、四、五、六名");
+                            finishBetOperation.doFinish(driver, "单号1 ~ 10");
                         }
                     }
+                    driver.switchTo().parentFrame();
                     navigationNinethTenthOperation.doNavigate(driver);
                     Integer ninethTenthRound = ratioFetchingForNinethTenthOperation.doFetchRatio(driver);
                     if (Config.getNinethTenthEnabled()) {
                         boolean isNinethTenthBet = betForNinethTenthOperation.doBet(driver, ninethTenthRound, isPlayTime);
                         if (isNinethTenthBet) {
-                            finishBetOperation.doFinish(driver, "七、八、九、十名");
+                            finishBetOperation.doFinish(driver, "单号1 ~ 10");
                         }
                     }
                 } catch (Exception e) {

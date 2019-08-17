@@ -14,10 +14,10 @@ public class NavigationSMPOperation {
     private static final Logger logger = LoggerFactory.getLogger(NavigationSMPOperation.class);
 
     public void doNavigate(WebDriver driver) throws InterruptedException {
-        WebElement smpBtn = DriverUtils.returnOnFindingElementEqualsValue(driver, By.tagName("a"), "兩面盤");
+        WebElement smpBtn = DriverUtils.returnOnFindingElementEqualsValue(driver, By.tagName("a"), "两面盘");
         smpBtn.click();
         Thread.sleep(500);
-        logger.info("[Operation - Navigate] Navigate to 兩面盤");
+        logger.info("[Operation - Navigate] Navigate to 两面盘");
 
 
     }

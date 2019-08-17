@@ -42,103 +42,97 @@ public class RatioFetchingForSeventhEighthOperation {
     }
 
     public Integer doFetchRatio(WebDriver driver) throws InterruptedException {
-        logger.info("[Operation - FetchRatio] Fetch ratio for 北京赛车 - {}", PLAYGROUND);
+        logger.info("[Operation - FetchRatio] Fetch ratio for 幸运飞艇 - {}", PLAYGROUND);
 
-        logger.info("[Operation - FetchRatio] Fetch lottery result for 北京赛车 - {} - 期数", PLAYGROUND);
+        logger.info("[Operation - FetchRatio] Fetch lottery result for 幸运飞艇 - {} - 期数", PLAYGROUND);
 //        获取之前开奖信息
         LotteryResult lotteryResult = new LotteryResult();
-        WebElement round = DriverUtils.returnOnFindingElement(driver, By.id("newPhase"));
-        lotteryResult.setRound(Integer.parseInt(round.getText()));
-        WebElement lotteryResultEle = DriverUtils.returnOnFindingElement(driver, By.id("prevBall"));
+        WebElement round = DriverUtils.returnOnFindingElement(driver, By.id("result_info"));
+        lotteryResult.setRound(Integer.parseInt(round.getText().substring(7,16)));
+        WebElement lotteryResultEle = DriverUtils.returnOnFindingElement(driver, By.id("result_balls"));
         List<WebElement> spanList = lotteryResultEle.findElements(By.tagName("span"));
 
-        lotteryResult.setFirst(Integer.parseInt(spanList.get(0).getAttribute("class").substring(3)));
-        lotteryResult.setSecond(Integer.parseInt(spanList.get(1).getAttribute("class").substring(3)));
-        lotteryResult.setThird(Integer.parseInt(spanList.get(2).getAttribute("class").substring(3)));
-        lotteryResult.setFourth(Integer.parseInt(spanList.get(3).getAttribute("class").substring(3)));
-        lotteryResult.setFifth(Integer.parseInt(spanList.get(4).getAttribute("class").substring(3)));
-        lotteryResult.setSixth(Integer.parseInt(spanList.get(5).getAttribute("class").substring(3)));
-        lotteryResult.setSeventh(Integer.parseInt(spanList.get(6).getAttribute("class").substring(3)));
-        lotteryResult.setEighth(Integer.parseInt(spanList.get(7).getAttribute("class").substring(3)));
-        lotteryResult.setNineth(Integer.parseInt(spanList.get(8).getAttribute("class").substring(3)));
-        lotteryResult.setTenth(Integer.parseInt(spanList.get(9).getAttribute("class").substring(3)));
+        lotteryResult.setFirst(Integer.parseInt(spanList.get(0).getText()));
+        lotteryResult.setSecond(Integer.parseInt(spanList.get(1).getText()));
+        lotteryResult.setThird(Integer.parseInt(spanList.get(2).getText()));
+        lotteryResult.setFourth(Integer.parseInt(spanList.get(3).getText()));
+        lotteryResult.setFifth(Integer.parseInt(spanList.get(4).getText()));
+        lotteryResult.setSixth(Integer.parseInt(spanList.get(5).getText()));
+        lotteryResult.setSeventh(Integer.parseInt(spanList.get(6).getText()));
+        lotteryResult.setEighth(Integer.parseInt(spanList.get(7).getText()));
+        lotteryResult.setNineth(Integer.parseInt(spanList.get(8).getText()));
+        lotteryResult.setTenth(Integer.parseInt(spanList.get(9).getText()));
         logger.info(lotteryResult.toString());
         if (lotteryResultRepository.findByRound(lotteryResult.getRound()) == null) {
-            logger.info("[Operation - FetchRatio] Save lotteryResult to DB for 北京赛车 - {} - 开奖信息", PLAYGROUND);
+            logger.info("[Operation - FetchRatio] Save lotteryResult to DB for 幸运飞艇 - {} - 开奖信息", PLAYGROUND);
             lotteryResultRepository.save(lotteryResult);
         }
 
-        logger.info("[Operation - FetchRatio] Fetch round for 北京赛车 - {} - 期数", PLAYGROUND);
+        logger.info("[Operation - FetchRatio] Fetch round for 幸运飞艇 - {} - 期数", PLAYGROUND);
 //        获取当前下注期数
-        WebElement element = DriverUtils.returnOnFindingElement(driver, By.id("NowJq"));
+        driver.switchTo().frame("frame");
+        WebElement element = DriverUtils.returnOnFindingElement(driver, By.id("drawNumber"));
+
 
         SeventhEighthRatio ratio = new SeventhEighthRatio();
-        ratio.setRound(Integer.parseInt(element.getText()));
+        ratio.setRound(Integer.parseInt(element.getText().substring(2)));
 
         //        获取当前输赢情况
-        WebElement todayWinLost = DriverUtils.returnOnFindingElement(driver, By.id("profit"));
+        WebElement todayWinLost = DriverUtils.returnOnFindingElement(driver, By.id("bresult"));
         Double todayWinLostMoney = Double.parseDouble(todayWinLost.getText());
-        logger.info("[Operation - FetchRatio] Today win/lost for 北京赛车 - {} - {}", PLAYGROUND, todayWinLostMoney);
+        logger.info("[Operation - FetchRatio] Today win/lost for 幸运飞艇 - {} - {}", PLAYGROUND, todayWinLostMoney);
         WinLostMoney winLostMoney = new WinLostMoney();
         winLostMoney.setAccountName(Store.getAccountName());
         winLostMoney.setRound(ratio.getRound());
         winLostMoney.setWinLostMoney(todayWinLostMoney);
         if (winLostMoneyRepository.findByRoundAndAccountName(winLostMoney.getRound(), winLostMoney.getAccountName()) == null) {
-            logger.info("[Operation - FetchRatio] Save today win/lost for 北京赛车 - {}", PLAYGROUND);
+            logger.info("[Operation - FetchRatio] Save today win/lost for 幸运飞艇 - {}", PLAYGROUND);
             winLostMoneyRepository.save(winLostMoney);
         }
 
-        WebElement gameBox = DriverUtils.returnOnFindingElement(driver, By.id("gameBox"));
+        WebElement gameBox = DriverUtils.returnOnFindingElement(driver, By.id("main"));
         RankSingleRatio seventhRatio = new RankSingleRatio();
-        WebElement ratioTest = gameBox.findElement(By.id("odds_24_95"));
-        if (ratioTest.getText().equals("-")) {
+        WebElement ratioTest = gameBox.findElement(By.id("o_B7_1"));
+        if (ratioTest.getText().equals("--")) {
 //                正在开奖 或者 正在刷新
             return null;
         }
 
-        WebElement ratioTable = DriverUtils.returnOnFindingElement(driver, By.cssSelector("div.game_box[data-title=第七名]"));
+        WebElement ratioTable = DriverUtils.returnOnFindingElement(driver, By.id("bet_panel"));
         try {
-            seventhRatio.setFirst(Double.parseDouble(ratioTable.findElement(By.id("odds_24_95")).getText()));
-            seventhRatio.setSecond(Double.parseDouble(ratioTable.findElement(By.id("odds_24_96")).getText()));
-            seventhRatio.setThird(Double.parseDouble(ratioTable.findElement(By.id("odds_24_97")).getText()));
-            seventhRatio.setFourth(Double.parseDouble(ratioTable.findElement(By.id("odds_24_98")).getText()));
-            seventhRatio.setFifth(Double.parseDouble(ratioTable.findElement(By.id("odds_24_99")).getText()));
-            seventhRatio.setSixth(Double.parseDouble(ratioTable.findElement(By.id("odds_24_100")).getText()));
-            seventhRatio.setSeventh(Double.parseDouble(ratioTable.findElement(By.id("odds_24_101")).getText()));
-            seventhRatio.setEighth(Double.parseDouble(ratioTable.findElement(By.id("odds_24_102")).getText()));
-            seventhRatio.setNineth(Double.parseDouble(ratioTable.findElement(By.id("odds_24_103")).getText()));
-            seventhRatio.setTenth(Double.parseDouble(ratioTable.findElement(By.id("odds_24_104")).getText()));
-            seventhRatio.setDan(Double.parseDouble(ratioTable.findElement(By.id("odds_26_107")).getText()));
-            seventhRatio.setShuang(Double.parseDouble(ratioTable.findElement(By.id("odds_26_108")).getText()));
-            seventhRatio.setDa(Double.parseDouble(ratioTable.findElement(By.id("odds_25_105")).getText()));
-            seventhRatio.setXiao(Double.parseDouble(ratioTable.findElement(By.id("odds_25_106")).getText()));
+            seventhRatio.setFirst(Double.parseDouble(ratioTable.findElement(By.id("o_B7_1")).getText()));
+            seventhRatio.setSecond(Double.parseDouble(ratioTable.findElement(By.id("o_B7_2")).getText()));
+            seventhRatio.setThird(Double.parseDouble(ratioTable.findElement(By.id("o_B7_3")).getText()));
+            seventhRatio.setFourth(Double.parseDouble(ratioTable.findElement(By.id("o_B7_4")).getText()));
+            seventhRatio.setFifth(Double.parseDouble(ratioTable.findElement(By.id("o_B7_5")).getText()));
+            seventhRatio.setSixth(Double.parseDouble(ratioTable.findElement(By.id("o_B7_6")).getText()));
+            seventhRatio.setSeventh(Double.parseDouble(ratioTable.findElement(By.id("o_B7_7")).getText()));
+            seventhRatio.setEighth(Double.parseDouble(ratioTable.findElement(By.id("o_B7_8")).getText()));
+            seventhRatio.setNineth(Double.parseDouble(ratioTable.findElement(By.id("o_B7_9")).getText()));
+            seventhRatio.setTenth(Double.parseDouble(ratioTable.findElement(By.id("o_B7_10")).getText()));
         } catch (NumberFormatException e) {
             throw new RuntimeException("Can not find lottery result");
         }
         ratio.setRatioSeventh(seventhRatio);
 
-        ratioTable = DriverUtils.returnOnFindingElement(driver, By.cssSelector("div.game_box[data-title=第八名]"));
+        ratioTable = DriverUtils.returnOnFindingElement(driver, By.id("bet_panel"));
         RankSingleRatio eighthRatio = new RankSingleRatio();
-        eighthRatio.setFirst(Double.parseDouble(ratioTable.findElement(By.id("odds_27_109")).getText()));
-        eighthRatio.setSecond(Double.parseDouble(ratioTable.findElement(By.id("odds_27_110")).getText()));
-        eighthRatio.setThird(Double.parseDouble(ratioTable.findElement(By.id("odds_27_111")).getText()));
-        eighthRatio.setFourth(Double.parseDouble(ratioTable.findElement(By.id("odds_27_112")).getText()));
-        eighthRatio.setFifth(Double.parseDouble(ratioTable.findElement(By.id("odds_27_113")).getText()));
-        eighthRatio.setSixth(Double.parseDouble(ratioTable.findElement(By.id("odds_27_114")).getText()));
-        eighthRatio.setSeventh(Double.parseDouble(ratioTable.findElement(By.id("odds_27_115")).getText()));
-        eighthRatio.setEighth(Double.parseDouble(ratioTable.findElement(By.id("odds_27_116")).getText()));
-        eighthRatio.setNineth(Double.parseDouble(ratioTable.findElement(By.id("odds_27_117")).getText()));
-        eighthRatio.setTenth(Double.parseDouble(ratioTable.findElement(By.id("odds_27_118")).getText()));
-        eighthRatio.setDan(Double.parseDouble(ratioTable.findElement(By.id("odds_29_121")).getText()));
-        eighthRatio.setShuang(Double.parseDouble(ratioTable.findElement(By.id("odds_29_122")).getText()));
-        eighthRatio.setDa(Double.parseDouble(ratioTable.findElement(By.id("odds_28_119")).getText()));
-        eighthRatio.setXiao(Double.parseDouble(ratioTable.findElement(By.id("odds_28_120")).getText()));
+        eighthRatio.setFirst(Double.parseDouble(ratioTable.findElement(By.id("o_B8_1")).getText()));
+        eighthRatio.setSecond(Double.parseDouble(ratioTable.findElement(By.id("o_B8_2")).getText()));
+        eighthRatio.setThird(Double.parseDouble(ratioTable.findElement(By.id("o_B8_3")).getText()));
+        eighthRatio.setFourth(Double.parseDouble(ratioTable.findElement(By.id("o_B8_4")).getText()));
+        eighthRatio.setFifth(Double.parseDouble(ratioTable.findElement(By.id("o_B8_5")).getText()));
+        eighthRatio.setSixth(Double.parseDouble(ratioTable.findElement(By.id("o_B8_6")).getText()));
+        eighthRatio.setSeventh(Double.parseDouble(ratioTable.findElement(By.id("o_B8_7")).getText()));
+        eighthRatio.setEighth(Double.parseDouble(ratioTable.findElement(By.id("o_B8_8")).getText()));
+        eighthRatio.setNineth(Double.parseDouble(ratioTable.findElement(By.id("o_B8_9")).getText()));
+        eighthRatio.setTenth(Double.parseDouble(ratioTable.findElement(By.id("o_B8_10")).getText()));
         ratio.setRatioEighth(eighthRatio);
 
-        logger.info("[Operation - FetchRatio] Fetch ratio for 北京赛车 - {} - 赔率", PLAYGROUND);
+        logger.info("[Operation - FetchRatio] Fetch ratio for 幸运飞艇 - {} - 赔率", PLAYGROUND);
         logger.info(ratio.toString());
         if (seventhEighthRatioRepository.findByRound(ratio.getRound()) == null) {
-            logger.info("[Operation - FetchRatio] Save ratio to DB for 北京赛车 - {} - 赔率", PLAYGROUND);
+            logger.info("[Operation - FetchRatio] Save ratio to DB for 幸运飞艇 - {} - 赔率", PLAYGROUND);
             seventhEighthRatioRepository.save(ratio);
         }
         if (winLostMoney.getWinLostMoney() + Config.getLostThreshold() < 0) {
