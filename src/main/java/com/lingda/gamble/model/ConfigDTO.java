@@ -2,6 +2,7 @@ package com.lingda.gamble.model;
 
 
 import com.lingda.gamble.param.Config;
+import com.lingda.gamble.param.StrategyMode;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class ConfigDTO {
     private Boolean smpDanShuang;
     private List<Integer> smpLevelChips;
     private Boolean firstSecondEnabled;
-    private Boolean firstSecondSmartMode;
+    private StrategyMode firstSecondStrategyMode;
     private List<Integer> firstSecondExcludeNumbers;
     private List<Integer> firstSecondLevelAccList;
     private Boolean thirdFourthEnabled;
@@ -39,7 +40,7 @@ public class ConfigDTO {
         setSmpLevelChips(Config.getSmpLevelChips());
 
         setFirstSecondEnabled(Config.getFirstSecondEnabled());
-        setFirstSecondSmartMode(Config.getFirstSecondSmartMode());
+        setFirstSecondStrategyMode(Config.getFirstSecondStrategyMode());
         setFirstSecondExcludeNumbers(Config.getFirstSecondExcludeNumbers());
         setFirstSecondLevelAccList(Config.getFirstSecondLevelAccList());
 
@@ -66,12 +67,12 @@ public class ConfigDTO {
         setLostThreshold(Config.getLostThreshold());
     }
 
-    public Boolean getFirstSecondSmartMode() {
-        return firstSecondSmartMode;
+    public StrategyMode getFirstSecondStrategyMode() {
+        return firstSecondStrategyMode;
     }
 
-    public void setFirstSecondSmartMode(Boolean firstSecondSmartMode) {
-        this.firstSecondSmartMode = firstSecondSmartMode;
+    public void setFirstSecondStrategyMode(StrategyMode firstSecondStrategyMode) {
+        this.firstSecondStrategyMode = firstSecondStrategyMode;
     }
 
     public Boolean getThirdFourthSmartMode() {

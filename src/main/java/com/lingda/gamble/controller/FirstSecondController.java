@@ -1,6 +1,7 @@
 package com.lingda.gamble.controller;
 
 import com.lingda.gamble.param.Config;
+import com.lingda.gamble.param.StrategyMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,13 +49,13 @@ public class FirstSecondController {
     @RequestMapping(value="enable/smart_mode", method = RequestMethod.POST)
     public void enableFirstSecondSmartMode() {
         logger.info("Enable first_second smart mode");
-        Config.setFirstSecondSmartMode(true);
+        Config.setFirstSecondStrategyMode(StrategyMode.SMART);
     }
 
     @RequestMapping(value="disable/smart_mode", method = RequestMethod.POST)
     public void disableFirstSecondSmartMode() {
         logger.info("Disable first_second smart mode");
-        Config.setFirstSecondSmartMode(false);
+        Config.setFirstSecondStrategyMode(StrategyMode.DISABLED);
     }
 
     @RequestMapping(value="smart_switch", method = RequestMethod.POST)

@@ -11,8 +11,9 @@ public class Config {
     private static Boolean smpDaXiao = true;
     private static Boolean smpDanShuang = false;
     private static List<Integer> smpLevelChips = Collections.singletonList(initialChip);
+
     private static Boolean firstSecondEnabled = false;
-    private static Boolean firstSecondSmartMode = false;
+    private static StrategyMode firstSecondStrategyMode = StrategyMode.PAIR;
     private static Integer firstSecondSmartDetectRoundNumber = 2;
     private static Integer firstSecondMaxBetCount = 7;
     private static List<Integer> firstSecondExcludeNumbers = new ArrayList<>();
@@ -190,12 +191,12 @@ public class Config {
         Config.ninethTenthSmartSwitch = ninethTenthSmartSwitch;
     }
 
-    public static Boolean getFirstSecondSmartMode() {
-        return firstSecondSmartMode;
+    public static StrategyMode getFirstSecondStrategyMode() {
+        return firstSecondStrategyMode;
     }
 
-    public static void setFirstSecondSmartMode(Boolean firstSecondSmartMode) {
-        Config.firstSecondSmartMode = firstSecondSmartMode;
+    public static void setFirstSecondStrategyMode(StrategyMode  firstSecondStrategyMode) {
+        Config.firstSecondStrategyMode = firstSecondStrategyMode;
     }
 
     public static Boolean getThirdFourthSmartMode() {
