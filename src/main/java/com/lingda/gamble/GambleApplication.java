@@ -93,7 +93,7 @@ public class GambleApplication {
                                   FinishBetOperation finishBetOperation) {
         return (args) -> {
             if (args.length == 0) {
-                String chromeDriverPath = resourceLoader.getResource("classpath:chromedriver.exe").getFile().getPath();
+                String chromeDriverPath = resourceLoader.getResource("classpath:chromedriver").getFile().getPath();
                 logger.info("Chrome driver path is {}", chromeDriverPath);
                 System.setProperty("webdriver.chrome.driver", chromeDriverPath);
             } else {

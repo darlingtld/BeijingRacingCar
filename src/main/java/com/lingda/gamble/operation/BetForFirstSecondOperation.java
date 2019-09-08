@@ -395,74 +395,25 @@ public class BetForFirstSecondOperation {
                         logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round);
                     } else {
                         logger.info("[Operation - Bet] No last bet for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round - 1);
-                        getConsecutivePairOccursWithinANumberOfRounds(round, 20);
-//                        int firstCountOfNumbersToRemove = 3 - Config.getFirstSecondExcludeNumbers().size();
-//                        int secondCountOfNumbersToRemove = 3 - Config.getFirstSecondExcludeNumbers().size();
-//                        Map<Integer, Integer> firstNumberStatsMap = Utils.sortByValue(Utils.convertMap(firstNumberCountMap), true);
-//                        Map<Integer, Integer> secondNumberStatsMap = Utils.sortByValue(Utils.convertMap(secondNumberCountMap), true);
-//
-//                        List<Integer> firstNumberToBetList = new ArrayList<>(numberBetList);
-//                        List<Integer> secondNumberToBetList = new ArrayList<>(numberBetList);
-//                        List<Integer> firstNumberToRemoveList = new ArrayList<>();
-//                        List<Integer> secondNumberToRemoveList = new ArrayList<>();
-//
-//                        firstNumberStatsMap.forEach((k, v) -> {
-//                            if (v >= 2 && firstCountOfNumbersToRemove > firstNumberToRemoveList.size()) {
-//                                firstNumberToRemoveList.add(k);
-//                            }
-//                        });
-//
-//                        secondNumberStatsMap.forEach((k, v) -> {
-//                            if (v >= 2 && secondCountOfNumbersToRemove > secondNumberToRemoveList.size()) {
-//                                secondNumberToRemoveList.add(k);
-//                            }
-//                        });
-//
-//                        firstNumberToBetList.removeAll(firstNumberToRemoveList);
-//                        secondNumberToBetList.removeAll(secondNumberToRemoveList);
-//
-//                        Collections.shuffle(firstNumberToBetList);
-//                        Collections.shuffle(secondNumberToBetList);
-//
-//                        betForFirst(bet, chip, firstNumberToBetList.subList(0, Math.min(firstNumberToBetList.size(), Config.getFirstSecondMaxBetCount())), driver);
-//                        money = calculateMoney(money, -Math.min(firstNumberToBetList.size(), Config.getFirstSecondMaxBetCount()) * chip);
-//                        betForSecond(bet, chip, secondNumberToBetList.subList(0, Math.min(secondNumberToBetList.size(), Config.getFirstSecondMaxBetCount())), driver);
-//                        money = calculateMoney(money, -Math.min(secondNumberToBetList.size(), Config.getFirstSecondMaxBetCount()) * chip);
+                        Set<Integer> numbersToBet = getConsecutivePairOccursWithinANumberOfRounds(round, 20);
+                        System.out.println(numbersToBet);
+                        if (numbersToBet.contains(lastLotteryResult.getFirst())) {
+                            betForFirst(bet, chip, Collections.singletonList(lastLotteryResult.getFirst()), driver);
+                            money = calculateMoney(money, -Math.min(1, Config.getFirstSecondMaxBetCount()) * chip);
+                        }
+                        if (numbersToBet.contains(lastLotteryResult.getSecond())) {
+                            betForSecond(bet, chip, Collections.singletonList(lastLotteryResult.getSecond()), driver);
+                            money = calculateMoney(money, -Math.min(1, Config.getFirstSecondMaxBetCount()) * chip);
+                        }
                     }
                 } else {
-//                    int firstCountOfNumbersToRemove = 3 - Config.getFirstSecondExcludeNumbers().size();
-//                    int secondCountOfNumbersToRemove = 3 - Config.getFirstSecondExcludeNumbers().size();
-//                    Map<Integer, Integer> firstNumberStatsMap = Utils.sortByValue(Utils.convertMap(firstNumberCountMap), true);
-//                    Map<Integer, Integer> secondNumberStatsMap = Utils.sortByValue(Utils.convertMap(secondNumberCountMap), true);
-//
-//                    List<Integer> firstNumberToBetList = new ArrayList<>(numberBetList);
-//                    List<Integer> secondNumberToBetList = new ArrayList<>(numberBetList);
-//                    List<Integer> firstNumberToRemoveList = new ArrayList<>();
-//                    List<Integer> secondNumberToRemoveList = new ArrayList<>();
-//
-//                    firstNumberStatsMap.forEach((k, v) -> {
-//                        if (v >= 2 && firstCountOfNumbersToRemove > firstNumberToRemoveList.size()) {
-//                            firstNumberToRemoveList.add(k);
-//                        }
-//                    });
-//
-//                    secondNumberStatsMap.forEach((k, v) -> {
-//                        if (v >= 2 && secondCountOfNumbersToRemove > secondNumberToRemoveList.size()) {
-//                            secondNumberToRemoveList.add(k);
-//                        }
-//                    });
-//                    firstNumberToBetList.removeAll(firstNumberToRemoveList);
-//                    secondNumberToBetList.removeAll(secondNumberToRemoveList);
-//
-//                    Collections.shuffle(firstNumberToBetList);
-//                    Collections.shuffle(secondNumberToBetList);
-//
-//                    Integer firstMoneyBet = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime);
-//                    betForFirst(bet, firstMoneyBet, firstNumberToBetList.subList(0, Math.min(firstNumberToBetList.size(), Config.getFirstSecondMaxBetCount())), driver);
-//                    money = calculateMoney(money, -Math.min(firstNumberToBetList.size(), Config.getFirstSecondMaxBetCount()) * firstMoneyBet);
-//                    Integer secondMoneyBet = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime);
-//                    betForSecond(bet, secondMoneyBet, secondNumberToBetList.subList(0, Math.min(secondNumberToBetList.size(), Config.getFirstSecondMaxBetCount())), driver);
-//                    money = calculateMoney(money, -Math.min(secondNumberToBetList.size(), Config.getFirstSecondMaxBetCount()) * secondMoneyBet);
+                    Integer firstMoneyBetChip = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime);
+                    betForFirst(bet, firstMoneyBetChip, Collections.singletonList(1), driver);
+                    money = calculateMoney(money, -Math.min(1, Config.getFirstSecondMaxBetCount()) * firstMoneyBetChip);
+
+                    Integer secondMoneyBetChip = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime);
+                    betForSecond(bet, secondMoneyBetChip, Collections.singletonList(lastLotteryResult.getSecond()), driver);
+                    money = calculateMoney(money, -Math.min(1, Config.getFirstSecondMaxBetCount()) * secondMoneyBetChip);
 
                     break;
                 }
@@ -476,25 +427,46 @@ public class BetForFirstSecondOperation {
 
     }
 
-//    TODO
-    private void getConsecutivePairOccursWithinANumberOfRounds(int currentRound, int numberOfRounds) {
+    private Set<Integer> getConsecutivePairOccursWithinANumberOfRounds(int currentRound, int numberOfRounds) {
         List<LotteryResult> lotteryResultList = new ArrayList<>(numberOfRounds);
         for (int i = 0; i < numberOfRounds; i++) {
             lotteryResultList.add(lotteryResultRepository.findByRound(currentRound - i));
         }
-        Map<Integer, List<Integer>> numberAndRoundsMap = new HashMap<>();
-        lotteryResultList.forEach(lotteryResult -> {
-            numberAndRoundsMap.computeIfAbsent(lotteryResult.getFirst(), k -> new ArrayList<>()).add(lotteryResult.getRound());
-            numberAndRoundsMap.computeIfAbsent(lotteryResult.getSecond(), k -> new ArrayList<>()).add(lotteryResult.getRound());
-            numberAndRoundsMap.computeIfAbsent(lotteryResult.getThird(), k -> new ArrayList<>()).add(lotteryResult.getRound());
-            numberAndRoundsMap.computeIfAbsent(lotteryResult.getFourth(), k -> new ArrayList<>()).add(lotteryResult.getRound());
-            numberAndRoundsMap.computeIfAbsent(lotteryResult.getFifth(), k -> new ArrayList<>()).add(lotteryResult.getRound());
-            numberAndRoundsMap.computeIfAbsent(lotteryResult.getSixth(), k -> new ArrayList<>()).add(lotteryResult.getRound());
-            numberAndRoundsMap.computeIfAbsent(lotteryResult.getSeventh(), k -> new ArrayList<>()).add(lotteryResult.getRound());
-            numberAndRoundsMap.computeIfAbsent(lotteryResult.getEighth(), k -> new ArrayList<>()).add(lotteryResult.getRound());
-            numberAndRoundsMap.computeIfAbsent(lotteryResult.getNineth(), k -> new ArrayList<>()).add(lotteryResult.getRound());
-            numberAndRoundsMap.computeIfAbsent(lotteryResult.getTenth(), k -> new ArrayList<>()).add(lotteryResult.getRound());
-        });
+        Set<Integer> consecutiveRoundsForSameNumber = new HashSet<>();
+        for (int i = 0; i < numberOfRounds - 1; i++) {
+            if (lotteryResultList.get(i).getFirst().equals(lotteryResultList.get(i + 1).getFirst())) {
+                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getFirst());
+            }
+            if (lotteryResultList.get(i).getSecond().equals(lotteryResultList.get(i + 1).getSecond())) {
+                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getSecond());
+            }
+            if (lotteryResultList.get(i).getThird().equals(lotteryResultList.get(i + 1).getThird())) {
+                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getFirst());
+            }
+            if (lotteryResultList.get(i).getFourth().equals(lotteryResultList.get(i + 1).getFourth())) {
+                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getFourth());
+            }
+            if (lotteryResultList.get(i).getFifth().equals(lotteryResultList.get(i + 1).getFifth())) {
+                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getFifth());
+            }
+            if (lotteryResultList.get(i).getSixth().equals(lotteryResultList.get(i + 1).getSixth())) {
+                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getSixth());
+            }
+            if (lotteryResultList.get(i).getSeventh().equals(lotteryResultList.get(i + 1).getSeventh())) {
+                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getSeventh());
+            }
+            if (lotteryResultList.get(i).getEighth().equals(lotteryResultList.get(i + 1).getEighth())) {
+                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getEighth());
+            }
+            if (lotteryResultList.get(i).getNineth().equals(lotteryResultList.get(i + 1).getNineth())) {
+                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getNineth());
+            }
+            if (lotteryResultList.get(i).getTenth().equals(lotteryResultList.get(i + 1).getTenth())) {
+                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getTenth());
+            }
+        }
+
+        return consecutiveRoundsForSameNumber;
     }
 
     private Integer decideBetChip(Integer winningNumber, RankSingleBet lastRankSingleBet, boolean isPlayTime) {
