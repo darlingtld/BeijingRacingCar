@@ -75,4 +75,16 @@ public class FirstSecondController {
         logger.info("Set first_second max bet count={}", count);
         Config.setFirstSecondMaxBetCount(count);
     }
+
+    @RequestMapping(value="pair_detect_round_number", method = RequestMethod.POST)
+    public void setPairDetectRoundNumber(@RequestParam("number") Integer number) {
+        logger.info("Set first_second pair_detect_round_number={}", number);
+        Config.setFirstSecondPairModeDetectRoundNumber(number);
+    }
+
+    @RequestMapping(value="pair_gap_round_number", method = RequestMethod.POST)
+    public void setPairGapRoundNumber(@RequestParam("number") Integer number) {
+        logger.info("Set first_second pair_gap_round_number={}", number);
+        Config.setFirstSecondGapRoundsForConsecutiveNumbers(number);
+    }
 }

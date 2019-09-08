@@ -73,4 +73,16 @@ public class SeventhEighthController {
         logger.info("Set seventh_eighth max bet count={}", count);
         Config.setSeventhEighthMaxBetCount(count);
     }
+
+    @RequestMapping(value="pair_detect_round_number", method = RequestMethod.POST)
+    public void setPairDetectRoundNumber(@RequestParam("number") Integer number) {
+        logger.info("Set Seventh_Eighth pair_detect_round_number={}", number);
+        Config.setSeventhEighthPairModeDetectRoundNumber(number);
+    }
+
+    @RequestMapping(value="pair_gap_round_number", method = RequestMethod.POST)
+    public void setPairGapRoundNumber(@RequestParam("number") Integer number) {
+        logger.info("Set Seventh_Eighth pair_gap_round_number={}", number);
+        Config.setSeventhEighthGapRoundsForConsecutiveNumbers(number);
+    }
 }

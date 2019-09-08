@@ -74,4 +74,16 @@ public class FifthSixthController {
         logger.info("Set fifth_sixth max bet count={}", count);
         Config.setFifthSixthMaxBetCount(count);
     }
+
+    @RequestMapping(value="pair_detect_round_number", method = RequestMethod.POST)
+    public void setPairDetectRoundNumber(@RequestParam("number") Integer number) {
+        logger.info("Set Fifth_Sixth pair_detect_round_number={}", number);
+        Config.setFifthSixthPairModeDetectRoundNumber(number);
+    }
+
+    @RequestMapping(value="pair_gap_round_number", method = RequestMethod.POST)
+    public void setPairGapRoundNumber(@RequestParam("number") Integer number) {
+        logger.info("Set Fifth_Sixth pair_gap_round_number={}", number);
+        Config.setFifthSixthGapRoundsForConsecutiveNumbers(number);
+    }
 }

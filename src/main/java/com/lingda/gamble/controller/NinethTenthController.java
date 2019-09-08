@@ -75,4 +75,15 @@ public class NinethTenthController {
         Config.setNinethTenthMaxBetCount(count);
     }
 
+    @RequestMapping(value="pair_detect_round_number", method = RequestMethod.POST)
+    public void setPairDetectRoundNumber(@RequestParam("number") Integer number) {
+        logger.info("Set Nineth_Tenth pair_detect_round_number={}", number);
+        Config.setNinethTenthPairModeDetectRoundNumber(number);
+    }
+
+    @RequestMapping(value="pair_gap_round_number", method = RequestMethod.POST)
+    public void setPairGapRoundNumber(@RequestParam("number") Integer number) {
+        logger.info("Set Nineth_Tenth pair_gap_round_number={}", number);
+        Config.setNinethTenthGapRoundsForConsecutiveNumbers(number);
+    }
 }

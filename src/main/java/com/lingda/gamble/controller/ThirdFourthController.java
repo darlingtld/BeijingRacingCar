@@ -73,4 +73,16 @@ public class ThirdFourthController {
         logger.info("Set third_fourth max bet count={}", count);
         Config.setThirdFourthMaxBetCount(count);
     }
+
+    @RequestMapping(value="pair_detect_round_number", method = RequestMethod.POST)
+    public void setPairDetectRoundNumber(@RequestParam("number") Integer number) {
+        logger.info("Set Third_Fourth pair_detect_round_number={}", number);
+        Config.setThirdFourthPairModeDetectRoundNumber(number);
+    }
+
+    @RequestMapping(value="pair_gap_round_number", method = RequestMethod.POST)
+    public void setPairGapRoundNumber(@RequestParam("number") Integer number) {
+        logger.info("Set Third_Fourth pair_gap_round_number={}", number);
+        Config.setThirdFourthGapRoundsForConsecutiveNumbers(number);
+    }
 }
