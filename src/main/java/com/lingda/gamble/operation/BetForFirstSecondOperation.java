@@ -1,9 +1,6 @@
 package com.lingda.gamble.operation;
 
-import com.lingda.gamble.model.FirstSecondBet;
-import com.lingda.gamble.model.FirstSecondRatio;
-import com.lingda.gamble.model.LotteryResult;
-import com.lingda.gamble.model.RankSingleBet;
+import com.lingda.gamble.model.*;
 import com.lingda.gamble.param.Config;
 import com.lingda.gamble.repository.FirstSecondBetRepository;
 import com.lingda.gamble.repository.FirstSecondRatioRepository;
@@ -48,6 +45,13 @@ public class BetForFirstSecondOperation {
     private final FirstSecondRatioRepository firstSecondRatioRepository;
 
     private final LotteryResultRepository lotteryResultRepository;
+
+    @Autowired
+    private OperationUtils operationUtils;
+
+    private Integer lastBetFirstNumber;
+
+    private Integer lastBetSecondNumber;
 
     @Autowired
     public BetForFirstSecondOperation(FirstSecondBetRepository firstSecondBetRepository,
@@ -130,10 +134,10 @@ public class BetForFirstSecondOperation {
         logger.info("[Operation - Bet] Get last bet information for 幸运飞艇 - {}", PLAYGROUND);
         FirstSecondBet lastBet = firstSecondBetRepository.findByRound(round - 1);
         //            结算上次中奖情况
-        logger.info("=============== 金额 (for test) ===============");
-        money = calculateMoney(money, calculateLastLotteryResult(lastBet, lastLotteryResult));
-        logger.info("我的余额:{}", money);
-        logger.info("====================================");
+//        logger.info("=============== 金额 (for test) ===============");
+//        money = calculateMoney(money, calculateLastLotteryResult(lastBet, lastLotteryResult));
+//        logger.info("我的余额:{}", money);
+//        logger.info("====================================");
 
         FirstSecondBet bet = new FirstSecondBet();
         bet.setRound(round);
@@ -385,9 +389,8 @@ public class BetForFirstSecondOperation {
                     Integer secondMoneyBet = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime);
                     betForSecond(bet, secondMoneyBet, secondNumberToBetList.subList(0, Math.min(secondNumberToBetList.size(), Config.getFirstSecondMaxBetCount())), driver);
                     money = calculateMoney(money, -Math.min(secondNumberToBetList.size(), Config.getFirstSecondMaxBetCount()) * secondMoneyBet);
-
-                    break;
                 }
+                break;
             case PAIR:
                 logger.info("[Operation - Bet] Bet in PAIR mode");
                 if (lastBet == null) {
@@ -395,28 +398,45 @@ public class BetForFirstSecondOperation {
                         logger.info("[Operation - Bet] Not in play time.  Do not bet for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round);
                     } else {
                         logger.info("[Operation - Bet] No last bet for 幸运飞艇 - {} - 期数 {}", PLAYGROUND, round - 1);
-                        Set<Integer> numbersToBet = getConsecutivePairOccursWithinANumberOfRounds(round, 20);
-                        System.out.println(numbersToBet);
-                        if (numbersToBet.contains(lastLotteryResult.getFirst())) {
+                        Map<String, Integer> numbersToBet = operationUtils.getConsecutivePairOccursWithinANumberOfRounds(round, Config.getFirstSecondPairModeDetectRoundNumber(), Config.getFirstSecondGapRoundsForConsecutiveNumbers());
+                        logger.info("[Operation - Bet] bet {}", numbersToBet);
+                        if (numbersToBet.containsValue(lastLotteryResult.getFirst())) {
                             betForFirst(bet, chip, Collections.singletonList(lastLotteryResult.getFirst()), driver);
+                            lastBetFirstNumber = lastLotteryResult.getFirst();
                             money = calculateMoney(money, -Math.min(1, Config.getFirstSecondMaxBetCount()) * chip);
                         }
-                        if (numbersToBet.contains(lastLotteryResult.getSecond())) {
+                        if (numbersToBet.containsValue(lastLotteryResult.getSecond())) {
                             betForSecond(bet, chip, Collections.singletonList(lastLotteryResult.getSecond()), driver);
+                            lastBetSecondNumber = lastLotteryResult.getSecond();
                             money = calculateMoney(money, -Math.min(1, Config.getFirstSecondMaxBetCount()) * chip);
                         }
                     }
                 } else {
-                    Integer firstMoneyBetChip = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime);
-                    betForFirst(bet, firstMoneyBetChip, Collections.singletonList(1), driver);
-                    money = calculateMoney(money, -Math.min(1, Config.getFirstSecondMaxBetCount()) * firstMoneyBetChip);
-
-                    Integer secondMoneyBetChip = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime);
-                    betForSecond(bet, secondMoneyBetChip, Collections.singletonList(lastLotteryResult.getSecond()), driver);
-                    money = calculateMoney(money, -Math.min(1, Config.getFirstSecondMaxBetCount()) * secondMoneyBetChip);
-
-                    break;
+//                    check if last bet is a win
+                    if (lastLotteryResult.getFirst().equals(lastBetFirstNumber)) {
+//                        bingo. It's a win
+                        logger.info("Last bet for first is a win. Last bet first is {}", lastBetFirstNumber);
+                        lastBetFirstNumber = null;
+                    } else {
+                        logger.info("No luck. Continue to bet {} for first", lastBetFirstNumber);
+                        Integer firstMoneyBetChip = decideBetChip(lastLotteryResult.getFirst(), lastBet.getBetFirst(), isPlayTime);
+                        betForFirst(bet, firstMoneyBetChip, Collections.singletonList(lastBetFirstNumber), driver);
+                        money = calculateMoney(money, -Math.min(1, Config.getFirstSecondMaxBetCount()) * firstMoneyBetChip);
+                    }
+                    if (lastLotteryResult.getSecond().equals(lastBetSecondNumber)) {
+                        logger.info("Last bet for second is a win. Last bet second is {}", lastBetSecondNumber);
+                        lastBetSecondNumber = null;
+                    } else {
+                        logger.info("No luck. Continue to bet {} for second", lastBetSecondNumber);
+                        Integer secondMoneyBetChip = decideBetChip(lastLotteryResult.getSecond(), lastBet.getBetSecond(), isPlayTime);
+                        betForSecond(bet, secondMoneyBetChip, Collections.singletonList(lastBetSecondNumber), driver);
+                        money = calculateMoney(money, -Math.min(1, Config.getFirstSecondMaxBetCount()) * secondMoneyBetChip);
+                    }
                 }
+                if (bet.getBetFirst() == null || bet.getBetSecond() == null) {
+                    return false;
+                }
+                break;
         }
 
         logger.info("=============== 金额 (for test) ===============");
@@ -425,48 +445,6 @@ public class BetForFirstSecondOperation {
         firstSecondBetRepository.save(bet);
         return true;
 
-    }
-
-    private Set<Integer> getConsecutivePairOccursWithinANumberOfRounds(int currentRound, int numberOfRounds) {
-        List<LotteryResult> lotteryResultList = new ArrayList<>(numberOfRounds);
-        for (int i = 0; i < numberOfRounds; i++) {
-            lotteryResultList.add(lotteryResultRepository.findByRound(currentRound - i));
-        }
-        Set<Integer> consecutiveRoundsForSameNumber = new HashSet<>();
-        for (int i = 0; i < numberOfRounds - 1; i++) {
-            if (lotteryResultList.get(i).getFirst().equals(lotteryResultList.get(i + 1).getFirst())) {
-                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getFirst());
-            }
-            if (lotteryResultList.get(i).getSecond().equals(lotteryResultList.get(i + 1).getSecond())) {
-                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getSecond());
-            }
-            if (lotteryResultList.get(i).getThird().equals(lotteryResultList.get(i + 1).getThird())) {
-                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getFirst());
-            }
-            if (lotteryResultList.get(i).getFourth().equals(lotteryResultList.get(i + 1).getFourth())) {
-                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getFourth());
-            }
-            if (lotteryResultList.get(i).getFifth().equals(lotteryResultList.get(i + 1).getFifth())) {
-                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getFifth());
-            }
-            if (lotteryResultList.get(i).getSixth().equals(lotteryResultList.get(i + 1).getSixth())) {
-                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getSixth());
-            }
-            if (lotteryResultList.get(i).getSeventh().equals(lotteryResultList.get(i + 1).getSeventh())) {
-                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getSeventh());
-            }
-            if (lotteryResultList.get(i).getEighth().equals(lotteryResultList.get(i + 1).getEighth())) {
-                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getEighth());
-            }
-            if (lotteryResultList.get(i).getNineth().equals(lotteryResultList.get(i + 1).getNineth())) {
-                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getNineth());
-            }
-            if (lotteryResultList.get(i).getTenth().equals(lotteryResultList.get(i + 1).getTenth())) {
-                consecutiveRoundsForSameNumber.add(lotteryResultList.get(i).getTenth());
-            }
-        }
-
-        return consecutiveRoundsForSameNumber;
     }
 
     private Integer decideBetChip(Integer winningNumber, RankSingleBet lastRankSingleBet, boolean isPlayTime) {

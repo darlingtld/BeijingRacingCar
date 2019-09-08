@@ -1,5 +1,7 @@
 package com.lingda.gamble.param;
 
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,43 +15,63 @@ public class Config {
     private static List<Integer> smpLevelChips = Collections.singletonList(initialChip);
 
     private static Boolean firstSecondEnabled = false;
+
     private static StrategyMode firstSecondStrategyMode = StrategyMode.PAIR;
+    private static Integer firstSecondPairModeDetectRoundNumber = 8;
+    private static Integer firstSecondGapRoundsForConsecutiveNumbers = 5;
+
     private static Integer firstSecondSmartDetectRoundNumber = 2;
     private static Integer firstSecondMaxBetCount = 7;
     private static List<Integer> firstSecondExcludeNumbers = new ArrayList<>();
-    private static List<Integer> firstSecondLevelAccList = Collections.singletonList(initialChip);
+    private static List<Integer> firstSecondLevelAccList = Lists.newArrayList(initialChip, initialChip + 1, initialChip + 2, initialChip + 3, initialChip + 4, initialChip + 5, initialChip + 6);
     private static List<String> firstSecondSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean thirdFourthEnabled = false;
-    private static Boolean thirdFourthSmartMode = false;
+
+    private static StrategyMode thirdFourthStrategyMode = StrategyMode.PAIR;
+    private static Integer thirdFourthPairModeDetectRoundNumber = 8;
+    private static Integer thirdFourthGapRoundsForConsecutiveNumbers = 5;
+    
     private static Integer thirdFourthSmartDetectRoundNumber = 2;
     private static Integer thirdFourthMaxBetCount = 7;
     private static List<Integer> thirdFourthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> thirdFourthLevelAccList = Collections.singletonList(initialChip);
+    private static List<Integer> thirdFourthLevelAccList = Lists.newArrayList(initialChip, initialChip + 1, initialChip + 2, initialChip + 3, initialChip + 4, initialChip + 5, initialChip + 6);;
     private static List<String> thirdFourthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean fifthSixthEnabled = false;
-    private static Boolean fifthSixthSmartMode = false;
+    
+    private static StrategyMode fifthSixthStrategyMode = StrategyMode.PAIR;
+    private static Integer fifthSixthPairModeDetectRoundNumber = 8;
+    private static Integer fifthSixthGapRoundsForConsecutiveNumbers = 5;
+    
     private static Integer fifthSixthSmartDetectRoundNumber = 2;
     private static Integer fifthSixthMaxBetCount = 7;
     private static List<Integer> fifthSixthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> fifthSixthLevelAccList = Collections.singletonList(initialChip);
+    private static List<Integer> fifthSixthLevelAccList = Lists.newArrayList(initialChip, initialChip + 1, initialChip + 2, initialChip + 3, initialChip + 4, initialChip + 5, initialChip + 6);;
     private static List<String> fifthSixthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean seventhEighthEnabled = false;
-    private static Boolean seventhEighthSmartMode = false;
+
+    private static StrategyMode seventhEighthStrategyMode = StrategyMode.PAIR;
+    private static Integer seventhEighthPairModeDetectRoundNumber = 8;
+    private static Integer seventhEighthGapRoundsForConsecutiveNumbers = 5;
+    
     private static Integer seventhEighthSmartDetectRoundNumber = 2;
     private static Integer seventhEighthMaxBetCount = 7;
     private static List<Integer> seventhEighthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> seventhEighthLevelAccList = Collections.singletonList(initialChip);
+    private static List<Integer> seventhEighthLevelAccList = Lists.newArrayList(initialChip, initialChip + 1, initialChip + 2, initialChip + 3, initialChip + 4, initialChip + 5, initialChip + 6);;
     private static List<String> seventhEighthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
 
     private static Boolean ninethTenthEnabled = false;
-    private static Boolean ninethTenthSmartMode = false;
+
+    private static StrategyMode ninethTenthStrategyMode = StrategyMode.PAIR;
+    private static Integer ninethTenthPairModeDetectRoundNumber = 8;
+    private static Integer ninethTenthGapRoundsForConsecutiveNumbers = 5;
+    
     private static Integer ninethTenthSmartDetectRoundNumber = 2;
     private static Integer ninethTenthMaxBetCount = 7;
     private static List<Integer> ninethTenthExcludeNumbers = new ArrayList<>();
-    private static List<Integer> ninethTenthLevelAccList = Collections.singletonList(initialChip);
+    private static List<Integer> ninethTenthLevelAccList = Lists.newArrayList(initialChip, initialChip + 1, initialChip + 2, initialChip + 3, initialChip + 4, initialChip + 5, initialChip + 6);;
     private static List<String> ninethTenthSmartSwitch = Arrays.asList("1,3,5", "6,8,10");
     private static String email = "";
     private static Integer lostThreshold = 10000;
@@ -195,42 +217,9 @@ public class Config {
         return firstSecondStrategyMode;
     }
 
-    public static void setFirstSecondStrategyMode(StrategyMode  firstSecondStrategyMode) {
+    public static void setFirstSecondStrategyMode(StrategyMode firstSecondStrategyMode) {
         Config.firstSecondStrategyMode = firstSecondStrategyMode;
     }
-
-    public static Boolean getThirdFourthSmartMode() {
-        return thirdFourthSmartMode;
-    }
-
-    public static void setThirdFourthSmartMode(Boolean thirdFourthSmartMode) {
-        Config.thirdFourthSmartMode = thirdFourthSmartMode;
-    }
-
-    public static Boolean getFifthSixthSmartMode() {
-        return fifthSixthSmartMode;
-    }
-
-    public static void setFifthSixthSmartMode(Boolean fifthSixthSmartMode) {
-        Config.fifthSixthSmartMode = fifthSixthSmartMode;
-    }
-
-    public static Boolean getSeventhEighthSmartMode() {
-        return seventhEighthSmartMode;
-    }
-
-    public static void setSeventhEighthSmartMode(Boolean seventhEighthSmartMode) {
-        Config.seventhEighthSmartMode = seventhEighthSmartMode;
-    }
-
-    public static Boolean getNinethTenthSmartMode() {
-        return ninethTenthSmartMode;
-    }
-
-    public static void setNinethTenthSmartMode(Boolean ninethTenthSmartMode) {
-        Config.ninethTenthSmartMode = ninethTenthSmartMode;
-    }
-
     public static Boolean getSmpDaXiao() {
         return smpDaXiao;
     }
@@ -394,5 +383,119 @@ public class Config {
 
     public static void setNinethTenthExcludeNumbers(List<Integer> ninethTenthExcludeNumbers) {
         Config.ninethTenthExcludeNumbers = ninethTenthExcludeNumbers;
+    }
+
+
+    public static Integer getFirstSecondPairModeDetectRoundNumber() {
+        return firstSecondPairModeDetectRoundNumber;
+    }
+
+    public static void setFirstSecondPairModeDetectRoundNumber(Integer firstSecondPairModeDetectRoundNumber) {
+        Config.firstSecondPairModeDetectRoundNumber = firstSecondPairModeDetectRoundNumber;
+    }
+
+
+    public static Integer getFirstSecondGapRoundsForConsecutiveNumbers() {
+        return firstSecondGapRoundsForConsecutiveNumbers;
+    }
+
+    public static void setFirstSecondGapRoundsForConsecutiveNumbers(Integer firstSecondGapRoundsForConsecutiveNumbers) {
+        Config.firstSecondGapRoundsForConsecutiveNumbers = firstSecondGapRoundsForConsecutiveNumbers;
+    }
+
+    public static StrategyMode getThirdFourthStrategyMode() {
+        return thirdFourthStrategyMode;
+    }
+
+    public static void setThirdFourthStrategyMode(StrategyMode thirdFourthStrategyMode) {
+        Config.thirdFourthStrategyMode = thirdFourthStrategyMode;
+    }
+
+    public static Integer getThirdFourthPairModeDetectRoundNumber() {
+        return thirdFourthPairModeDetectRoundNumber;
+    }
+
+    public static void setThirdFourthPairModeDetectRoundNumber(Integer thirdFourthPairModeDetectRoundNumber) {
+        Config.thirdFourthPairModeDetectRoundNumber = thirdFourthPairModeDetectRoundNumber;
+    }
+
+    public static Integer getThirdFourthGapRoundsForConsecutiveNumbers() {
+        return thirdFourthGapRoundsForConsecutiveNumbers;
+    }
+
+    public static void setThirdFourthGapRoundsForConsecutiveNumbers(Integer thirdFourthGapRoundsForConsecutiveNumbers) {
+        Config.thirdFourthGapRoundsForConsecutiveNumbers = thirdFourthGapRoundsForConsecutiveNumbers;
+    }
+
+    public static StrategyMode getFifthSixthStrategyMode() {
+        return fifthSixthStrategyMode;
+    }
+
+    public static void setFifthSixthStrategyMode(StrategyMode fifthSixthStrategyMode) {
+        Config.fifthSixthStrategyMode = fifthSixthStrategyMode;
+    }
+
+    public static Integer getFifthSixthPairModeDetectRoundNumber() {
+        return fifthSixthPairModeDetectRoundNumber;
+    }
+
+    public static void setFifthSixthPairModeDetectRoundNumber(Integer fifthSixthPairModeDetectRoundNumber) {
+        Config.fifthSixthPairModeDetectRoundNumber = fifthSixthPairModeDetectRoundNumber;
+    }
+
+    public static Integer getFifthSixthGapRoundsForConsecutiveNumbers() {
+        return fifthSixthGapRoundsForConsecutiveNumbers;
+    }
+
+    public static void setFifthSixthGapRoundsForConsecutiveNumbers(Integer fifthSixthGapRoundsForConsecutiveNumbers) {
+        Config.fifthSixthGapRoundsForConsecutiveNumbers = fifthSixthGapRoundsForConsecutiveNumbers;
+    }
+
+    public static StrategyMode getSeventhEighthStrategyMode() {
+        return seventhEighthStrategyMode;
+    }
+
+    public static void setSeventhEighthStrategyMode(StrategyMode seventhEighthStrategyMode) {
+        Config.seventhEighthStrategyMode = seventhEighthStrategyMode;
+    }
+
+    public static Integer getSeventhEighthPairModeDetectRoundNumber() {
+        return seventhEighthPairModeDetectRoundNumber;
+    }
+
+    public static void setSeventhEighthPairModeDetectRoundNumber(Integer seventhEighthPairModeDetectRoundNumber) {
+        Config.seventhEighthPairModeDetectRoundNumber = seventhEighthPairModeDetectRoundNumber;
+    }
+
+    public static Integer getSeventhEighthGapRoundsForConsecutiveNumbers() {
+        return seventhEighthGapRoundsForConsecutiveNumbers;
+    }
+
+    public static void setSeventhEighthGapRoundsForConsecutiveNumbers(Integer seventhEighthGapRoundsForConsecutiveNumbers) {
+        Config.seventhEighthGapRoundsForConsecutiveNumbers = seventhEighthGapRoundsForConsecutiveNumbers;
+    }
+
+    public static StrategyMode getNinethTenthStrategyMode() {
+        return ninethTenthStrategyMode;
+    }
+
+    public static void setNinethTenthStrategyMode(StrategyMode ninethTenthStrategyMode) {
+        Config.ninethTenthStrategyMode = ninethTenthStrategyMode;
+    }
+
+    public static Integer getNinethTenthPairModeDetectRoundNumber() {
+        return ninethTenthPairModeDetectRoundNumber;
+    }
+
+    public static void setNinethTenthPairModeDetectRoundNumber(Integer ninethTenthPairModeDetectRoundNumber) {
+        Config.ninethTenthPairModeDetectRoundNumber = ninethTenthPairModeDetectRoundNumber;
+    }
+
+    public static Integer getNinethTenthGapRoundsForConsecutiveNumbers() {
+        return ninethTenthGapRoundsForConsecutiveNumbers;
+    }
+
+    public static void setNinethTenthGapRoundsForConsecutiveNumbers(Integer ninethTenthGapRoundsForConsecutiveNumbers) {
+        Config.ninethTenthGapRoundsForConsecutiveNumbers = ninethTenthGapRoundsForConsecutiveNumbers;
     }
 }

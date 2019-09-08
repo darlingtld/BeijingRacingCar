@@ -1,6 +1,7 @@
 package com.lingda.gamble.controller;
 
 import com.lingda.gamble.param.Config;
+import com.lingda.gamble.param.StrategyMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,13 +48,13 @@ public class NinethTenthController {
     @RequestMapping(value="enable/smart_mode", method = RequestMethod.POST)
     public void enableNinethTenthSmartMode() {
         logger.info("Enable nineth_tenth smart mode");
-        Config.setNinethTenthSmartMode(true);
+        Config.setNinethTenthStrategyMode(StrategyMode.SMART);
     }
 
     @RequestMapping(value="disable/smart_mode", method = RequestMethod.POST)
     public void disableNinethTenthSmartMode() {
         logger.info("Disable nineth_tenth smart mode");
-        Config.setNinethTenthSmartMode(false);
+        Config.setNinethTenthStrategyMode(StrategyMode.DISABLED);
     }
 
     @RequestMapping(value="smart_switch", method = RequestMethod.POST)
